@@ -1,0 +1,5 @@
+include 'service-member:module-batch'
+include 'service-member:module-core'
+include 'service-member:module-domain'
+include 'service-member:module-external-api'
+include 'service-member:module-internal-api'
