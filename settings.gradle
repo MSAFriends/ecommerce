@@ -8,3 +8,13 @@ include 'service-discovery'
 include 'service-member'
 include 'service-order'
 include 'service-product'
+
+project(':service-member').projectDir = new File(settingsDir, 'service-member')
+apply from: 'service-member/settings.gradle'
+
+project(':service-order').projectDir = new File(settingsDir, 'service-member')
+apply from: 'service-member/settings.gradle'
+
+project(':service-product').projectDir = new File(settingsDir, 'service-member')
+apply from: 'service-member/settings.gradle'
+
