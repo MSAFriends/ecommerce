@@ -1,0 +1,11 @@
+dependencies {
+    implementation project(':service-member:module-core')
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
