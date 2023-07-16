@@ -12,9 +12,9 @@ include 'service-product'
 project(':service-member').projectDir = new File(settingsDir, 'service-member')
 apply from: 'service-member/settings.gradle'
 
-project(':service-order').projectDir = new File(settingsDir, 'service-member')
-apply from: 'service-member/settings.gradle'
+project(':service-order').projectDir = new File(settingsDir, 'service-order')
+apply from: 'service-order/settings.gradle'
 
-project(':service-product').projectDir = new File(settingsDir, 'service-member')
-apply from: 'service-member/settings.gradle'
+project(':service-product').projectDir = new File(settingsDir, 'service-product')
+apply from: 'service-product/settings.gradle'
 
