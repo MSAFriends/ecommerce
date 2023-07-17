@@ -1,5 +1,6 @@
-package com.github.msafriends.serviceorder.modulecore.domain;
+package com.github.msafriends.serviceorder.modulecore.domain.card;
 
+import com.github.msafriends.serviceorder.modulecore.domain.bank.BankProvider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

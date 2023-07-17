@@ -1,6 +1,6 @@
 package com.github.msafriends.serviceorder.modulecore.dto;
 
-import com.github.msafriends.serviceorder.modulecore.domain.Product;
+import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

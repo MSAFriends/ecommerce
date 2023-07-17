@@ -1,6 +1,7 @@
-package com.github.msafriends.serviceorder.modulecore.domain;
+package com.github.msafriends.serviceorder.modulecore.domain.order;
 
-import com.github.msafreinds.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

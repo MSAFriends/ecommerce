@@ -1,7 +1,7 @@
 package com.github.msafriends.serviceorder.modulecore.dto;
 
-import com.github.msafriends.serviceorder.modulecore.domain.Order;
-import com.github.msafriends.serviceorder.modulecore.domain.OrderStatus;
+import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
+import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

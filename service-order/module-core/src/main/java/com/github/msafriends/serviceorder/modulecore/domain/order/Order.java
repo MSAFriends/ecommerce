@@ -1,9 +1,9 @@
-package com.github.msafriends.serviceorder.modulecore.domain;
+package com.github.msafriends.serviceorder.modulecore.domain.order;
 
-import com.github.msafreinds.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.serviceorder.modulecore.dto.CouponResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
@@ -40,11 +40,10 @@ public class Order extends BaseTimeEntity {
     @Column(nullable = false)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<OrderItem> orderItems = new ArrayList<>();
 
-    @Builder
-    public Order(Long memberId, String request, Recipient recipient, OrderStatus status) {
+    public Order(Long memberId, String request, Recipient recipient, OrderStatus status, List<CouponResponse> coupons) {
         validateOrder();
 
         this.memberId = memberId;

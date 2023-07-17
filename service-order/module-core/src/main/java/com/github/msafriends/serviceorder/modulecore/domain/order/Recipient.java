@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceorder.modulecore.domain;
+package com.github.msafriends.serviceorder.modulecore.domain.order;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

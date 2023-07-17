@@ -1,7 +1,11 @@
 package com.github.msafriends.serviceorder.modulecore.dto;
 
-import com.github.msafriends.serviceorder.modulecore.domain.CouponDiscountType;
+import com.github.msafriends.serviceorder.modulecore.domain.coupon.CouponDiscountType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CouponResponse {
 
     private int value;

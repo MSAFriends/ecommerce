@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceorder.modulecore.domain;
+package com.github.msafriends.serviceorder.modulecore.domain.order;
 
 public enum OrderStatus {
     APPROVAL_PENDING,
