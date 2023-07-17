@@ -3,7 +3,8 @@ package com.github.msafriends.modulecore.domain.coupon;
 import com.github.msafriends.modulecore.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.util.Assert;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -31,21 +32,38 @@ public class Coupon {
     private int value;
 
     @Column(nullable = false)
-    private Boolean hasUsed;
+    private Boolean hasUsed = false;
+
+    @Column(nullable = false)
+    private LocalDateTime startAt;
+
+    @Column(nullable = false)
+    private LocalDateTime endAt;
+
 
     @Builder
-    public Coupon (Member member, CouponDiscountType discountType, int value) {
+    public Coupon (Member member, CouponDiscountType discountType, int value, LocalDateTime startAt, LocalDateTime endAt) {
         validateValue(value);
         this.member = member;
         this.uuid = generateUuid();
         this.discountType = discountType;
         this.value = value;
-        this.hasUsed = false;
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
     public void use() {
+        checkCouponValidity();
         if (!this.hasUsed) {
             this.hasUsed = true;
+        }
+    }
+
+    private void checkCouponValidity() {
+        LocalDateTime currentDate = LocalDateTime.now();
+
+        if (currentDate.isBefore(startAt) || currentDate.isAfter(endAt)) {
+            throw new IllegalStateException("The coupon is not within its validity period.");
         }
     }
 
