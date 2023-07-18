@@ -21,7 +21,7 @@ class PriceCalculatorTest {
     @DisplayName("전체 가격 계산 테스트")
     class TotalPriceTest {
         @Test
-        @DisplayName("전체 가격 계산 테스트")
+        @DisplayName("전체 가격을 계산한다.")
         void testCalculateTotalPrice() {
             // given
             int totalPrice = 10_000;
@@ -41,7 +41,7 @@ class PriceCalculatorTest {
     @DisplayName("할인 가격 테스트")
     class DiscountedPriceTest {
         @Test
-        @DisplayName("쿠폰 할인 가격 금액이 totalPrice보다 작은 경우")
+        @DisplayName("쿠폰 할인 가격 금액이 totalPrice보다 작은 경우에 할인된 가격을 계산한다.")
         void testCalculateDiscountedPriceLessThanTotalPrice() {
             // given
             int totalPrice = 10_000;
@@ -60,7 +60,7 @@ class PriceCalculatorTest {
         }
 
         @Test
-        @DisplayName("쿠폰 할인 가격 금액이 totalPrice보다 큰 경우")
+        @DisplayName("쿠폰 할인 가격 금액이 totalPrice보다 큰 경우에 0을 반환한다.")
         void testCalculateDiscountedPriceGreaterThanTotalPrice() {
             // given
             int totalPrice = 10_000;
