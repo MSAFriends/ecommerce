@@ -22,6 +22,6 @@ public class CouponResponse {
     }
 
     public int applyDiscount(int price) {
-        return discountType.strategy().apply(price, value);
+        return Math.max(0, discountType.strategy().apply(price, value));
     }
 }

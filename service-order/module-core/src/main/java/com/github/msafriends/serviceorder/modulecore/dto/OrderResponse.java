@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collections;
 import java.util.List;
 
 @Setter
@@ -31,13 +32,17 @@ public class OrderResponse {
     }
 
     public static OrderResponse from(final Order order) {
+        return from(order, Collections.emptyList());
+    }
+
+    public static OrderResponse from(final Order order, final List<CouponResponse> coupons) {
         return OrderResponse.builder()
                 .id(order.getId())
                 .memberId(order.getMemberId())
                 .status(order.getStatus())
                 .request(order.getRequest())
                 .recipient(RecipientResponse.from(order.getRecipient()))
-                .price(PriceResponse.from(order))
+                .price(PriceResponse.from(order, coupons))
                 .orderItems(OrderItemResponse.from(order.getOrderItems()))
                 .build();
     }
