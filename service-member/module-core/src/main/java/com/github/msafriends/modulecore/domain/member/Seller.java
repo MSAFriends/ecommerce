@@ -27,7 +27,7 @@ public class Seller {
     private String userName;
     private int grd;
 
-    @Builder(builderClassName = "BySellerAccountBuilder", builderMethodName = "BySellerAccountBuilder")
+    @Builder
     public Seller(String nickName, String userName, int grd) {
         this.nickName = nickName;
         this.userName = userName;
