@@ -9,7 +9,7 @@ public class ProductFixture {
 
     private static Product.ProductBuilder createDefaultProductBuilder() {
         return Product.builder()
-                .productId(DEFAULT_PRODUCT_ID)
+                .id(DEFAULT_PRODUCT_ID)
                 .quantity(DEFAULT_QUANTITY)
                 .price(DEFAULT_PRICE);
     }

@@ -13,8 +13,8 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
-    @Column(nullable = false)
-    private Long productId;
+    @Column(name = "product_id", nullable = false)
+    private Long id;
 
     @Column(name = "product_quantity", nullable = false)
     private Integer quantity;
@@ -23,8 +23,8 @@ public class Product {
     private Integer price;
 
     @Builder
-    public Product(Long productId, Integer quantity, Integer price) {
-        this.productId = productId;
+    public Product(Long id, Integer quantity, Integer price) {
+        this.id = id;
         this.quantity = quantity;
         this.price = price;
 
@@ -42,7 +42,7 @@ public class Product {
     }
 
     private void validateNotNull() {
-        Assert.notNull(productId, "productId must not be null");
+        Assert.notNull(id, "productId must not be null");
         Assert.notNull(quantity, "quantity must not be null");
         Assert.notNull(price, "price must not be null");
     }
