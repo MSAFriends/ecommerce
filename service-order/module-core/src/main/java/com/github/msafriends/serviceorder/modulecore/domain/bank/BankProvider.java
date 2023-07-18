@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
+
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -19,16 +22,39 @@ public class BankProvider {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private Integer maintenanceStartTime;
+    @Column(nullable = false, columnDefinition = "TIME")
+    private LocalTime maintenanceStartTime;
 
-    @Column(nullable = false)
-    private Integer maintenanceEndTime;
+    @Column(nullable = false, columnDefinition = "TIME")
+    private LocalTime maintenanceEndTime;
 
     @Builder
-    public BankProvider(String name, Integer maintenanceStartTime, Integer maintenanceEndTime) {
+    public BankProvider(String name, LocalTime maintenanceStartTime, LocalTime maintenanceEndTime) {
+        validateBankProvider(name, maintenanceStartTime, maintenanceEndTime);
+
         this.name = name;
         this.maintenanceStartTime = maintenanceStartTime;
         this.maintenanceEndTime = maintenanceEndTime;
+    }
+
+    public boolean isMaintenanceTime() {
+        LocalTime now = LocalTime.now();
+        return now.isAfter(maintenanceStartTime) && now.isBefore(maintenanceEndTime);
+    }
+
+    private void validateBankProvider(String name, LocalTime maintenanceStartTime, LocalTime maintenanceEndTime) {
+        validateNotNull(name, maintenanceStartTime, maintenanceEndTime);
+        validateMaintenanceTime(maintenanceStartTime, maintenanceEndTime);
+    }
+
+    private void validateNotNull(String name, LocalTime maintenanceStartTime, LocalTime maintenanceEndTime) {
+        Assert.hasText(name, "name must not be empty");
+        Assert.notNull(maintenanceStartTime, "maintenanceStartTime must not be null");
+        Assert.notNull(maintenanceEndTime, "maintenanceEndTime must not be null");
+    }
+
+    private void validateMaintenanceTime(LocalTime maintenanceStartTime, LocalTime maintenanceEndTime) {
+        Assert.isTrue(!maintenanceStartTime.isAfter(maintenanceEndTime),
+                "maintenanceStartTime must be before maintenanceEndTime");
     }
 }
