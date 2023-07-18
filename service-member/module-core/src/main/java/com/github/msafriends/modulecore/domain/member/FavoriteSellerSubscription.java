@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "favorite_seller_subscriptions")
 public class FavoriteSellerSubscription {
 

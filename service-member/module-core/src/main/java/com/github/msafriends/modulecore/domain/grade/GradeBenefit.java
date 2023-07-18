@@ -9,7 +9,6 @@ import org.springframework.util.Assert;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "grade_benefits")
 public class GradeBenefit {
 
