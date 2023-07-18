@@ -28,6 +28,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<FavoriteSellerSubscription> favoriteSellerSubscriptions = new ArrayList<>();
+
     @Column(nullable = false)
     private String email;
 
