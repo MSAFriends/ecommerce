@@ -43,9 +43,8 @@ public class CardExpiration {
         Assert.isTrue(month >= 1 && month <= 12, "month must be between 1 and 12");
     }
 
-    public boolean isExpired() {
+    public boolean isExpired(LocalDate currentDate) {
         LocalDate expiryDate = LocalDate.of(this.year, this.month, 1);
-        LocalDate currentDate = LocalDate.now();
         return currentDate.isAfter(expiryDate);
     }
 }
