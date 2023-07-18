@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,6 +34,9 @@ public class Notification {
     @Column(nullable = false)
     private String pageUrl;
 
+    @Column(nullable = false)
+    private String message;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private NotificationType type;
@@ -41,22 +47,33 @@ public class Notification {
 
     @Builder(builderClassName = "ByOrderEventBuilder", builderMethodName = "ByOrderEventBuilder")
     public Notification(Member member, String senderName, String pageUrl, NotificationType type) {
+        validateSenderName(senderName);
+
         this.member = member;
         this.senderName = senderName;
         this.pageUrl = pageUrl;
+        this.message = generateMessage(senderName, type);
         this.type = type;
         this.senderType = NotificationSenderType.SELLER;
         this.isRead = false;
-
-        validateSenderName(senderName);
     }
 
     @Builder(builderClassName = "ByManagerEventBuilder", builderMethodName = "ByManagerEventBuilder")
-    public Notification(String pageUrl, NotificationType type) {
-        this.pageUrl = pageUrl;
-        this.type = type;
+    public Notification(Member member, String pageUrl, NotificationType type) {
+        this.member = member;
         this.senderName = MANAGER_NAME;
+        this.pageUrl = pageUrl;
+        this.message = generateMessage(senderName, type);
+        this.type = type;
         this.senderType = NotificationSenderType.ADMIN;
+        this.isRead = false;
+    }
+
+    private String generateMessage(String senderName, NotificationType type) {
+        String message = type.getMessageTemplate();
+        Pattern pattern = Pattern.compile("\\{(.+?)}\\}");
+        Matcher matcher = pattern.matcher(message);
+        return matcher.replaceAll(senderName);
     }
 
     private void validateSenderName(String senderName) {
