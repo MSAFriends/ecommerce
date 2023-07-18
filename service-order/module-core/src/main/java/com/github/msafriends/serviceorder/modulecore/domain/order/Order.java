@@ -49,10 +49,10 @@ public class Order extends BaseTimeEntity {
         this.request = request;
         this.recipient = recipient;
         this.status = status;
-        this.orderItems = getOrderItems(products);
+        this.orderItems = generateOrderItems(products);
     }
 
-    private List<OrderItem> getOrderItems(List<Product> products) {
+    private List<OrderItem> generateOrderItems(List<Product> products) {
         return products.stream()
                 .map(product -> OrderItem.builder()
                         .order(this)
@@ -73,10 +73,10 @@ public class Order extends BaseTimeEntity {
 
     private void validateOrder(Long memberId, Recipient recipient, OrderStatus status, List<Product> products) {
         validateNotNull(memberId, recipient, status, products);
-        validateIfEmpty(products);
+        validateNotEmpty(products);
     }
 
-    private void validateIfEmpty(List<Product> products) {
+    private void validateNotEmpty(List<Product> products) {
         Assert.notEmpty(products, "products must not be empty");
     }
 
