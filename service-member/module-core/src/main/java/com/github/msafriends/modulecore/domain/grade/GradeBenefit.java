@@ -33,13 +33,12 @@ public class GradeBenefit {
     @Builder
     public GradeBenefit (Grade grade, String name, CouponDiscountType discountType, int value) {
         validateValue(value);
+        Assert.hasText(name, "Name must not be empty.");
 
         this.grade = grade;
         this.name = name;
         this.discountType = discountType;
         this.value = value;
-
-        Assert.hasText(name, "Name must not be empty.");
     }
 
     private void validateValue (int value) {
