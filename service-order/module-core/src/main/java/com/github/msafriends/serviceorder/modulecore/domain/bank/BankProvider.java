@@ -37,9 +37,8 @@ public class BankProvider {
         this.maintenanceEndTime = maintenanceEndTime;
     }
 
-    public boolean isMaintenanceTime() {
-        LocalTime now = LocalTime.now();
-        return now.isAfter(maintenanceStartTime) && now.isBefore(maintenanceEndTime);
+    public boolean isMaintenanceTime(LocalTime currentTime) {
+        return currentTime.isAfter(maintenanceStartTime) && currentTime.isBefore(maintenanceEndTime);
     }
 
     private void validateBankProvider(String name, LocalTime maintenanceStartTime, LocalTime maintenanceEndTime) {
