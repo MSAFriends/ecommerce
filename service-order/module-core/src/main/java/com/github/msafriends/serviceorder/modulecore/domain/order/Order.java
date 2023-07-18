@@ -1,14 +1,17 @@
 package com.github.msafriends.serviceorder.modulecore.domain.order;
 
 import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
 import com.github.msafriends.serviceorder.modulecore.dto.CouponResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -25,12 +28,6 @@ public class Order extends BaseTimeEntity {
     @Column(nullable = false)
     private Long memberId;
 
-    @Column(nullable = false)
-    private Integer totalPrice;
-
-    @Column(nullable = false)
-    private Integer discountedPrice;
-
     @Embedded
     private Recipient recipient;
 
@@ -43,13 +40,27 @@ public class Order extends BaseTimeEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<OrderItem> orderItems = new ArrayList<>();
 
-    public Order(Long memberId, String request, Recipient recipient, OrderStatus status, List<CouponResponse> coupons) {
-        validateOrder();
-
+    @Builder
+    public Order(Long memberId, String request, Recipient recipient, OrderStatus status, List<OrderItem> orderItems) {
         this.memberId = memberId;
         this.request = request;
         this.recipient = recipient;
         this.status = status;
+        if (orderItems != null) {
+            this.orderItems.addAll(orderItems);
+        }
+
+        validateOrder();
+    }
+
+    public int getTotalPrice() {
+        var priceCalculator = new PriceCalculator(orderItems, Collections.emptyList());
+        return priceCalculator.calculateTotalPrice();
+    }
+
+    public int getDiscountedPrice(List<CouponResponse> coupons) {
+        var priceCalculator = new PriceCalculator(orderItems, coupons);
+        return priceCalculator.calculateDiscountedPrice();
     }
 
     private void validateOrder() {
@@ -59,13 +70,6 @@ public class Order extends BaseTimeEntity {
     private void validateNotNull() {
         Assert.notNull(status, "status must not be null");
         Assert.notNull(memberId, "memberId must not be null");
-        Assert.notNull(totalPrice, "totalPrice must not be null");
         Assert.notNull(recipient, "recipient must not be null");
-    }
-
-    private int calculateTotalPrice() {
-        return orderItems.stream()
-                .mapToInt(item -> item.getProduct().getPrice() * item.getProduct().getQuantity())
-                .sum();
     }
 }
