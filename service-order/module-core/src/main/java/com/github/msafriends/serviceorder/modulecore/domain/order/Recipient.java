@@ -24,11 +24,11 @@ public class Recipient {
 
     @Builder
     public Recipient(String name, String phoneNumber, String address) {
-        validateRecipient();
-
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+
+        validateRecipient();
     }
 
     private void validateRecipient() {

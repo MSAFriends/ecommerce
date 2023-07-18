@@ -24,11 +24,11 @@ public class Product {
 
     @Builder
     public Product(Long productId, Integer quantity, Integer price) {
-        validateProduct();
-
         this.productId = productId;
         this.quantity = quantity;
         this.price = price;
+
+        validateProduct();
     }
 
     private void validateProduct() {
