@@ -33,6 +33,12 @@ public class Product {
 
     private void validateProduct() {
         validateNotNull();
+        validateNotNegative();
+    }
+
+    private void validateNotNegative() {
+        Assert.isTrue(quantity >= 0, "quantity must not be negative");
+        Assert.isTrue(price >= 0, "price must not be negative");
     }
 
     private void validateNotNull() {
