@@ -2,6 +2,7 @@ package com.github.msafriends.modulecore.domain.member;
 
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.grade.MemberGrade;
+import com.github.msafriends.modulecore.domain.notification.Notification;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -30,6 +31,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<FavoriteSellerSubscription> favoriteSellerSubscriptions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Notification> notifications = new ArrayList<>();
 
     @Column(nullable = false)
     private String email;

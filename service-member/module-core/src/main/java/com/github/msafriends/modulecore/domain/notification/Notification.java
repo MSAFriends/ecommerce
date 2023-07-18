@@ -1,5 +1,6 @@
 package com.github.msafriends.modulecore.domain.notification;
 
+import com.github.msafriends.modulecore.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -18,8 +19,18 @@ public class Notification {
     @Column(name = "notification_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Column(nullable = false)
     private Boolean isRead = false;
+
+    @Column(nullable = false)
+    private String senderName;
+
+    @Column(nullable = false)
+    private String pageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -29,19 +40,16 @@ public class Notification {
     @Column(nullable = false)
     private NotificationSenderType senderType;
 
-    @Column(nullable = false)
-    private String senderName;
-
-    @Column(nullable = false)
-    private String pageUrl;
-
     @Builder(builderClassName = "ByOrderEventBuilder", builderMethodName = "ByOrderEventBuilder")
-    public Notification(String senderName, String pageUrl, NotificationType type) {
-        validateSenderName(senderName);
+    public Notification(Member member, String senderName, String pageUrl, NotificationType type) {
+        this.member = member;
         this.senderName = senderName;
         this.pageUrl = pageUrl;
         this.type = type;
         this.senderType = NotificationSenderType.SELLER;
+        this.isRead = false;
+
+        validateSenderName(senderName);
     }
 
     @Builder(builderClassName = "ByManagerEventBuilder", builderMethodName = "ByManagerEventBuilder")
