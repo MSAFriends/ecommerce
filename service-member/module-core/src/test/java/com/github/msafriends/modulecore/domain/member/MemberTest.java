@@ -24,10 +24,19 @@ class MemberTest {
         }
 
         @Test
-        @DisplayName("멤버의 주소가 blank이기 때문에 업데이트가 실패한다.")
-        void testUpdateMemberCurrentAddressWithInValidAddress() {
+        @DisplayName("멤버의 주소가 blank인 경우 업데이트가 실패한다.")
+        void testUpdateMemberCurrentAddressWithInValidBlankAddress() {
             Member member = MemberFixture.createMember();
             assertThatThrownBy(() -> member.updateCurrentAddress(""))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Address must not be null or empty.");
+        }
+
+        @Test
+        @DisplayName("멤버의 주소가 null 경우 업데이트가 실패한다.")
+        void testUpdateMemberCurrentAddressWithInvalidNullAddress() {
+            Member member = MemberFixture.createMember();
+            assertThatThrownBy(() -> member.updateCurrentAddress(null))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Address must not be null or empty.");
         }
@@ -72,13 +81,33 @@ class MemberTest {
         }
 
         @Test
-        @DisplayName("멤버의 전화번호가 Blank로 들어올 시 업데이트가 실패한다.")
-        void testUpdateMemberPhoneNumberWithBlankPhoneNumber() {
+        @DisplayName("멤버의 전화번호가 Blank인 경우 업데이트가 실패한다.")
+        void testUpdateMemberPhoneNumberWithBlank() {
             Member member = MemberFixture.createMember();
 
             assertThatThrownBy(() -> member.updatePhoneNumber(""))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Phone number must not be null or empty.");
+        }
+
+        @Test
+        @DisplayName("멤버의 전화번호가 공백이 포함되어 들어오는 경우 업데이트가 실패한다.")
+        void testUpdateMemberPhoneNumberWithWhiteSpace() {
+            Member member = MemberFixture.createMember();
+
+            assertThatThrownBy(() -> member.updatePhoneNumber("010-1234- 565"))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Invalid phone number format.");
+        }
+
+        @Test
+        @DisplayName("멤버의 전화번호가 유효하지 않은 문자열이 포함되어 들어오는 경우 업데이트가 실패한다.")
+        void testUpdateMemberPhoneNumberWithInvalidCharacters() {
+            Member member = MemberFixture.createMember();
+
+            assertThatThrownBy(() -> member.updatePhoneNumber("010-1234-$565"))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Invalid phone number format.");
         }
     }
 
@@ -114,7 +143,6 @@ class MemberTest {
             assertThatThrownBy(() -> member.updateEmail("@example.a"))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Invalid email format.");
-
         }
 
         @Test
