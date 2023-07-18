@@ -21,7 +21,8 @@ public class Coupon {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String uuid;
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -41,10 +42,11 @@ public class Coupon {
 
 
     @Builder
-    public Coupon (Member member, CouponDiscountType discountType, int value, LocalDateTime startAt, LocalDateTime endAt) {
+    public Coupon (Member member, String name, CouponDiscountType discountType, int value, LocalDateTime startAt, LocalDateTime endAt) {
         validateValue(value);
+        validateCouponExpirationDateCorrectness(startAt, endAt);
         this.member = member;
-        this.uuid = generateUuid();
+        this.name = name;
         this.discountType = discountType;
         this.value = value;
         this.startAt = startAt;
@@ -66,6 +68,12 @@ public class Coupon {
         }
     }
 
+    private void validateCouponExpirationDateCorrectness(LocalDateTime startAt, LocalDateTime endAt) {
+        if (endAt.isBefore(startAt)) {
+            throw new IllegalStateException("The coupon's expiration date is incorrectly set.");
+        }
+    }
+
     private void validateValue (int value) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
@@ -74,9 +82,5 @@ public class Coupon {
         if (discountType.equals(CouponDiscountType.PERCENTAGE) && value >100) {
             throw new IllegalArgumentException("Percentage value cannot exceed 100.");
         }
-    }
-
-    private String generateUuid() {
-        return "";
     }
 }
