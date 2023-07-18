@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "member_grades")
 public class MemberGrade {
 
