@@ -3,6 +3,9 @@ package com.github.msafriends.modulecore.domain.member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,6 +17,9 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="seller_id")
     private Long id;
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<FavoriteSellerSubscription> favoriteSellerSubscriptions = new ArrayList<>();
 
     @Column(unique = true)
     private String nickName;
