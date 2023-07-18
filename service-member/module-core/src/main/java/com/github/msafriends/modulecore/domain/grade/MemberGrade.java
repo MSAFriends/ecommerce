@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -45,20 +46,17 @@ public class MemberGrade {
     }
 
     public List<Coupon> generateGradeBenefitCoupons() {
-        List<Coupon> coupons = new ArrayList<>();
         List<GradeBenefit> gradeBenefits = this.grade.getBenefits();
 
-        for (GradeBenefit gradeBenefit : gradeBenefits) {
-            Coupon coupon = Coupon.builder()
-                    .member(member)
-                    .discountType(gradeBenefit.getDiscountType())
-                    .value(gradeBenefit.getValue())
-                    .startAt(generateCouponStartAt())
-                    .endAt(generateCouponEndAt())
-                    .build();
-            coupons.add(coupon);
-        }
-        return coupons;
+        return gradeBenefits.stream()
+                .map(gradeBenefit -> Coupon.builder()
+                        .member(member)
+                        .discountType(gradeBenefit.getDiscountType())
+                        .value(gradeBenefit.getValue())
+                        .startAt(generateCouponStartAt())
+                        .endAt(generateCouponEndAt())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private LocalDateTime generateCouponStartAt() {
