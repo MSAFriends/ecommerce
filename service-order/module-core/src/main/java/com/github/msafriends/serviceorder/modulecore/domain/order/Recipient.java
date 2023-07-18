@@ -24,14 +24,14 @@ public class Recipient {
 
     @Builder
     public Recipient(String name, String phoneNumber, String address) {
+        validateRecipient(name, phoneNumber, address);
+
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
-
-        validateRecipient();
     }
 
-    private void validateRecipient() {
+    private void validateRecipient(String name, String phoneNumber, String address) {
         Assert.hasText(name, "name must not be empty");
         Assert.hasText(phoneNumber, "phoneNumber must not be empty");
         Assert.hasText(address, "address must not be empty");

@@ -2,6 +2,7 @@ package com.github.msafriends.serviceorder.modulecore.domain.order;
 
 import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
+import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import com.github.msafriends.serviceorder.modulecore.dto.CouponResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,19 +39,26 @@ public class Order extends BaseTimeEntity {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @Builder
-    public Order(Long memberId, String request, Recipient recipient, OrderStatus status, List<OrderItem> orderItems) {
+    public Order(Long memberId, String request, Recipient recipient, OrderStatus status, List<Product> products) {
+        validateOrder(memberId, recipient, status, products);
+
         this.memberId = memberId;
         this.request = request;
         this.recipient = recipient;
         this.status = status;
-        if (orderItems != null) {
-            this.orderItems.addAll(orderItems);
-        }
+        this.orderItems = getOrderItems(products);
+    }
 
-        validateOrder();
+    private List<OrderItem> getOrderItems(List<Product> products) {
+        return products.stream()
+                .map(product -> OrderItem.builder()
+                        .order(this)
+                        .product(product)
+                        .build())
+                .toList();
     }
 
     public int getTotalPrice() {
@@ -63,13 +71,19 @@ public class Order extends BaseTimeEntity {
         return priceCalculator.calculateDiscountedPrice();
     }
 
-    private void validateOrder() {
-        validateNotNull();
+    private void validateOrder(Long memberId, Recipient recipient, OrderStatus status, List<Product> products) {
+        validateNotNull(memberId, recipient, status, products);
+        validateIfEmpty(products);
     }
 
-    private void validateNotNull() {
+    private void validateIfEmpty(List<Product> products) {
+        Assert.notEmpty(products, "products must not be empty");
+    }
+
+    private void validateNotNull(Long memberId, Recipient recipient, OrderStatus status, List<Product> products) {
         Assert.notNull(status, "status must not be null");
         Assert.notNull(memberId, "memberId must not be null");
         Assert.notNull(recipient, "recipient must not be null");
+        Assert.notNull(products, "products must not be null");
     }
 }

@@ -24,24 +24,24 @@ public class Product {
 
     @Builder
     public Product(Long id, Integer quantity, Integer price) {
+        validateProduct(id, quantity, price);
+
         this.id = id;
         this.quantity = quantity;
         this.price = price;
-
-        validateProduct();
     }
 
-    private void validateProduct() {
-        validateNotNull();
-        validateNotNegative();
+    private void validateProduct(Long id, Integer quantity, Integer price) {
+        validateNotNull(id, quantity, price);
+        validateNotNegative(quantity, price);
     }
 
-    private void validateNotNegative() {
+    private void validateNotNegative(Integer quantity, Integer price) {
         Assert.isTrue(quantity >= 0, "quantity must not be negative");
         Assert.isTrue(price >= 0, "price must not be negative");
     }
 
-    private void validateNotNull() {
+    private void validateNotNull(Long id, Integer quantity, Integer price) {
         Assert.notNull(id, "productId must not be null");
         Assert.notNull(quantity, "quantity must not be null");
         Assert.notNull(price, "price must not be null");

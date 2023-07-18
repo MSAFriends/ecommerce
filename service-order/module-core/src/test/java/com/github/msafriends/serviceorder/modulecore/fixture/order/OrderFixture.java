@@ -4,6 +4,8 @@ import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Recipient;
 
+import java.util.List;
+
 public class OrderFixture {
     private static final Long DEFAULT_MEMBER_ID = 1L;
     private static final String DEFAULT_REQUEST = "테스트 요청사항";
@@ -15,6 +17,7 @@ public class OrderFixture {
                 .memberId(DEFAULT_MEMBER_ID)
                 .request(DEFAULT_REQUEST)
                 .recipient(DEFAULT_RECIPIENT)
+                .products(List.of(ProductFixture.createDefaultProduct()))
                 .status(DEFAULT_STATUS);
     }
 

@@ -29,26 +29,18 @@ public class OrderItem extends BaseTimeEntity {
 
     @Builder
     public OrderItem(Order order, Product product) {
+        validateOrderItem(order, product);
+
         this.order = order;
         this.product = product;
-
-        validateOrderItem();
     }
 
-    private void validateOrderItem() {
-        validateNotNull();
+    private void validateOrderItem(Order order, Product product) {
+        validateNotNull(order, product);
     }
 
-    private void validateNotNull() {
+    private void validateNotNull(Order order, Product product) {
         Assert.notNull(order, "order must not be null");
         Assert.notNull(product, "product must not be null");
-    }
-
-    public void setOrder(Order order) {
-        if (this.order != null) {
-            this.order.getOrderItems().remove(this);
-        }
-        this.order = order;
-        order.getOrderItems().add(this);
     }
 }
