@@ -50,12 +50,12 @@ public class Member {
 
     @Builder
     public Member(String email, String password, String phoneNumber, String name) {
+        validatePhoneNumber(phoneNumber);
+
         this.email = new Email(email);
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.name = name;
-
-        validatePhoneNumber(phoneNumber);
     }
 
     public void updateCurrentAddress(String address) {
