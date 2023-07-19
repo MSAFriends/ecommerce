@@ -71,7 +71,7 @@ public class Notification {
 
     private String generateMessage(String senderName, NotificationType type) {
         String message = type.getMessageTemplate();
-        Pattern pattern = Pattern.compile("\\{(.+?)}\\}");
+        Pattern pattern = Pattern.compile("\\{(.+?)\\}");
         Matcher matcher = pattern.matcher(message);
         return matcher.replaceAll(senderName);
     }
