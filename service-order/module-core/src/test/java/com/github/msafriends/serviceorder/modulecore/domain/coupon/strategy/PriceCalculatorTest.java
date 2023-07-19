@@ -1,8 +1,8 @@
 package com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy;
 
+import com.github.msafriends.serviceorder.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
-import com.github.msafriends.serviceorder.modulecore.dto.CouponResponse;
 import com.github.msafriends.serviceorder.modulecore.fixture.order.CouponFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.order.OrderFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.order.OrderItemFixture;
@@ -48,9 +48,10 @@ class PriceCalculatorTest {
             int expectedDiscountedPrice = 8_100;
             Order order = OrderFixture.createDefaultOrder();
             List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
-            List<CouponResponse> coupons = List.of(
-                    CouponFixture.createCouponWithFixedDiscount(1_000),
-                    CouponFixture.createCouponWithPercentDiscount(10));
+            List<Coupon> coupons = List.of(
+                    CouponFixture.createCouponWithFixedDiscount(order, 1_000),
+                    CouponFixture.createCouponWithPercentDiscount(order, 10));
+            order.addCoupons(coupons);
 
             // when
             PriceCalculator priceCalculator = new PriceCalculator(orderItems, coupons);
@@ -67,7 +68,8 @@ class PriceCalculatorTest {
             int expectedTotalPrice = 0;
             Order order = OrderFixture.createDefaultOrder();
             List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
-            List<CouponResponse> coupons = List.of(CouponFixture.createCouponWithFixedDiscount(12_000));
+            List<Coupon> coupons = List.of(CouponFixture.createCouponWithFixedDiscount(order, 12_000));
+            order.addCoupons(coupons);
 
             // when
             PriceCalculator priceCalculator = new PriceCalculator(orderItems, coupons);

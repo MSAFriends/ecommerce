@@ -1,8 +1,8 @@
 package com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy;
 
+import com.github.msafriends.serviceorder.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.CouponDiscountType;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
-import com.github.msafriends.serviceorder.modulecore.dto.CouponResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PriceCalculator {
     private final List<OrderItem> orderItems;
-    private final List<CouponResponse> coupons;
+    private final List<Coupon> coupons;
 
     public int calculateTotalPrice() {
         return orderItems.stream()
