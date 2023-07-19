@@ -40,7 +40,6 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDateTime endAt;
 
-
     @Builder
     public Coupon (Member member, String name, CouponDiscountType discountType, int value, LocalDateTime startAt, LocalDateTime endAt) {
         validateValue(value, discountType);
