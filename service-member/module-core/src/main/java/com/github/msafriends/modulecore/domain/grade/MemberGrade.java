@@ -1,14 +1,12 @@
 package com.github.msafriends.modulecore.domain.grade;
 
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
-import com.github.msafriends.modulecore.domain.grade.Grade;
 import com.github.msafriends.modulecore.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +51,7 @@ public class MemberGrade {
                         .member(member)
                         .discountType(gradeBenefit.getDiscountType())
                         .value(gradeBenefit.getValue())
+                        .name(gradeBenefit.getName())
                         .startAt(generateCouponStartAt())
                         .endAt(generateCouponEndAt())
                         .build())
@@ -60,7 +59,12 @@ public class MemberGrade {
     }
 
     private LocalDateTime generateCouponStartAt() {
-        return LocalDateTime.now().withNano(0);
+        return LocalDateTime.now()
+                .withDayOfMonth(1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(1);
     }
 
     private LocalDateTime generateCouponEndAt() {

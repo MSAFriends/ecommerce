@@ -43,7 +43,7 @@ public class Coupon {
 
     @Builder
     public Coupon (Member member, String name, CouponDiscountType discountType, int value, LocalDateTime startAt, LocalDateTime endAt) {
-        validateValue(value);
+        validateValue(value, discountType);
         validateCouponExpirationDateCorrectness(startAt, endAt);
         this.member = member;
         this.name = name;
@@ -74,7 +74,7 @@ public class Coupon {
         }
     }
 
-    private void validateValue (int value) {
+    private void validateValue (int value, CouponDiscountType discountType) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
         }

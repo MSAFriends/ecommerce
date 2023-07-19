@@ -2,6 +2,7 @@ package com.github.msafriends.modulecore.domain.grade;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Grade {
     @Builder
     public Grade (String name, int minOrderCountForGrade, int maxOrderCountForGrade) {
         validationOrderCountsForGrade(minOrderCountForGrade, maxOrderCountForGrade);
+        Assert.hasText(name, "Grade name must not be null or empty.");
         this.name = name;
         this.minOrderCountForGrade = minOrderCountForGrade;
         this.maxOrderCountForGrade = maxOrderCountForGrade;
@@ -42,5 +44,9 @@ public class Grade {
         if (minOrderCount > maxOrderCount) {
             throw new IllegalArgumentException("Invalid order counts: minOrderCount must be less than or equal to maxOrderCount.");
         }
+    }
+
+    public void addAllBenefits(List<GradeBenefit> benefits) {
+        this.benefits = benefits;
     }
 }
