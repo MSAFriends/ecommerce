@@ -39,7 +39,7 @@ public class CardExpiration {
     }
 
     private void validateRange(Integer year, Integer month) {
-        Assert.isTrue(year >= 0, "year must be greater than or equal to 0");
+        Assert.isTrue(year >= 0 && year <= 99, "year must be between 0 and 99");
         Assert.isTrue(month >= 1 && month <= 12, "month must be between 1 and 12");
     }
 
