@@ -10,15 +10,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * @deprecated module-core에 동일한 역할의 BaseTimeEntity가 있으므로, 이후에는 module-core의 BaseTimeEntity를 사용해야 합니다.
+ */
 @Getter
+@Deprecated(forRemoval = true)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedAt;
 }
+
