@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 /**
- * @deprecated module-core에 동일한 역할의 BaseTimeEntity가 있으므로, 이후에는 module-core의 BaseTimeEntity를 사용해야 합니다.
+ * @deprecated module-common에 동일한 역할의 BaseTimeEntity가 있으므로, 이후에는 module-common의 BaseTimeEntity를 사용해야 합니다.
  */
 @Getter
 @Deprecated(forRemoval = true)
