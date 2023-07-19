@@ -53,17 +53,15 @@ public class Coupon {
         this.endAt = endAt;
     }
 
-    public void use() {
-        checkCouponValidity();
+    public void use(LocalDateTime currentTime) {
+        checkCouponValidity(currentTime);
         if (!this.hasUsed) {
             this.hasUsed = true;
         }
     }
 
-    private void checkCouponValidity() {
-        LocalDateTime currentDate = LocalDateTime.now();
-
-        if (currentDate.isBefore(startAt) || currentDate.isAfter(endAt)) {
+    private void checkCouponValidity(LocalDateTime currentTime) {
+        if (currentTime.isBefore(startAt) || currentTime.isAfter(endAt)) {
             throw new IllegalStateException("The coupon is not within its validity period.");
         }
     }
