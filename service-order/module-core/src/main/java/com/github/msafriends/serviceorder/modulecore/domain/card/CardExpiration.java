@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Getter
 @Embeddable
@@ -49,7 +50,7 @@ public class CardExpiration {
     }
 
     public boolean isExpired(LocalDate currentDate) {
-        LocalDate expiryDate = LocalDate.of(this.year, this.month, 1);
+        LocalDate expiryDate = YearMonth.of(year, month).atEndOfMonth();
         return currentDate.isAfter(expiryDate);
     }
 }
