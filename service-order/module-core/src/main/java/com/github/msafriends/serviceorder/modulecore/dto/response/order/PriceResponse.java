@@ -1,18 +1,14 @@
-package com.github.msafriends.serviceorder.modulecore.dto;
+package com.github.msafriends.serviceorder.modulecore.dto.response.order;
 
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
 
 @Getter
-@Setter
 public class PriceResponse {
 
-    private int totalPrice;
-    private int discountedPrice;
+    private final int totalPrice;
+    private final int discountedPrice;
 
     @Builder
     public PriceResponse(int totalPrice, int discountedPrice) {
@@ -20,10 +16,10 @@ public class PriceResponse {
         this.discountedPrice = discountedPrice;
     }
 
-    public static PriceResponse from(final Order order, final List<CouponResponse> coupons) {
+    public static PriceResponse from(final Order order) {
         return PriceResponse.builder()
                 .totalPrice(order.getTotalPrice())
-                .discountedPrice(order.getDiscountedPrice(coupons))
+                .discountedPrice(order.getDiscountedPrice())
                 .build();
     }
 }

@@ -1,17 +1,15 @@
-package com.github.msafriends.serviceorder.modulecore.dto;
+package com.github.msafriends.serviceorder.modulecore.dto.response.order;
 
 import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ProductResponse {
 
-    private Long id;
-    private Integer quantity;
-    private Integer price;
+    private final Long id;
+    private final Integer quantity;
+    private final Integer price;
 
     @Builder
     public ProductResponse(Long id, Integer quantity, Integer price) {

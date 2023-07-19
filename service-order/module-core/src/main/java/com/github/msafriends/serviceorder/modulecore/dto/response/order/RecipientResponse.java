@@ -1,16 +1,14 @@
-package com.github.msafriends.serviceorder.modulecore.dto;
+package com.github.msafriends.serviceorder.modulecore.dto.response.order;
 
 import com.github.msafriends.serviceorder.modulecore.domain.order.Recipient;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class RecipientResponse {
-    private String name;
-    private String phoneNumber;
-    private String address;
+    private final String name;
+    private final String phoneNumber;
+    private final String address;
 
     @Builder
     public RecipientResponse(String name, String phoneNumber, String address) {

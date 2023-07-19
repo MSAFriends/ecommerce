@@ -1,16 +1,14 @@
-package com.github.msafriends.serviceorder.modulecore.dto;
+package com.github.msafriends.serviceorder.modulecore.dto.response.order;
 
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
 public class OrderItemResponse {
-    private ProductResponse product;
+    private final ProductResponse product;
 
     @Builder
     public OrderItemResponse(ProductResponse product) {
