@@ -14,18 +14,23 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CardExpiration {
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Integer year;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Integer month;
 
     @Builder
     public CardExpiration(Integer year, Integer month) {
         validateCardExpiration(year, month);
 
-        this.year = year;
+        this.year = adjustToCurrentCentury(year);
         this.month = month;
+    }
+
+    private int adjustToCurrentCentury(Integer twoDigitYear) {
+        int currentCentury = LocalDate.now().getYear() / 100 * 100;
+        return currentCentury + twoDigitYear;
     }
 
     private void validateCardExpiration(Integer year, Integer month) {

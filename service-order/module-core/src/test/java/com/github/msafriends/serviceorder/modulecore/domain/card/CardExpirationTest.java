@@ -14,7 +14,8 @@ class CardExpirationTest {
     @DisplayName("카드 만료기한 테스트")
     class IsExpiredTest {
         private static final LocalDate CURRENT_DATE = LocalDate.of(2023, 7, 1);
-        private static final Integer CURRENT_YEAR = 2023;
+        private static final LocalDate EXPIRATION_DATE = LocalDate.of(2023, 7, 31);
+        private static final Integer CURRENT_YEAR = 23;
         private static final Integer PREVIOUS_MONTH = 6;
         private static final Integer CURRENT_MONTH = 7;
         private static final Integer NEXT_MONTH = 8;
