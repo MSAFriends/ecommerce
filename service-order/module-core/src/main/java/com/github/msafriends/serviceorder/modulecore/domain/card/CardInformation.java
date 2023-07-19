@@ -21,34 +21,34 @@ public class CardInformation {
     private CardExpiration expiration;
 
     @Column(nullable = false)
-    private String cvv;
+    private String cvc;
 
     @Builder
-    public CardInformation(String cardNumber, CardExpiration expiration, String cvv) {
-        validateCardInformation(cardNumber, expiration, cvv);
+    public CardInformation(String cardNumber, CardExpiration expiration, String cvc) {
+        validateCardInformation(cardNumber, expiration, cvc);
 
         this.cardNumber = cardNumber;
         this.expiration = expiration;
-        this.cvv = cvv;
+        this.cvc = cvc;
     }
 
-    private void validateCardInformation(String cardNumber, CardExpiration expiration, String cvv) {
-        validateNotNull(cardNumber, expiration, cvv);
+    private void validateCardInformation(String cardNumber, CardExpiration expiration, String cvc) {
+        validateNotNull(cardNumber, expiration, cvc);
         validateCardNumber(cardNumber);
-        validateCvv(cvv);
+        validateCvc(cvc);
     }
 
-    private void validateNotNull(String cardNumber, CardExpiration expiration, String cvv) {
+    private void validateNotNull(String cardNumber, CardExpiration expiration, String cvc) {
         Assert.notNull(cardNumber, "cardNumber must not be null");
         Assert.notNull(expiration, "expiration must not be null");
-        Assert.notNull(cvv, "cvv must not be null");
+        Assert.notNull(cvc, "cvc must not be null");
     }
 
     private void validateCardNumber(String cardNumber) {
         Assert.isTrue(cardNumber.length() == 16, "cardNumber must be 16 digits");
     }
 
-    private void validateCvv(String cvv) {
-        Assert.isTrue(cvv.length() == 3, "cvv must be 3 digits");
+    private void validateCvc(String cvc) {
+        Assert.isTrue(cvc.length() == 3, "cvc must be 3 digits");
     }
 }
