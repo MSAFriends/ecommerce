@@ -8,7 +8,6 @@ public class MemberFixture {
     private static final String PASSWORD = "테스트 요청사항";
     private static final String PHONE_NUMBER = "010-1234-5678";
     private static final String NAME = "admin";
-    private static final String ADDRESS = "서울시 서대문구 홍제동";
     private static final String SELLER_NAME = "김경식";
     private static final String SELLER_NICK_NAME = "oereo";
     private static final int GRD = 1;

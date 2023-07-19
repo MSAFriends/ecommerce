@@ -8,16 +8,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-
 class GradeBenefitTest {
 
     @Nested
     @DisplayName("등급혜택 등록 테스트")
-    class AddressUpdateTests {
+    class GradeBenefitRegisterTests {
 
         @Test
         @DisplayName("등급혜택 등록이 성공적으로 업데이트 된다.")
-        void testRegisterGrade() {
+        void testRegisterGradeBenefit() {
             Grade grade = GradeFixture.createBronzeGrade();
             String gradeBenefitNameWithFixedDiscount = "1000원 할인 쿠폰 발급";
             String gradeBenefitNameWithPercentageDiscount = "10% 할인 쿠폰 발급";
@@ -41,7 +40,7 @@ class GradeBenefitTest {
 
         @Test
         @DisplayName("등급혜택 등록시 할인 금액이 0또는 0미만일 경우 실패한다.")
-        void testRegisterGradeWithValueLessThanZero() {
+        void testRegisterGradeBenefitWithValueLessThanZero() {
             Grade grade = GradeFixture.createBronzeGrade();
             String gradeBenefitName = "1000원 할인 쿠폰 발급";
 
@@ -68,7 +67,7 @@ class GradeBenefitTest {
 
         @Test
         @DisplayName("등급혜택 등록시 퍼센티지 할인이 100%가 넘는 경우 실패한다.")
-        void testRegisterGradeWithPercentageGreaterThan100() {
+        void testRegisterGradeBenefitWithPercentageGreaterThan100() {
             Grade grade = GradeFixture.createBronzeGrade();
             String gradeBenefitName = "10% 할인 쿠폰 발급";
 
@@ -85,7 +84,7 @@ class GradeBenefitTest {
 
         @Test
         @DisplayName("등급혜택 등록시 이름이 없는 경우 실패한다.")
-        void testRegisterGradeWithBlankName() {
+        void testRegisterGradeBenefitWithBlankName() {
             Grade grade = GradeFixture.createBronzeGrade();
             String gradeBenefitName = "";
 

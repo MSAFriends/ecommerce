@@ -3,14 +3,13 @@ package com.github.msafriends.modulecore.domain.grade;
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.coupon.CouponDiscountType;
 import com.github.msafriends.modulecore.domain.member.Member;
+import com.github.msafriends.modulecore.fixture.CouponFixture;
 import com.github.msafriends.modulecore.fixture.GradeFixture;
 import com.github.msafriends.modulecore.fixture.MemberFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -20,19 +19,6 @@ class MemberGradeTest {
     @Nested
     @DisplayName("멤버 등급 쿠폰 생성 테스트")
     class MemberGradeCouponTest {
-        LocalDateTime startAt = LocalDateTime.now()
-                .withDayOfMonth(1)
-                .withHour(0)
-                .withMinute(0)
-                .withSecond(0)
-                .withNano(1);
-
-        LocalDateTime endAt = LocalDateTime.now()
-                .withDayOfMonth(LocalDate.now().lengthOfMonth())
-                .withHour(23)
-                .withMinute(59)
-                .withSecond(59)
-                .withNano(0);
 
         @Test
         @DisplayName("멤버 등급에 따른 혜택에 따라 쿠폰이 발급된다.")
@@ -57,8 +43,8 @@ class MemberGradeTest {
             assertThat(coupons.get(0).getName()).isEqualTo("1000원 할인 쿠폰");
 
             // 멤버 등급 혜택에 따른 쿠폰 발급 유효기간 Validation
-            assertThat(coupons.get(0).getStartAt()).isEqualTo(startAt);
-            assertThat(coupons.get(0).getEndAt()).isEqualTo(endAt);
+            assertThat(coupons.get(0).getStartAt()).isEqualTo(CouponFixture.createEndAt());
+            assertThat(coupons.get(0).getEndAt()).isEqualTo(CouponFixture.createEndAt());
         }
 
         @Test
