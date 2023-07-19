@@ -32,7 +32,7 @@ public class GradeBenefit {
 
     @Builder
     public GradeBenefit (Grade grade, String name, CouponDiscountType discountType, int value) {
-        validateValue(value);
+        validateValue(value, discountType);
         Assert.hasText(name, "Name must not be empty.");
 
         this.grade = grade;
@@ -41,7 +41,7 @@ public class GradeBenefit {
         this.value = value;
     }
 
-    private void validateValue (int value) {
+    private void validateValue (int value, CouponDiscountType discountType) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
         }
