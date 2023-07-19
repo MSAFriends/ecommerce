@@ -12,7 +12,7 @@ class GradeTest {
 
     @Nested
     @DisplayName("등급 등록 테스트")
-    class AddressUpdateTests {
+    class GradeRegisterTests {
 
         @Test
         @DisplayName("등급 등록이 성공적으로 업데이트 된다.")
