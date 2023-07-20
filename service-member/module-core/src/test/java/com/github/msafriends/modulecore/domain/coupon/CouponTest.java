@@ -122,8 +122,10 @@ class CouponTest {
                     .build();
 
             coupon.use(LocalDateTime.now());
-            coupon.use(LocalDateTime.now());
-            assertThat(coupon.getHasUsed()).isEqualTo(true);
+            assertThatThrownBy(() ->
+                    coupon.use(LocalDateTime.now()))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage("The coupon has already been used.");
         }
 
         @Test
