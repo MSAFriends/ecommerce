@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @Table(name = "notifications")
 public class Notification {
 
-    public static String MANAGER_NAME = "manager";
+    public static final String MANAGER_NAME = "manager";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
