@@ -54,9 +54,10 @@ public class Coupon {
 
     public void use(LocalDateTime currentTime) {
         checkCouponValidity(currentTime);
-        if (!this.hasUsed) {
-            this.hasUsed = true;
+        if (this.hasUsed) {
+            throw new IllegalStateException("The coupon has already been used.");
         }
+        this.hasUsed = true;
     }
 
     private void checkCouponValidity(LocalDateTime currentTime) {
