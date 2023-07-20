@@ -5,10 +5,10 @@ import com.github.msafriends.modulecore.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.temporal.TemporalAdjusters;
 
 @Getter
 @Entity
@@ -43,7 +43,7 @@ public class MemberGrade {
         return this.grade.getBenefits();
     }
 
-    public List<Coupon> generateGradeBenefitCoupons() {
+    public List<Coupon> generateGradeBenefitCoupons(LocalDateTime currentTime) {
         List<GradeBenefit> gradeBenefits = this.grade.getBenefits();
 
         return gradeBenefits.stream()
@@ -52,14 +52,14 @@ public class MemberGrade {
                         .discountType(gradeBenefit.getDiscountType())
                         .value(gradeBenefit.getValue())
                         .name(gradeBenefit.getName())
-                        .startAt(generateCouponStartAt())
-                        .endAt(generateCouponEndAt())
+                        .startAt(generateCouponStartAt(currentTime))
+                        .endAt(generateCouponEndAt(currentTime))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private LocalDateTime generateCouponStartAt() {
-        return LocalDateTime.now()
+    private LocalDateTime generateCouponStartAt(LocalDateTime currentTime) {
+        return currentTime
                 .withDayOfMonth(1)
                 .withHour(0)
                 .withMinute(0)
@@ -67,9 +67,9 @@ public class MemberGrade {
                 .withNano(1);
     }
 
-    private LocalDateTime generateCouponEndAt() {
-        return LocalDateTime.now()
-                .withDayOfMonth(LocalDate.now().lengthOfMonth())
+    private LocalDateTime generateCouponEndAt(LocalDateTime currentTime) {
+        return currentTime
+                .with(TemporalAdjusters.lastDayOfMonth())
                 .withHour(23)
                 .withMinute(59)
                 .withSecond(59)

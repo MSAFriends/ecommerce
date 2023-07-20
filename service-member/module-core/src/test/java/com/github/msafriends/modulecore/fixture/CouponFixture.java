@@ -23,19 +23,13 @@ public class CouponFixture {
     }
 
     public static LocalDateTime createStartAt() {
-        return LocalDateTime.now()
-                .withDayOfMonth(1)
-                .withHour(0)
-                .withMinute(0)
-                .withSecond(0)
-                .withNano(1);
+        return LocalDateTime.of(2023, 7, 1, 0, 0, 0, 1);
     }
     public static LocalDateTime createEndAt() {
-        return LocalDateTime.now()
-                .withDayOfMonth(LocalDate.now().lengthOfMonth())
-                .withHour(23)
-                .withMinute(59)
-                .withSecond(59)
-                .withNano(0);
+        return LocalDateTime.of(2023, 7, 31, 23, 59, 59, 0);
+    }
+
+    public static LocalDateTime createExampleDate() {
+        return LocalDateTime.of(2023, 7, 7, 18, 30, 59);
     }
 }

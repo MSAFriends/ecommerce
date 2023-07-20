@@ -33,20 +33,20 @@ public class Grade {
 
     @Builder
     public Grade (String name, int minOrderCountForGrade, int maxOrderCountForGrade) {
-        validationOrderCountsForGrade(minOrderCountForGrade, maxOrderCountForGrade);
+        validateOrderCountsForGrade(minOrderCountForGrade, maxOrderCountForGrade);
         Assert.hasText(name, "Grade name must not be null or empty.");
         this.name = name;
         this.minOrderCountForGrade = minOrderCountForGrade;
         this.maxOrderCountForGrade = maxOrderCountForGrade;
     }
 
-    private void validationOrderCountsForGrade(int minOrderCount, int maxOrderCount) {
+    private void validateOrderCountsForGrade(int minOrderCount, int maxOrderCount) {
         if (minOrderCount > maxOrderCount) {
             throw new IllegalArgumentException("Invalid order counts: minOrderCount must be less than or equal to maxOrderCount.");
         }
     }
 
-    public void addAllBenefits(List<GradeBenefit> benefits) {
-        this.benefits = benefits;
+    public void addBenefit(GradeBenefit benefits) {
+        this.benefits.add(benefits);
     }
 }

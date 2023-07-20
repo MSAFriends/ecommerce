@@ -31,19 +31,19 @@ class MemberGradeTest {
                     .value(1000)
                     .name("1000원 할인 쿠폰")
                     .build();
-            bronzeGrade.addAllBenefits(List.of(bronzeGradeBenefit));
+            bronzeGrade.addBenefit(bronzeGradeBenefit);
             MemberGrade memberGrade = MemberGrade.builder()
                     .grade(bronzeGrade)
                     .member(member)
                     .build();
-            List<Coupon> coupons = memberGrade.generateGradeBenefitCoupons();
+            List<Coupon> coupons = memberGrade.generateGradeBenefitCoupons(CouponFixture.createExampleDate());
             assertThat(coupons).hasSize(1);
             assertThat(coupons.get(0).getHasUsed()).isEqualTo(false);
             assertThat(coupons.get(0).getValue()).isEqualTo(1000);
             assertThat(coupons.get(0).getName()).isEqualTo("1000원 할인 쿠폰");
 
             // 멤버 등급 혜택에 따른 쿠폰 발급 유효기간 Validation
-            assertThat(coupons.get(0).getStartAt()).isEqualTo(CouponFixture.createEndAt());
+            assertThat(coupons.get(0).getStartAt()).isEqualTo(CouponFixture.createStartAt());
             assertThat(coupons.get(0).getEndAt()).isEqualTo(CouponFixture.createEndAt());
         }
 
@@ -64,12 +64,15 @@ class MemberGradeTest {
                     .value(2000)
                     .name("2000원 할인 쿠폰")
                     .build();
-            bronzeGrade.addAllBenefits(List.of(bronzeGradeBenefit1, bronzeGradeBenefit2));
+
+            bronzeGrade.addBenefit(bronzeGradeBenefit1);
+            bronzeGrade.addBenefit(bronzeGradeBenefit2);
+
             MemberGrade memberGrade = MemberGrade.builder()
                     .grade(bronzeGrade)
                     .member(member)
                     .build();
-            List<Coupon> coupons = memberGrade.generateGradeBenefitCoupons();
+            List<Coupon> coupons = memberGrade.generateGradeBenefitCoupons(CouponFixture.createExampleDate());
             assertThat(coupons).hasSize(2);
 
             // 멤버 등급 혜택에 따른 쿠폰 발급 유효기간 Validation
