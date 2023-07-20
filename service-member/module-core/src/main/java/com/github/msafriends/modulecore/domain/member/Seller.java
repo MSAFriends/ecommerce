@@ -24,12 +24,12 @@ public class Seller {
     private String nickName;
 
     private String userName;
-    private int grd;
+    private int grade;
 
     @Builder
-    public Seller(String nickName, String userName, int grd) {
+    public Seller(String nickName, String userName, int grade) {
         this.nickName = nickName;
         this.userName = userName;
-        this.grd = grd;
+        this.grade = grade;
     }
 }
