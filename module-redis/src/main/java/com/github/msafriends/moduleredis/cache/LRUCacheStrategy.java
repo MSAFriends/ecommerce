@@ -4,28 +4,28 @@ package com.github.msafriends.moduleredis.cache;
  * Interface representing Least Recently Used (LRU) caching strategy.
  * Extends EvictionCacheStrategy and allows defining methods specific to LRU strategy.
  */
-public interface LRUCacheStrategy<KEY, VALUE> extends EvictionCacheStrategy<KEY, VALUE> {
+public interface LRUCacheStrategy<K, V> extends EvictionCacheStrategy<K, V> {
     /**
      * Moves the given key to the Most Recently Used (MRU) position.
      * @param key The key to move to the MRU position.
      */
-    void moveToMRU(KEY key);
+    void moveToMRU(K key);
 
     /**
      * Moves the given key to the Least Recently Used (LRU) position.
      * @param key The key to move to the LRU position.
      */
-    void moveToLRU(KEY key);
+    void moveToLRU(K key);
 
     /**
      * Retrieves the most recently used key in the cache.
      * @return The key of the most recently used item.
      */
-    KEY getMostRecentlyUsedKey();
+    K getMostRecentlyUsedKey();
 
     /**
      * Retrieves the least recently used key in the cache.
      * @return The key of the least recently used item.
      */
-    KEY getLeastRecentlyUsedKey();
+    K getLeastRecentlyUsedKey();
 }

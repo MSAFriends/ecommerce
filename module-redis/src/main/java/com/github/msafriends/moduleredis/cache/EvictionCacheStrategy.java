@@ -1,7 +1,7 @@
 package com.github.msafriends.moduleredis.cache;
 
-public interface EvictionCacheStrategy<KEY, VALUE> extends CacheStrategy<KEY, VALUE>{
+public interface EvictionCacheStrategy<K, V> extends CacheStrategy<K, V>{
 
-    void evictItem(KEY key);
-    void adjustFrequency(KEY key);
+    void evictItem(K key);
+    void adjustFrequency(K key);
 }

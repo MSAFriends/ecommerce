@@ -8,6 +8,6 @@ public interface CacheStrategy <KEY, VALUE> {
     void put(KEY key, VALUE value);
     void remove(KEY key);
     void clear();
-    int size();
+    int getSize();
     boolean contains(KEY key);
 }

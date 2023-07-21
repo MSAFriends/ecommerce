@@ -4,25 +4,25 @@ package com.github.msafriends.moduleredis.cache;
  * Interface representing Least Frequently Used (LFU) caching strategy.
  * Extends EvictionCacheStrategy and allows defining methods specific to LFU strategy.
  */
-public interface LFUCacheStrategy<KEY, VALUE> extends EvictionCacheStrategy<KEY, VALUE>{
+public interface LFUCacheStrategy<K, V> extends EvictionCacheStrategy<K, V>{
     /**
      * Increases the frequency of usage for the given key.
      * @param key The key for which to increase the usage frequency.
      */
-    void increaseFrequency(KEY key);
+    void increaseFrequency(K key);
 
     /**
      * Decreases the frequency of usage for the given key.
      * @param key The key for which to decrease the usage frequency.
      */
-    void decreaseFrequency(KEY key);
+    void decreaseFrequency(K key);
 
     /**
      * Retrieves the current usage frequency for the given key.
      * @param key The key for which to retrieve the usage frequency.
      * @return The current usage frequency of the key.
      */
-    int getFrequency(KEY key);
+    int getFrequency(K key);
 
     /**
      * Returns the minimum usage frequency among all keys managed by LFU strategy.
@@ -41,5 +41,5 @@ public interface LFUCacheStrategy<KEY, VALUE> extends EvictionCacheStrategy<KEY,
      * @param key The key for which to retrieve the usage frequency.
      * @return The current usage frequency of the key.
      */
-    int getCurrentFrequency(KEY key);
+    int getCurrentFrequency(K key);
 }
