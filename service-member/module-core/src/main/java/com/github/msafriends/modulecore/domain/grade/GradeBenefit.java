@@ -21,26 +21,25 @@ public class GradeBenefit {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
+    private Long couponId;
+
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private CouponDiscountType discountType;
-
-    @Column(nullable = false)
-    private int value;
+    private String description;
 
     @Builder
-    public GradeBenefit (Grade grade, String name, CouponDiscountType discountType, int value) {
-        validateValue(value, discountType);
+    public GradeBenefit (Grade grade, Long couponId, String name, String description) {
         Assert.hasText(name, "Name must not be empty.");
 
         this.grade = grade;
+        this.couponId = couponId;
         this.name = name;
-        this.discountType = discountType;
-        this.value = value;
+        this.description = description;
     }
 
+    @Deprecated
     private void validateValue (int value, CouponDiscountType discountType) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
