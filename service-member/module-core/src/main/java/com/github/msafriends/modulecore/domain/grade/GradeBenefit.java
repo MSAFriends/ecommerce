@@ -1,6 +1,5 @@
 package com.github.msafriends.modulecore.domain.grade;
 
-import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.coupon.CouponDiscountType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +20,10 @@ public class GradeBenefit {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
-    private Long couponId;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BenefitType benefitType;
+    private int value;
 
     @Column(nullable = false)
     private String name;
@@ -30,22 +32,23 @@ public class GradeBenefit {
     private String description;
 
     @Builder
-    public GradeBenefit (Grade grade, Long couponId, String name, String description) {
+    public GradeBenefit (Grade grade, BenefitType benefitType, int value, String name, String description) {
         Assert.hasText(name, "Name must not be empty.");
-
+        validateValue(value, benefitType);
+        this.benefitType = benefitType;
+        this.value = value;
         this.grade = grade;
-        this.couponId = couponId;
         this.name = name;
         this.description = description;
     }
 
     @Deprecated
-    private void validateValue (int value, CouponDiscountType discountType) {
+    private void validateValue (int value, BenefitType benefitType) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
         }
 
-        if (discountType.equals(CouponDiscountType.PERCENTAGE) && value >100) {
+        if (benefitType.equals(BenefitType.PERCENTAGE_DISCOUNT_COUPON) && value >100) {
             throw new IllegalArgumentException("Percentage value cannot exceed 100.");
         }
     }
