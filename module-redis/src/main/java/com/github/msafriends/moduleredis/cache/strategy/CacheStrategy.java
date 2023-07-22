@@ -1,4 +1,4 @@
-package com.github.msafriends.moduleredis.cache;
+package com.github.msafriends.moduleredis.cache.strategy;
 
 import org.springframework.stereotype.Indexed;
 
