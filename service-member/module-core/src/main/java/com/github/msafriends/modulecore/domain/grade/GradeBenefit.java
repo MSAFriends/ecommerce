@@ -1,6 +1,5 @@
 package com.github.msafriends.modulecore.domain.grade;
 
-import com.github.msafriends.modulecore.domain.coupon.CouponDiscountType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.util.Assert;
@@ -42,7 +41,10 @@ public class GradeBenefit {
         this.description = description;
     }
 
-    @Deprecated
+    public boolean isDiscountDeliveryBenefit() {
+        return benefitType == BenefitType.DELIVERY_DISCOUNT;
+    }
+
     private void validateValue (int value, BenefitType benefitType) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
