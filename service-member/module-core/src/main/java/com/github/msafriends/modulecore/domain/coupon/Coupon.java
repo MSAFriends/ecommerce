@@ -1,10 +1,10 @@
 package com.github.msafriends.modulecore.domain.coupon;
 
-import com.github.msafriends.modulecore.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -12,14 +12,16 @@ import java.time.LocalDateTime;
 @Table(name = "coupons")
 public class Coupon {
 
+    private static final int DEFAULT_MAX_QUANTITY_MEMBER = 1;
+    private static final int DEFAULT_QUANTITY = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
+    private List<MemberCoupon> memberCoupons = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
@@ -32,44 +34,43 @@ public class Coupon {
     private int value;
 
     @Column(nullable = false)
-    private Boolean hasUsed = false;
+    @Enumerated(EnumType.STRING)
+    private CouponGenerateType generateType;
+
+    private int quantity;
 
     @Column(nullable = false)
-    private LocalDateTime startAt;
+    private Integer maxQuantityPerMember;
 
-    @Column(nullable = false)
-    private LocalDateTime endAt;
-
-    @Builder
-    public Coupon (Member member, String name, CouponDiscountType discountType, int value, LocalDateTime startAt, LocalDateTime endAt) {
+    @Builder(builderClassName = "ByLimitedBuilder", builderMethodName = "ByLimitedBuilder")
+    public Coupon(List<MemberCoupon> memberCoupons, String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, int quantity, Integer maxQuantityPerMember) {
         validateValue(value, discountType);
-        validateCouponExpirationDateCorrectness(startAt, endAt);
-        this.member = member;
+        this.memberCoupons = memberCoupons;
         this.name = name;
         this.discountType = discountType;
         this.value = value;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.generateType = generateType;
+        this.quantity = quantity;
+        this.maxQuantityPerMember = generateMaxQuantityPerMember(maxQuantityPerMember);
     }
 
-    public void use(LocalDateTime currentTime) {
-        checkCouponValidity(currentTime);
-        if (this.hasUsed) {
-            throw new IllegalStateException("The coupon has already been used.");
-        }
-        this.hasUsed = true;
+    @Builder(builderClassName = "ByUnLimitedBuilder", builderMethodName = "ByUnLimitedBuilder")
+    public Coupon(List<MemberCoupon> memberCoupons, String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, Integer maxQuantityPerMember) {
+        validateValue(value, discountType);
+        this.memberCoupons = memberCoupons;
+        this.name = name;
+        this.discountType = discountType;
+        this.value = value;
+        this.generateType = generateType;
+        this.quantity = DEFAULT_QUANTITY;
+        this.maxQuantityPerMember = generateMaxQuantityPerMember(maxQuantityPerMember);
     }
 
-    private void checkCouponValidity(LocalDateTime currentTime) {
-        if (currentTime.isBefore(startAt) || currentTime.isAfter(endAt)) {
-            throw new IllegalStateException("The coupon is not within its validity period.");
+    private int generateMaxQuantityPerMember(Integer maxQuantityPerMember) {
+        if (maxQuantityPerMember == null) {
+            return DEFAULT_MAX_QUANTITY_MEMBER;
         }
-    }
-
-    private void validateCouponExpirationDateCorrectness(LocalDateTime startAt, LocalDateTime endAt) {
-        if (endAt.isBefore(startAt)) {
-            throw new IllegalStateException("The coupon's expiration date is incorrectly set.");
-        }
+        return maxQuantityPerMember;
     }
 
     private void validateValue (int value, CouponDiscountType discountType) {
