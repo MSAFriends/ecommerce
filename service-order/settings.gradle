@@ -1,3 +1,2 @@
 include 'service-order:module-core'
-include 'service-order:module-external-api'
-include 'service-order:module-internal-api'
+include 'service-order:module-api'

@@ -1,6 +1,5 @@
 dependencies {
     implementation project(':service-order:module-core')
-    implementation project(':service-order:module-internal-api')
 }
 
 bootJar {
