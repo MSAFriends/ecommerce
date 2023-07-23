@@ -41,11 +41,11 @@ public class MemberCoupon {
     private LocalDateTime endAt;
 
     @Builder
-    public MemberCoupon(Member member, Coupon coupon, Boolean hasUsed, LocalDateTime usedAt, LocalDateTime startAt, LocalDateTime endAt) {
+    public MemberCoupon(Member member, Coupon coupon, LocalDateTime usedAt, LocalDateTime startAt, LocalDateTime endAt) {
         validateCouponExpirationDateCorrectness(startAt, endAt);
         this.member = member;
         this.coupon = coupon;
-        this.hasUsed = hasUsed;
+        this.hasUsed = false;
         this.usedAt = usedAt;
         this.startAt = startAt;
         this.endAt = endAt;
