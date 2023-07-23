@@ -1,7 +1,6 @@
 package com.github.msafriends.modulecore.domain.member;
 
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
-import com.github.msafriends.modulecore.domain.grade.MemberGrade;
 import com.github.msafriends.modulecore.domain.notification.Notification;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,9 +22,6 @@ public class Member {
     private Long id;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<MemberGrade> memberGrades = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -36,6 +32,10 @@ public class Member {
 
     @Embedded
     private Email email;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
 
     @Column(nullable = false, length=20)
     private String password;
@@ -53,6 +53,7 @@ public class Member {
         validatePhoneNumber(phoneNumber);
 
         this.email = new Email(email);
+        this.grade = Grade.BRONZE;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.name = name;
