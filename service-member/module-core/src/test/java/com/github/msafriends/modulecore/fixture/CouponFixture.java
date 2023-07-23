@@ -2,9 +2,9 @@ package com.github.msafriends.modulecore.fixture;
 
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.coupon.CouponDiscountType;
+import com.github.msafriends.modulecore.domain.coupon.CouponGenerateType;
 import com.github.msafriends.modulecore.domain.member.Member;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CouponFixture {
@@ -12,13 +12,11 @@ public class CouponFixture {
     private static final int COUPON_VALUE = 1000;
 
     public static Coupon createCoupon (Member member) {
-        return Coupon.builder()
-                .member(member)
+        return Coupon.ByUnLimitedBuilder()
+                .generateType(CouponGenerateType.GRADE_BENEFIT)
                 .name(COUPON_NAME)
                 .value(COUPON_VALUE)
                 .discountType(CouponDiscountType.FIXED)
-                .startAt(createStartAt())
-                .endAt(createEndAt())
                 .build();
     }
 
