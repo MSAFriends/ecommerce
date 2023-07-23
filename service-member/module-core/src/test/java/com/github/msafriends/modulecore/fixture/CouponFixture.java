@@ -11,9 +11,9 @@ public class CouponFixture {
     private static final String COUPON_NAME = "10000원 할인 쿠폰";
     private static final int COUPON_VALUE = 1000;
 
-    public static Coupon createCoupon (Member member) {
+    public static Coupon createCoupon () {
         return Coupon.ByUnLimitedBuilder()
-                .generateType(CouponGenerateType.GRADE_BENEFIT)
+                .generateType(CouponGenerateType.BRONZE_GRADE_BENEFIT)
                 .name(COUPON_NAME)
                 .value(COUPON_VALUE)
                 .discountType(CouponDiscountType.FIXED)
