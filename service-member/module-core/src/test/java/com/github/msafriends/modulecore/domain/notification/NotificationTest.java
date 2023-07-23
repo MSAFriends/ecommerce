@@ -48,7 +48,7 @@ class NotificationTest {
         @DisplayName("쿠폰 관련 알림 생성이 성공한다.")
         void testNotificationMessageWithCoupon() {
             Member member = MemberFixture.createMember();
-            Coupon coupon = CouponFixture.createCoupon(member);
+            Coupon coupon = CouponFixture.createCoupon();
             String message = NotificationType.COUPON_DISTRIBUTION.getMessageTemplate();
 
             Notification notificationWithCoupon = Notification.ByOrderEventBuilder()
