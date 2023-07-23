@@ -3,9 +3,9 @@ package com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
-import com.github.msafriends.serviceorder.modulecore.fixture.order.CouponFixture;
-import com.github.msafriends.serviceorder.modulecore.fixture.order.OrderFixture;
-import com.github.msafriends.serviceorder.modulecore.fixture.order.OrderItemFixture;
+import com.github.msafriends.serviceorder.modulecore.fixture.OrderCouponFixture;
+import com.github.msafriends.serviceorder.modulecore.fixture.OrderFixture;
+import com.github.msafriends.serviceorder.modulecore.fixture.OrderItemFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -49,8 +49,8 @@ class PriceCalculatorTest {
             Order order = OrderFixture.createDefaultOrder();
             List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
             List<OrderCoupon> coupons = List.of(
-                    CouponFixture.createCouponWithFixedDiscount(order, 1_000),
-                    CouponFixture.createCouponWithPercentDiscount(order, 10));
+                    OrderCouponFixture.createCouponWithFixedDiscount(order, 1_000),
+                    OrderCouponFixture.createCouponWithPercentDiscount(order, 10));
             order.addCoupons(coupons);
 
             // when
@@ -68,7 +68,7 @@ class PriceCalculatorTest {
             int expectedTotalPrice = 0;
             Order order = OrderFixture.createDefaultOrder();
             List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
-            List<OrderCoupon> coupons = List.of(CouponFixture.createCouponWithFixedDiscount(order, 12_000));
+            List<OrderCoupon> coupons = List.of(OrderCouponFixture.createCouponWithFixedDiscount(order, 12_000));
             order.addCoupons(coupons);
 
             // when
