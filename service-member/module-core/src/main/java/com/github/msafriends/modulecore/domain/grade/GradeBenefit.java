@@ -45,6 +45,14 @@ public class GradeBenefit {
         return benefitType == BenefitType.DELIVERY_DISCOUNT;
     }
 
+    public boolean isFixedDiscountCouponBenefit() {
+        return benefitType == BenefitType.FIXED_DISCOUNT_COUPON;
+    }
+
+    public boolean isPercentageDiscountCouponBenefit() {
+        return benefitType == BenefitType.PERCENTAGE_DISCOUNT_COUPON;
+    }
+
     private void validateValue (int value, BenefitType benefitType) {
         if (value <= 0) {
             throw new IllegalArgumentException("Value must be greater than 0.");
