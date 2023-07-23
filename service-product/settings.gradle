@@ -1,0 +1,3 @@
+include 'service-product:module-core'
+include 'service-product:module-external-api'
+include 'service-product:module-internal-api'

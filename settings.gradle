@@ -17,4 +17,12 @@ apply from: 'service-order/settings.gradle'
 
 project(':service-product').projectDir = new File(settingsDir, 'service-product')
 apply from: 'service-product/settings.gradle'
+include 'service-product:module-core'
+findProject(':service-product:module-core')?.name = 'module-core'
+include 'service-product:module-batch'
+findProject(':service-product:module-batch')?.name = 'module-batch'
+include 'service-product:module-internal-api'
+findProject(':service-product:module-internal-api')?.name = 'module-internal-api'
+include 'service-product:module-external-api'
+findProject(':service-product:module-external-api')?.name = 'module-external-api'
 
