@@ -25,4 +25,12 @@ public class ProductResponse {
                 .price(product.getPrice())
                 .build();
     }
+
+    public static Product toProduct(final ProductResponse productResponse) {
+        return Product.builder()
+                .id(productResponse.getId())
+                .quantity(productResponse.getQuantity())
+                .price(productResponse.getPrice())
+                .build();
+    }
 }
