@@ -1,6 +1,7 @@
-package com.github.msafriends.serviceorder.modulecore.fixture.order;
+package com.github.msafriends.serviceorder.modulecore.fixture;
 
 import com.github.msafriends.serviceorder.modulecore.domain.order.Recipient;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.RecipientRequest;
 
 public class RecipientFixture {
     private static final String DEFAULT_NAME = "테스트 수신인";
@@ -20,6 +21,14 @@ public class RecipientFixture {
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .address(address)
+                .build();
+    }
+
+    public static RecipientRequest createDefaultRecipientRequest() {
+        return RecipientRequest.builder()
+                .name(DEFAULT_NAME)
+                .phoneNumber(DEFAULT_PHONE_NUMBER)
+                .address(DEFAULT_ADDRESS)
                 .build();
     }
 }
