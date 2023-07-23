@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class OrderCouponResponse {
@@ -31,5 +33,11 @@ public class OrderCouponResponse {
                 .discountValue(couponResponse.getValue())
                 .discountType(couponResponse.getDiscountType())
                 .build();
+    }
+
+    public static List<OrderCoupon> toCoupons(final Order order, final List<OrderCouponResponse> couponResponses) {
+        return couponResponses.stream()
+                .map(couponResponse -> toCoupon(order, couponResponse))
+                .toList();
     }
 }
