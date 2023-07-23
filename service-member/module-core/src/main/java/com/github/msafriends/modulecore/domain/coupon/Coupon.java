@@ -43,9 +43,8 @@ public class Coupon {
     private Integer maxQuantityPerMember;
 
     @Builder(builderClassName = "ByLimitedBuilder", builderMethodName = "ByLimitedBuilder")
-    public Coupon(List<MemberCoupon> memberCoupons, String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, int quantity, Integer maxQuantityPerMember) {
+    public Coupon(String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, int quantity, Integer maxQuantityPerMember) {
         validateValue(value, discountType);
-        this.memberCoupons = memberCoupons;
         this.name = name;
         this.discountType = discountType;
         this.value = value;
@@ -55,15 +54,18 @@ public class Coupon {
     }
 
     @Builder(builderClassName = "ByUnLimitedBuilder", builderMethodName = "ByUnLimitedBuilder")
-    public Coupon(List<MemberCoupon> memberCoupons, String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, Integer maxQuantityPerMember) {
+    public Coupon(String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, Integer maxQuantityPerMember) {
         validateValue(value, discountType);
-        this.memberCoupons = memberCoupons;
         this.name = name;
         this.discountType = discountType;
         this.value = value;
         this.generateType = generateType;
         this.quantity = DEFAULT_QUANTITY;
         this.maxQuantityPerMember = generateMaxQuantityPerMember(maxQuantityPerMember);
+    }
+
+    public void addMemberCoupon(MemberCoupon memberCoupon) {
+        this.memberCoupons.add(memberCoupon);
     }
 
     private int generateMaxQuantityPerMember(Integer maxQuantityPerMember) {
