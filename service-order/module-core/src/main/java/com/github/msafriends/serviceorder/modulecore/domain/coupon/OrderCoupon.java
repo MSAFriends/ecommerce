@@ -18,6 +18,9 @@ public class OrderCoupon {
     @Column(name = "order_coupon_id")
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private Long couponId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CouponDiscountType discountType;
@@ -33,20 +36,22 @@ public class OrderCoupon {
     private Order order;
 
     @Builder
-    public OrderCoupon(CouponDiscountType discountType, String name, Integer discountValue, Order order) {
-        validateCoupon(discountType, name, discountValue, order);
+    public OrderCoupon(Long couponId, CouponDiscountType discountType, String name, Integer discountValue, Order order) {
+        validateCoupon(couponId, discountType, name, discountValue, order);
 
+        this.couponId = couponId;
         this.discountType = discountType;
         this.name = name;
         this.discountValue = discountValue;
         this.order = order;
     }
 
-    private void validateCoupon(CouponDiscountType discountType, String name, Integer discountValue, Order order) {
-        validateNotNull(discountType, name, discountValue, order);
+    private void validateCoupon(Long couponId, CouponDiscountType discountType, String name, Integer discountValue, Order order) {
+        validateNotNull(couponId, discountType, name, discountValue, order);
     }
 
-    private void validateNotNull(CouponDiscountType discountType, String name, Integer discountValue, Order order) {
+    private void validateNotNull(Long couponId, CouponDiscountType discountType, String name, Integer discountValue, Order order) {
+        Assert.notNull(couponId, "couponId must not be null");
         Assert.notNull(discountType, "discountType must not be null");
         Assert.notNull(name, "name must not be null");
         Assert.notNull(discountValue, "discountValue must not be null");
