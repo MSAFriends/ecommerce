@@ -46,7 +46,7 @@ public class Grade {
         }
     }
 
-    public void addBenefit(GradeBenefit benefits) {
-        this.benefits.add(benefits);
+    public void addBenefit(GradeBenefit benefit) {
+        this.benefits.add(benefit);
     }
 }
