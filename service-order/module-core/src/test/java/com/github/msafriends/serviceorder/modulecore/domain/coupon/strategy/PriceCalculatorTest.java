@@ -1,6 +1,6 @@
 package com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy;
 
-import com.github.msafriends.serviceorder.modulecore.domain.coupon.Coupon;
+import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
 import com.github.msafriends.serviceorder.modulecore.fixture.order.CouponFixture;
@@ -48,7 +48,7 @@ class PriceCalculatorTest {
             int expectedDiscountedPrice = 8_100;
             Order order = OrderFixture.createDefaultOrder();
             List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
-            List<Coupon> coupons = List.of(
+            List<OrderCoupon> coupons = List.of(
                     CouponFixture.createCouponWithFixedDiscount(order, 1_000),
                     CouponFixture.createCouponWithPercentDiscount(order, 10));
             order.addCoupons(coupons);
@@ -68,7 +68,7 @@ class PriceCalculatorTest {
             int expectedTotalPrice = 0;
             Order order = OrderFixture.createDefaultOrder();
             List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
-            List<Coupon> coupons = List.of(CouponFixture.createCouponWithFixedDiscount(order, 12_000));
+            List<OrderCoupon> coupons = List.of(CouponFixture.createCouponWithFixedDiscount(order, 12_000));
             order.addCoupons(coupons);
 
             // when

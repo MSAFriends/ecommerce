@@ -10,17 +10,20 @@ import org.springframework.util.Assert;
 
 @Entity
 @Getter
-@Table(name = "coupons")
+@Table(name = "order_coupons")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon {
+public class OrderCoupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coupon_id")
+    @Column(name = "order_coupon_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CouponDiscountType discountType;
+
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
     private Integer discountValue;
@@ -30,20 +33,22 @@ public class Coupon {
     private Order order;
 
     @Builder
-    public Coupon(Order order, CouponDiscountType discountType, Integer discountValue) {
-        validateCoupon(discountType, discountValue, order);
+    public OrderCoupon(CouponDiscountType discountType, String name, Integer discountValue, Order order) {
+        validateCoupon(discountType, name, discountValue, order);
 
         this.discountType = discountType;
+        this.name = name;
         this.discountValue = discountValue;
         this.order = order;
     }
 
-    private void validateCoupon(CouponDiscountType discountType, Integer discountValue, Order order) {
-        validateNotNull(discountType, discountValue, order);
+    private void validateCoupon(CouponDiscountType discountType, String name, Integer discountValue, Order order) {
+        validateNotNull(discountType, name, discountValue, order);
     }
 
-    private void validateNotNull(CouponDiscountType discountType, Integer discountValue, Order order) {
+    private void validateNotNull(CouponDiscountType discountType, String name, Integer discountValue, Order order) {
         Assert.notNull(discountType, "discountType must not be null");
+        Assert.notNull(name, "name must not be null");
         Assert.notNull(discountValue, "discountValue must not be null");
         Assert.notNull(order, "order must not be null");
     }
