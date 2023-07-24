@@ -1,13 +1,13 @@
-package com.github.msafriends.moduleinternalapi;
+package com.github.msafriends.moduleapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ModuleInternalApiApplication {
+public class ModuleApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ModuleInternalApiApplication.class, args);
+        SpringApplication.run(ModuleApiApplication.class, args);
     }
 
 }
