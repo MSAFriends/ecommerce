@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidMemberName {
-    String message() default "이름의 형식이 올바르지 않습니다.";
+    String message() default "The format of the name is not valid.";
 
     Class<?>[] groups() default {};
 
