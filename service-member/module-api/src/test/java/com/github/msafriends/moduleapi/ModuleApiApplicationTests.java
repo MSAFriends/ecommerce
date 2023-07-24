@@ -1,10 +1,10 @@
-package com.github.msafriends.moduleinternalapi;
+package com.github.msafriends.moduleapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ModuleInternalApiApplicationTests {
+class ModuleApiApplicationTests {
 
     @Test
     void contextLoads() {

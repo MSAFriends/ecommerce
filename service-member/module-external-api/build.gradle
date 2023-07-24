@@ -1,4 +1,0 @@
-dependencies {
-    implementation project(':service-member:module-core')
-    implementation project(':service-member:module-internal-api')
-}
