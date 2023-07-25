@@ -31,7 +31,6 @@ public class MemberCoupon {
     @Column(nullable = false)
     private Boolean hasUsed = false;
 
-    @Column(nullable = false)
     private LocalDateTime usedAt;
 
     @Column(nullable = false)
@@ -41,12 +40,11 @@ public class MemberCoupon {
     private LocalDateTime endAt;
 
     @Builder
-    public MemberCoupon(Member member, Coupon coupon, LocalDateTime usedAt, LocalDateTime startAt, LocalDateTime endAt) {
+    public MemberCoupon(Member member, Coupon coupon, LocalDateTime startAt, LocalDateTime endAt) {
         validateCouponExpirationDateCorrectness(startAt, endAt);
         this.member = member;
         this.coupon = coupon;
         this.hasUsed = false;
-        this.usedAt = usedAt;
         this.startAt = startAt;
         this.endAt = endAt;
     }
@@ -57,6 +55,7 @@ public class MemberCoupon {
             throw new IllegalStateException("The coupon has already been used.");
         }
         this.hasUsed = true;
+        this.usedAt = LocalDateTime.now();
     }
 
     private void checkCouponValidity(LocalDateTime currentTime) {
