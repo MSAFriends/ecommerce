@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/internal/v1")
-public class OrderApiController {
+public class OrderInternalApiControllerV1 {
     private final OrderService orderService;
 
     @GetMapping("/orders/{orderId}")
