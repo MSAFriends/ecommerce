@@ -1,9 +1,16 @@
+plugins {
+    id 'com.palantir.docker' version '0.35.0'
+}
+
 dependencies {
     implementation project(':service-order:module-core')
     testImplementation testFixtures(project(':service-order:module-core'))
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
 }
 
 ext {
@@ -22,4 +29,12 @@ bootJar {
 
 jar {
     enabled = false
+}
+
+docker {
+    println(tasks.bootJar.outputs.files)
+    name rootProject.name + '-service-order:latest'
+    dockerfile file('../../Dockerfile')
+    files tasks.bootJar.outputs.files
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
 }
