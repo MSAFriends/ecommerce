@@ -24,6 +24,8 @@ services:
       - order-mysql
       - discovery-service
       - api-gateway-service
+    environment:
+      - VAULT_TOKEN=${VAULT_TOKEN}
     ports:
       - "8002:8080"
 
