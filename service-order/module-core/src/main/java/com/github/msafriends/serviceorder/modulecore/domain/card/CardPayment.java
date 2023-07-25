@@ -24,7 +24,7 @@ public class CardPayment {
     @Embedded
     private CardInformation cardInformation;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_provider_id")
     private BankProvider bankProvider;
 
