@@ -1,9 +1,9 @@
-package com.github.msafriends.dto.request.member;
+package com.github.msafriends.moduleapi.dto.request.member;
 
 import com.github.msafriends.modulecore.domain.member.Member;
-import com.github.msafriends.validator.anntations.ValidMemberName;
-import com.github.msafriends.validator.anntations.ValidPassword;
-import com.github.msafriends.validator.anntations.ValidPhoneNumber;
+import com.github.msafriends.moduleapi.validator.anntations.ValidMemberName;
+import com.github.msafriends.moduleapi.validator.anntations.ValidPassword;
+import com.github.msafriends.moduleapi.validator.anntations.ValidPhoneNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
