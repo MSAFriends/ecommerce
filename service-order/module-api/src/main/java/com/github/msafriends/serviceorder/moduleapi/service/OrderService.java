@@ -40,11 +40,11 @@ public class OrderService {
     @Transactional
     public Long createOrder(Long memberId, OrderRequest orderRequest) {
         List<Product> products = getProducts(orderRequest);
-        validateIfProductStockIsEnough(products);
+        validateIfProductStockIsEnough(orderRequest, products);
 
         Order order = Order.builder()
                 .memberId(memberId)
-                .status(OrderStatus.APPROVED)
+                .status(OrderStatus.CREATE_PENDING)
                 .request(orderRequest.getRequest())
                 .products(products)
                 .recipient(RecipientRequest.toRecipient(orderRequest.getRecipient()))
@@ -65,9 +65,14 @@ public class OrderService {
         });
     }
 
-    private void validateIfProductStockIsEnough(List<Product> products) {
-        products.forEach(product -> {
-            if (product.getQuantity() < 1) {
+    private void validateIfProductStockIsEnough(OrderRequest orderRequest, List<Product> products) {
+        orderRequest.getOrderItems().forEach(orderItemRequest -> {
+            Product product = products.stream()
+                    .filter(p -> p.getId().equals(orderItemRequest.getProductId()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException(String.format("Product with ID %d not found", orderItemRequest.getProductId())));
+
+            if (product.getQuantity() < orderItemRequest.getQuantity()) {
                 throw new RuntimeException(String.format("Product stock for product ID %d is not enough", product.getId()));
             }
         });
