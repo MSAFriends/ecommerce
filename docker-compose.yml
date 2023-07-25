@@ -24,8 +24,8 @@ services:
       - order-mysql
       - discovery-service
       - api-gateway-service
-    environment:
-      - VAULT_TOKEN=${VAULT_TOKEN}
+    env_file:
+      - .env
     ports:
       - "8002:8080"
 
@@ -39,10 +39,8 @@ services:
       - ./.docker/order-service/db/initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "8502:3306"
-    environment:
-      - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=ecommerce
+    env_file:
+      - .env
 
 networks:
   msafriends_network:
