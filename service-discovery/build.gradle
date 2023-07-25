@@ -1,3 +1,7 @@
+plugins {
+    id 'com.palantir.docker' version '0.35.0'
+}
+
 bootJar {
     enabled = true
 }
@@ -18,4 +22,12 @@ dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
+}
+
+docker {
+    println(tasks.bootJar.outputs.files)
+    name rootProject.name + '-' + project.name + ':latest'
+    dockerfile file('../Dockerfile')
+    files tasks.bootJar.outputs.files
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
 }
