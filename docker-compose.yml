@@ -1,0 +1,47 @@
+version: '3'
+services:
+  discovery-service:
+    image: ecommerce-service-discovery:latest
+    networks:
+      - msafriends_network
+    ports:
+      - "8761:8761"
+
+  api-gateway-service:
+    image: ecommerce-service-api-gateway:latest
+    networks:
+      - msafriends_network
+    depends_on:
+      - discovery-service
+    ports:
+      - "8010:8080"
+
+  order-service:
+    image: ecommerce-service-order:latest
+    networks:
+      - msafriends_network
+    depends_on:
+      - order-mysql
+      - discovery-service
+      - api-gateway-service
+    ports:
+      - "8002:8080"
+
+  order-mysql:
+    image: mysql:8.0
+    networks:
+      - msafriends_network
+    volumes:
+      - ./.docker/order-service/db/conf.d:/etc/mysql/conf.d
+      - ./.docker/order-service/db/data:/var/lib/mysql
+      - ./.docker/order-service/db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "8502:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=ecommerce
+
+networks:
+  msafriends_network:
+    driver: bridge
