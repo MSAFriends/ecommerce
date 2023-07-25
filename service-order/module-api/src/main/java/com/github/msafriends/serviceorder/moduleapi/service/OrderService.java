@@ -44,7 +44,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .memberId(memberId)
-                .status(OrderStatus.CREATE_PENDING)
+                .status(OrderStatus.PENDING)
                 .request(orderRequest.getRequest())
                 .products(products)
                 .recipient(RecipientRequest.toRecipient(orderRequest.getRecipient()))
