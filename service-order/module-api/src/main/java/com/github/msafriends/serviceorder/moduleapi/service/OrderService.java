@@ -57,6 +57,11 @@ public class OrderService {
         return orderRepository.save(order).getId();
     }
 
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
     private void validateIfCouponExists(OrderRequest orderRequest, List<OrderCoupon> availableCoupons) {
         orderRequest.getOrderCouponIds().forEach(orderCouponId -> {
             if (availableCoupons.stream().noneMatch(availableCoupon -> availableCoupon.getCouponId().equals(orderCouponId))) {
@@ -82,10 +87,5 @@ public class OrderService {
         return orderRequest.getOrderItems().stream()
                 .map(orderItemRequest -> ProductResponse.toProduct(productServiceClient.getProduct(orderItemRequest.getProductId())))
                 .toList();
-    }
-
-    @Transactional
-    public void deleteOrder(Long orderId) {
-        orderRepository.deleteById(orderId);
     }
 }
