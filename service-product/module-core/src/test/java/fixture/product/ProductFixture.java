@@ -5,7 +5,6 @@ import domain.product.Product;
 
 public class ProductFixture {
 
-    private static final Long PRODUCT_ID = 1L;
     private static final Long SELLER_ID = 1L;
     private static final Long CODE = 111111111L;
     private static final int PRICE = 1000;
@@ -20,7 +19,6 @@ public class ProductFixture {
 
     public static Product createProduct(Benefit benefit) {
         return Product.builder()
-                .id(PRODUCT_ID)
                 .sellerId(SELLER_ID)
                 .code(CODE)
                 .price(PRICE)

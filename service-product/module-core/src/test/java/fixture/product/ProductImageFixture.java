@@ -5,7 +5,6 @@ import domain.product.ProductImage;
 
 public class ProductImageFixture {
 
-    private static final Long ID = 1L;
 
     private static final String BASE = "https://cdn.011st.com/11dims/resize/x80/11src/product/5994781350/L300.jpg?435000000";
     private static final String SIZE_100 = "https://cdn.011st.com/11dims/resize/x100/11src/product/5994781350/L300.jpg?435000000";
@@ -22,7 +21,6 @@ public class ProductImageFixture {
 
     public static ProductImage createProductImage(Product product) {
         return ProductImage.builder()
-                .id(ID)
                 .product(product)
                 .base(BASE)
                 .size100(SIZE_100)

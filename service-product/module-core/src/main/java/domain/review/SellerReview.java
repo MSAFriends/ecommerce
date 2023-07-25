@@ -1,66 +1,47 @@
 package domain.review;
 
-
-import domain.product.Product;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
-
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-public class Review {
+public class SellerReview {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "review_id")
+    @Id @GeneratedValue
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @NotNull
-    private Long memberId;
 
     @Min(value = 0, message = "0점 이상의 점수를 입력해주세요")
     @Max(value = 5, message = "5점 이하의 점수를 입력해주세요")
     private int rating;
+    private Long sellerId;
 
     @Column(nullable = false, length = 50)
     private String title;
-
     @Column(nullable = false, length = 500)
     private String content;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     @Builder
-    public Review(Long id, Product product, int rating, String title, String content) {
-        validateReview(title, content, rating);
-        this.id = id;
-        this.product = product;
+    public SellerReview(int rating, Long sellerId, String title, String content) {
+        validateSellerReview(title, content, rating);
         this.rating = rating;
+        this.sellerId = sellerId;
         this.title = title;
         this.content = content;
     }
 
-    private void validateReview(String title, String content, int rating) {
+    private void validateSellerReview(String title, String content, int rating) {
         validateNotNull(title, content);
         validateRating(rating);
     }
