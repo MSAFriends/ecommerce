@@ -1,0 +1,25 @@
+dependencies {
+    implementation project(':service-order:module-core')
+    testImplementation testFixtures(project(':service-order:module-core'))
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+ext {
+    set('springCloudVersion', "2022.0.3")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}

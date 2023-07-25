@@ -16,7 +16,7 @@ subprojects {
 
     dependencies {
         implementation project(':module-common')
-        implementation project(':module-kafka')
+
         implementation project(':module-redis')
     }
 
