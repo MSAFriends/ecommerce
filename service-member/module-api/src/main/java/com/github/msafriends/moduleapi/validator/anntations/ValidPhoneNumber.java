@@ -1,6 +1,6 @@
-package com.github.msafriends.validator.anntations;
+package com.github.msafriends.moduleapi.validator.anntations;
 
-import com.github.msafriends.validator.PhoneNumberValidator;
+import com.github.msafriends.moduleapi.validator.PhoneNumberValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

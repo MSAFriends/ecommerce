@@ -1,6 +1,6 @@
-package com.github.msafriends.validator.anntations;
+package com.github.msafriends.moduleapi.validator.anntations;
 
-import com.github.msafriends.validator.PasswordValidator;
+import com.github.msafriends.moduleapi.validator.PasswordValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
