@@ -51,17 +51,17 @@ public class Review {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Review(Long id, Product product, int rating, String title, String content) {
-        validateReview(title, content, rating);
-        this.id = id;
+    public Review(Long memberId, Product product, int rating, String title, String content) {
+        validateReview(memberId, title, content, rating);
+        this.memberId = memberId;
         this.product = product;
         this.rating = rating;
         this.title = title;
         this.content = content;
     }
 
-    private void validateReview(String title, String content, int rating) {
-        validateNotNull(title, content);
+    private void validateReview(Long memberId, String title, String content, int rating) {
+        validateNotNull(memberId, title, content);
         validateRating(rating);
     }
 
@@ -69,8 +69,9 @@ public class Review {
         Assert.isTrue(rating >= 0 && rating <= 5, "평점은 0 ~ 5점 사이로 입력해주세요.");
     }
 
-    private void validateNotNull(String title, String content) {
-        Assert.notNull(title, "product must not be null");
+    private void validateNotNull(Long memberId, String title, String content) {
+        Assert.notNull(memberId, "title must not be null");
+        Assert.notNull(title, "title must not be null");
         Assert.notNull(content, "content must not be null");
     }
 }

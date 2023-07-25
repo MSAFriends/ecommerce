@@ -63,9 +63,8 @@ public class Product {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Product(Long id, Long sellerId, List<ProductImage> productImages, Long code, String name, int price, int salePrice, float rating, String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String isMinor, int quantity, Benefit benefit) {
-        validateProduct(id, code, name, detailPageUrl, delivery, isMinor, quantity, price, salePrice);
-        this.id = id;
+    public Product(Long sellerId, List<ProductImage> productImages, Long code, String name, int price, int salePrice, float rating, String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String isMinor, int quantity, Benefit benefit) {
+        validateProduct(sellerId, code, name, detailPageUrl, delivery, isMinor, quantity, price, salePrice);
         this.sellerId = sellerId;
         this.productImages = productImages;
         this.code = code;
@@ -82,9 +81,9 @@ public class Product {
         this.benefit = benefit;
     }
 
-    private void validateProduct(Long id, Long code, String name, String detailPageUrl, String delivery, String isMinor, int quantity, int price, int salePrice) {
+    private void validateProduct(Long sellerId, Long code, String name, String detailPageUrl, String delivery, String isMinor, int quantity, int price, int salePrice) {
         validateSalePrice(price, salePrice);
-        validateNotNull(id, code, name, detailPageUrl, delivery, isMinor);
+        validateNotNull(sellerId, code, name, detailPageUrl, delivery, isMinor);
         validateQuantity(quantity);
     }
 
@@ -108,8 +107,8 @@ public class Product {
         }
      }
 
-     private void validateNotNull(Long memberId, Long code, String name, String detailPageUrl, String delivery, String isMinor) {
-        Assert.notNull(memberId, "memberId must not be null");
+     private void validateNotNull(Long sellerId, Long code, String name, String detailPageUrl, String delivery, String isMinor) {
+        Assert.notNull(sellerId, "sellerId must not be null");
         Assert.notNull(code, "code must not be null");
         Assert.notNull(name, "name must not be null");
         Assert.notNull(detailPageUrl, "detailPageUrl must not be null");

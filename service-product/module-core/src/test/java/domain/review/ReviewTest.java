@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ReviewTest {
+    private static final Long MEMBER_ID = 1L;
 
     private static final int RATING = 5;
     private static final String TITLE = "상품 후기";
@@ -20,11 +21,13 @@ public class ReviewTest {
         Benefit benefit = BenefitFixture.createDefaultBenefit();
         Product product = ProductFixture.createProduct(benefit);
         Review review = Review.builder()
+                .memberId(MEMBER_ID)
                 .product(product)
                 .rating(RATING)
                 .title(TITLE)
                 .content(CONTENT)
                 .build();
+        Assertions.assertThat(review.getMemberId()).isEqualTo(MEMBER_ID);
         Assertions.assertThat(review.getRating()).isEqualTo(RATING);
         Assertions.assertThat(review.getTitle()).isEqualTo(TITLE);
         Assertions.assertThat(review.getContent()).isEqualTo(CONTENT);
@@ -37,6 +40,7 @@ public class ReviewTest {
         Product product = ProductFixture.createProduct(benefit);
         Assertions.assertThatThrownBy(() -> {
             Review.builder()
+                    .memberId(MEMBER_ID)
                     .product(product)
                     .rating(6)
                     .title(TITLE)
