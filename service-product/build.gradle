@@ -1,4 +1,26 @@
-dependencies {
-    implementation project(':module-common')
-    implementation project(':module-redis')
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation project(':module-common')
+
+        implementation project(':module-redis')
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
 }
