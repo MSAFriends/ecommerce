@@ -16,7 +16,6 @@ public class ErrorResponse {
 	private String code;
 	@JsonIgnore
 	private HttpStatus status;
-
 	private ErrorResponse(ErrorCode errorCode) {
 		this.status = errorCode.getStatus();
 		this.code = errorCode.getCode();
@@ -26,5 +25,4 @@ public class ErrorResponse {
 	public static ErrorResponse of(ErrorCode errorCode){
 		return new ErrorResponse(errorCode);
 	}
-
 }
