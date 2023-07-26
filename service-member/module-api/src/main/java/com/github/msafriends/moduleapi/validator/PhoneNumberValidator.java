@@ -8,7 +8,7 @@ public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumbe
     private static final String regex = "^\\d{2,3}-\\d{3,4}-\\d{4}$";
 
     @Override
-    public boolean isValid(String password, ConstraintValidatorContext context) {
-        return password.matches(regex);
+    public boolean isValid(String phoneNumber, ConstraintValidatorContext context) {
+        return phoneNumber.matches(regex);
     }
 }
