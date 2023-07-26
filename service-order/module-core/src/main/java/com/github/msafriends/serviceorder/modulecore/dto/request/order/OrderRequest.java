@@ -9,16 +9,16 @@ import java.util.List;
 public class OrderRequest {
     private final String request;
 
-    private final List<OrderItemRequest> orderItems;
+    private final List<CartItemRequest> cartItems;
 
     private final List<Long> orderCouponIds;
 
     private final RecipientRequest recipient;
 
     @Builder
-    public OrderRequest(String request, List<OrderItemRequest> orderItems, List<Long> orderCouponIds, RecipientRequest recipient) {
+    public OrderRequest(String request, List<CartItemRequest> cartItems, List<Long> orderCouponIds, RecipientRequest recipient) {
         this.request = request;
-        this.orderItems = orderItems;
+        this.cartItems = cartItems;
         this.orderCouponIds = orderCouponIds;
         this.recipient = recipient;
     }

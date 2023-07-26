@@ -2,10 +2,10 @@ package com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy;
 
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
-import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
+import com.github.msafriends.serviceorder.modulecore.domain.order.CartItem;
 import com.github.msafriends.serviceorder.modulecore.fixture.OrderCouponFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.OrderFixture;
-import com.github.msafriends.serviceorder.modulecore.fixture.OrderItemFixture;
+import com.github.msafriends.serviceorder.modulecore.fixture.CartItemFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,10 @@ class PriceCalculatorTest {
             int totalPrice = 10_000;
             int expectedTotalPrice = 10_000;
             Order order = OrderFixture.createDefaultOrder();
-            List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
+            List<CartItem> cartItems = List.of(CartItemFixture.createCartItemWithPrice(order, totalPrice));
 
             // when
-            PriceCalculator priceCalculator = new PriceCalculator(orderItems, Collections.emptyList());
+            PriceCalculator priceCalculator = new PriceCalculator(cartItems, Collections.emptyList());
 
             // then
             assertThat(priceCalculator.calculateTotalPrice()).isEqualTo(expectedTotalPrice);
@@ -47,14 +47,14 @@ class PriceCalculatorTest {
             int totalPrice = 10_000;
             int expectedDiscountedPrice = 8_100;
             Order order = OrderFixture.createDefaultOrder();
-            List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
+            List<CartItem> cartItems = List.of(CartItemFixture.createCartItemWithPrice(order, totalPrice));
             List<OrderCoupon> coupons = List.of(
                     OrderCouponFixture.createCouponWithFixedDiscount(order, 1_000),
                     OrderCouponFixture.createCouponWithPercentDiscount(order, 10));
             order.addCoupons(coupons);
 
             // when
-            PriceCalculator priceCalculator = new PriceCalculator(orderItems, coupons);
+            PriceCalculator priceCalculator = new PriceCalculator(cartItems, coupons);
 
             // then
             assertThat(priceCalculator.calculateDiscountedPrice()).isEqualTo(expectedDiscountedPrice);
@@ -67,12 +67,12 @@ class PriceCalculatorTest {
             int totalPrice = 10_000;
             int expectedTotalPrice = 0;
             Order order = OrderFixture.createDefaultOrder();
-            List<OrderItem> orderItems = List.of(OrderItemFixture.createOrderItemWithPrice(order, totalPrice));
+            List<CartItem> cartItems = List.of(CartItemFixture.createCartItemWithPrice(order, totalPrice));
             List<OrderCoupon> coupons = List.of(OrderCouponFixture.createCouponWithFixedDiscount(order, 12_000));
             order.addCoupons(coupons);
 
             // when
-            PriceCalculator priceCalculator = new PriceCalculator(orderItems, coupons);
+            PriceCalculator priceCalculator = new PriceCalculator(cartItems, coupons);
 
             // then
             assertThat(priceCalculator.calculateDiscountedPrice()).isEqualTo(expectedTotalPrice);

@@ -71,21 +71,21 @@ public class OrderService {
     }
 
     private void validateIfProductStockIsEnough(OrderRequest orderRequest, List<Product> products) {
-        orderRequest.getOrderItems().forEach(orderItemRequest -> {
+        orderRequest.getCartItems().forEach(cartItemRequest -> {
             Product product = products.stream()
-                    .filter(p -> p.getId().equals(orderItemRequest.getProductId()))
+                    .filter(p -> p.getId().equals(cartItemRequest.getProductId()))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException(String.format("Product with ID %d not found", orderItemRequest.getProductId())));
+                    .orElseThrow(() -> new RuntimeException(String.format("Product with ID %d not found", cartItemRequest.getProductId())));
 
-            if (product.getQuantity() < orderItemRequest.getQuantity()) {
+            if (product.getQuantity() < cartItemRequest.getQuantity()) {
                 throw new RuntimeException(String.format("Product stock for product ID %d is not enough", product.getId()));
             }
         });
     }
 
     private List<Product> getProducts(OrderRequest orderRequest) {
-        return orderRequest.getOrderItems().stream()
-                .map(orderItemRequest -> ProductResponse.toProduct(productServiceClient.getProduct(orderItemRequest.getProductId())))
+        return orderRequest.getCartItems().stream()
+                .map(cartItemRequest -> ProductResponse.toProduct(productServiceClient.getProduct(cartItemRequest.getProductId())))
                 .toList();
     }
 }
