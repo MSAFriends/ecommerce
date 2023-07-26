@@ -33,7 +33,7 @@ public class MemberSignupRequest {
         this.name = name;
     }
 
-    public Member toEntity() {
+    public Member toMember() {
         return Member.builder()
                 .email(email)
                 .password(password)
