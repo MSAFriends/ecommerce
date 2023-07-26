@@ -9,7 +9,7 @@ import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderRes
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.ProductResponse;
 import com.github.msafriends.serviceorder.modulecore.fixture.OrderCouponFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.OrderFixture;
-import com.github.msafriends.serviceorder.modulecore.fixture.OrderItemFixture;
+import com.github.msafriends.serviceorder.modulecore.fixture.CartItemFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.ProductFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -90,8 +90,8 @@ class OrderServiceTest {
             // given
             Long memberId = 1L;
             Long nonExistingProductId = 2L;
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderItems(
-                    List.of(OrderItemFixture.createOrderItemRequestWithProductId(nonExistingProductId)));
+            OrderRequest request = OrderFixture.createOrderRequestWithCartItems(
+                    List.of(CartItemFixture.createCartItemRequestWithProductId(nonExistingProductId)));
 
             when(productServiceClient.getProduct(nonExistingProductId)).thenReturn(null);
 
@@ -106,8 +106,8 @@ class OrderServiceTest {
             // given
             Long memberId = 1L;
             int currentQuantity = 0;
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderItems(
-                    List.of(OrderItemFixture.createOrderItemRequestWithQuantity(currentQuantity)));
+            OrderRequest request = OrderFixture.createOrderRequestWithCartItems(
+                    List.of(CartItemFixture.createCartItemRequestWithQuantity(currentQuantity)));
 
             when(productServiceClient.getProduct(anyLong())).thenReturn(mock(ProductResponse.class));
 
@@ -146,8 +146,8 @@ class OrderServiceTest {
             Long existingProductId = 1L;
             Long existingCouponId = 1L;
             Order order = OrderFixture.createDefaultOrderWithId(orderId);
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderItems(
-                    List.of(OrderItemFixture.createOrderItemRequestWithProductId(existingProductId)));
+            OrderRequest request = OrderFixture.createOrderRequestWithCartItems(
+                    List.of(CartItemFixture.createCartItemRequestWithProductId(existingProductId)));
 
             when(productServiceClient.getProduct(existingProductId)).thenReturn(
                     ProductFixture.createDefaultProductResponseWithQuantity(1));

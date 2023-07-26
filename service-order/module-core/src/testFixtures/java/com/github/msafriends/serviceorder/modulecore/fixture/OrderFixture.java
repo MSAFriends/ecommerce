@@ -3,7 +3,7 @@ package com.github.msafriends.serviceorder.modulecore.fixture;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Recipient;
-import com.github.msafriends.serviceorder.modulecore.dto.request.order.OrderItemRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.CartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.OrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.RecipientRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
@@ -15,7 +15,7 @@ public class OrderFixture {
     private static final Long DEFAULT_MEMBER_ID = 1L;
     private static final String DEFAULT_REQUEST = "테스트 요청사항";
     private static final Recipient DEFAULT_RECIPIENT = RecipientFixture.createDefaultRecipient();
-    private static final OrderStatus DEFAULT_STATUS = OrderStatus.APPROVAL_PENDING;
+    private static final OrderStatus DEFAULT_STATUS = OrderStatus.PENDING;
 
     private static Order.OrderBuilder createDefaultOrderBuilder() {
         return Order.builder()
@@ -44,14 +44,14 @@ public class OrderFixture {
     private static OrderRequest.OrderRequestBuilder createDefaultOrderRequest() {
         return OrderRequest.builder()
                 .request(DEFAULT_REQUEST)
-                .orderItems(List.of(OrderItemFixture.createOrderItemRequestWithQuantity(ProductFixture.DEFAULT_QUANTITY)))
+                .cartItems(List.of(CartItemFixture.createCartItemRequestWithQuantity(ProductFixture.DEFAULT_QUANTITY)))
                 .recipient(RecipientFixture.createDefaultRecipientRequest())
                 .orderCouponIds(List.of(OrderCouponFixture.DEFAULT_COUPON_ID));
     }
 
-    public static OrderRequest createOrderRequestWithOrderItems(List<OrderItemRequest> orderItemRequests) {
+    public static OrderRequest createOrderRequestWithCartItems(List<CartItemRequest> cartItemRequests) {
         return createDefaultOrderRequest()
-                .orderItems(orderItemRequests)
+                .cartItems(cartItemRequests)
                 .build();
     }
 

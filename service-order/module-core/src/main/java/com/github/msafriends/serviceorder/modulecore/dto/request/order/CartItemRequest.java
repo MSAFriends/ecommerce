@@ -5,14 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class OrderItemRequest {
+public class CartItemRequest {
     private final Long productId;
 
     @Min(1)
     private final Integer quantity;
 
     @Builder
-    public OrderItemRequest(Long productId, Integer quantity) {
+    public CartItemRequest(Long productId, Integer quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }

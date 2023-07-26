@@ -1,6 +1,6 @@
 package com.github.msafriends.serviceorder.modulecore.domain.order;
 
-import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,13 +11,13 @@ import org.springframework.util.Assert;
 
 @Entity
 @Getter
-@Table(name = "order_items")
+@Table(name = "cart_items")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderItem extends BaseTimeEntity {
+public class CartItem extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_item_id")
+    @Column(name = "cart_item_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,14 +28,14 @@ public class OrderItem extends BaseTimeEntity {
     private Product product;
 
     @Builder
-    public OrderItem(Order order, Product product) {
-        validateOrderItem(order, product);
+    public CartItem(Order order, Product product) {
+        validateCartItem(order, product);
 
         this.order = order;
         this.product = product;
     }
 
-    private void validateOrderItem(Order order, Product product) {
+    private void validateCartItem(Order order, Product product) {
         validateNotNull(order, product);
     }
 

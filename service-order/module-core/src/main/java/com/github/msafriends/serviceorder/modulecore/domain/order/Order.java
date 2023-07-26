@@ -1,6 +1,6 @@
 package com.github.msafriends.serviceorder.modulecore.domain.order;
 
-import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
 import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
@@ -44,7 +44,7 @@ public class Order extends BaseTimeEntity {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<OrderCoupon> coupons = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Order extends BaseTimeEntity {
         this.request = request;
         this.recipient = recipient;
         this.status = status;
-        this.orderItems = generateOrderItems(products);
+        this.cartItems = generateCartItems(products);
 
         recalculatePrice();
     }
@@ -72,9 +72,9 @@ public class Order extends BaseTimeEntity {
         recalculatePrice();
     }
 
-    private List<OrderItem> generateOrderItems(List<Product> products) {
+    private List<CartItem> generateCartItems(List<Product> products) {
         return products.stream()
-                .map(product -> OrderItem.builder()
+                .map(product -> CartItem.builder()
                         .order(this)
                         .product(product)
                         .build())
@@ -82,7 +82,7 @@ public class Order extends BaseTimeEntity {
     }
 
     private void recalculatePrice() {
-        var priceCalculator = new PriceCalculator(orderItems, coupons);
+        var priceCalculator = new PriceCalculator(cartItems, coupons);
         this.totalPrice = priceCalculator.calculateTotalPrice();
         this.discountedPrice = priceCalculator.calculateDiscountedPrice();
     }
