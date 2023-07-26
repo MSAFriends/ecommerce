@@ -44,7 +44,7 @@ public class RestApiExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
 		ErrorResponse response = ErrorResponse.of(ex.getErrorCode());
-		log.error("Unexpected error has occurred", ex.getMessage(), ex);
+		log.error("Unexpected error has occurred: {}", ex.getMessage(), ex);
 		return new ResponseEntity<>(response, response.getStatus());
 	}
 
