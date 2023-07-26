@@ -5,11 +5,11 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class MemberNameValidator implements ConstraintValidator<ValidMemberName, String> {
-    private final int MIN_NAME_SIZE = 5;
-    private final int MAX_NAME_SIZE = 20;
+    private static final int MIN_NAME_SIZE = 5;
+    private static final int MAX_NAME_SIZE = 20;
 
     @Override
-    public boolean isValid(String name, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String name, ConstraintValidatorContext context) {
         if (name == null) {
             return false;
         }
