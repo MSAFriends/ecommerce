@@ -11,7 +11,8 @@ import org.springframework.util.Assert;
 
 @Entity
 @Getter
-@Table(name = "cart_items")
+@Table(name = "cart_items", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"order_id", "product_id"})})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartItem extends BaseTimeEntity {
 
