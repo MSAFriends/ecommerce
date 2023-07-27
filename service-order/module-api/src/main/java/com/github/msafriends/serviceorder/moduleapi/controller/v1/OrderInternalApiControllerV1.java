@@ -1,6 +1,6 @@
 package com.github.msafriends.serviceorder.moduleapi.controller.v1;
 
-import com.github.msafriends.serviceorder.modulecore.dto.request.order.OrderRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import com.github.msafriends.serviceorder.moduleapi.service.OrderService;
 import jakarta.validation.Valid;
@@ -28,11 +28,11 @@ public class OrderInternalApiControllerV1 {
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<Void> createOrder(
+    public ResponseEntity<Void> addCartItemToOrder(
             @RequestHeader("Member-Id") Long memberId,
-            @Valid @RequestBody OrderRequest orderRequest
+            @Valid @RequestBody UpdateCartItemRequest request
     ) {
-        return ResponseEntity.created(URI.create("/api/internal/v1/orders/" + orderService.createOrder(memberId, orderRequest))).build();
+        return ResponseEntity.created(URI.create("/api/internal/v1/orders/" + orderService.addCartItemToOrder(memberId, request))).build();
     }
 
     @DeleteMapping("/orders/{orderId}")

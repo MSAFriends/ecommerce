@@ -13,13 +13,13 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipient {
 
-    @Column(name = "recipient_name", nullable = false)
+    @Column(name = "recipient_name")
     private String name;
 
-    @Column(name = "recipient_phone_number", nullable = false)
+    @Column(name = "recipient_phone_number")
     private String phoneNumber;
 
-    @Column(name = "recipient_address", nullable = false)
+    @Column(name = "recipient_address")
     private String address;
 
     @Builder
