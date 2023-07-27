@@ -4,6 +4,8 @@ import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.ProductResponse;
 
 public class ProductFixture {
+    public static final String DEFAULT_PRODUCT_NAME = "테스트 상품";
+    public static final Long DEFAULT_SELLER_ID = 1L;
     public static final Long DEFAULT_PRODUCT_ID = 1L;
     public static final int DEFAULT_QUANTITY = 1;
     public static final int DEFAULT_PRICE = 1000;
@@ -11,6 +13,7 @@ public class ProductFixture {
     private static Product.ProductBuilder createDefaultProductBuilder() {
         return Product.builder()
                 .id(DEFAULT_PRODUCT_ID)
+                .name(DEFAULT_PRODUCT_NAME)
                 .quantity(DEFAULT_QUANTITY)
                 .price(DEFAULT_PRICE);
     }
