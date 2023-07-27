@@ -20,13 +20,13 @@ public class Product {
     private String name;
 
     @Column(name = "product_quantity", nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @Column(name = "product_price", nullable = false)
-    private Integer price;
+    private int price;
 
     @Builder
-    public Product(Long id, String name, Integer quantity, Integer price) {
+    public Product(Long id, String name, int quantity, int price) {
         validateProduct(id, name, quantity, price);
 
         this.id = id;
@@ -35,13 +35,13 @@ public class Product {
         this.price = price;
     }
 
-    public void addQuantity(Integer quantity) {
+    public void addQuantity(int quantity) {
         validateQuantity(this.quantity + quantity);
         this.quantity += quantity;
     }
 
-    private void validateProduct(Long id, String name, Integer quantity, Integer price) {
-        validateNotNull(id, name, quantity, price);
+    private void validateProduct(Long id, String name, int quantity, int price) {
+        validateNotNull(id, name);
         validateQuantity(quantity);
         validatePrice(price);
     }
@@ -54,10 +54,8 @@ public class Product {
         Assert.isTrue(price >= 0, "price must not be negative");
     }
 
-    private void validateNotNull(Long id, String name, Integer quantity, Integer price) {
+    private void validateNotNull(Long id, String name) {
         Assert.notNull(id, "productId must not be null");
         Assert.notNull(name, "name must not be null");
-        Assert.notNull(quantity, "quantity must not be null");
-        Assert.notNull(price, "price must not be null");
     }
 }
