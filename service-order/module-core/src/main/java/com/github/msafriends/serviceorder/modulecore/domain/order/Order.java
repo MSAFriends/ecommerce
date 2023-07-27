@@ -1,9 +1,11 @@
 package com.github.msafriends.serviceorder.modulecore.domain.order;
 
 import com.github.msafriends.modulecommon.base.BaseTimeEntity;
+import com.github.msafriends.modulecommon.exception.ErrorCode;
+import com.github.msafriends.modulecommon.exception.InvalidValueException;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
-import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,6 +15,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -27,6 +30,8 @@ public class Order extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Long memberId;
+
+    private Long sellerId;
 
     @Embedded
     private Recipient recipient;
@@ -47,19 +52,14 @@ public class Order extends BaseTimeEntity {
     private List<CartItem> cartItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<OrderCoupon> coupons = new ArrayList<>();
+    private List<OrderCoupon> coupons = new ArrayList<>();
 
-    @Builder
-    public Order(Long memberId, String request, Recipient recipient, OrderStatus status, List<Product> products) {
-        validateOrder(memberId, recipient, status, products, coupons);
+    @Builder(builderClassName = "PendingOrderBuilder", builderMethodName = "createPendingOrderBuilder")
+    public Order(Long memberId) {
+        validateOrder(memberId);
 
         this.memberId = memberId;
-        this.request = request;
-        this.recipient = recipient;
-        this.status = status;
-        this.cartItems = generateCartItems(products);
-
-        recalculatePrice();
+        this.status = OrderStatus.PENDING;
     }
 
     public void addCoupon(OrderCoupon coupon) {
@@ -72,13 +72,34 @@ public class Order extends BaseTimeEntity {
         recalculatePrice();
     }
 
-    private List<CartItem> generateCartItems(List<Product> products) {
-        return products.stream()
-                .map(product -> CartItem.builder()
-                        .order(this)
-                        .product(product)
-                        .build())
-                .toList();
+    public void updateCartItem(UpdateCartItemRequest request) {
+        validateOrderIsPending();
+        validateSellerId(request.getSellerId());
+
+        Optional<CartItem> existingCartItem = findExistingCartItemByProductId(request.getProductId());
+        if (existingCartItem.isPresent()) {
+            updateExistingCartItem(existingCartItem.get(), request);
+        } else {
+            this.sellerId = request.getSellerId();
+            cartItems.add(UpdateCartItemRequest.toCartItem(this, request));
+        }
+
+        recalculatePrice();
+    }
+
+    private void updateExistingCartItem(CartItem existingCartItem, UpdateCartItemRequest request) {
+        int totalQuantity = existingCartItem.getProduct().getQuantity() + request.getQuantity();
+        if (totalQuantity == 0) {
+            cartItems.remove(existingCartItem);
+        } else {
+            existingCartItem.getProduct().addQuantity(request.getQuantity());
+        }
+    }
+
+    private Optional<CartItem> findExistingCartItemByProductId(Long productId) {
+        return getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findAny();
     }
 
     private void recalculatePrice() {
@@ -87,20 +108,28 @@ public class Order extends BaseTimeEntity {
         this.discountedPrice = priceCalculator.calculateDiscountedPrice();
     }
 
-    private void validateOrder(Long memberId, Recipient recipient, OrderStatus status, List<Product> products, List<OrderCoupon> coupons) {
-        validateNotNull(memberId, recipient, status, products, coupons);
-        validateNotEmpty(products);
+    private void validateOrder(Long memberId) {
+        validateNotNull(memberId);
     }
 
-    private void validateNotEmpty(List<Product> products) {
-        Assert.notEmpty(products, "products must not be empty");
+    public void validateSellerId(Long sellerId) {
+        if (sellerId == null) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_VALUE, "판매자는 필수");
+        }
+
+        if (this.sellerId != null && !sellerId.equals(this.sellerId)) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_VALUE, "판매자는 동일해야 함");
+        }
     }
 
-    private void validateNotNull(Long memberId, Recipient recipient, OrderStatus status, List<Product> products, List<OrderCoupon> coupons) {
-        Assert.notNull(status, "status must not be null");
+    private void validateOrderIsPending() {
+        // TODO: 향후 CustomException으로 전환하기
+        if (!OrderStatus.PENDING.equals(status)) {
+            throw new RuntimeException("Order is not pending");
+        }
+    }
+
+    private void validateNotNull(Long memberId) {
         Assert.notNull(memberId, "memberId must not be null");
-        Assert.notNull(recipient, "recipient must not be null");
-        Assert.notNull(products, "products must not be null");
-        Assert.notNull(coupons, "coupons must not be null");
     }
 }
