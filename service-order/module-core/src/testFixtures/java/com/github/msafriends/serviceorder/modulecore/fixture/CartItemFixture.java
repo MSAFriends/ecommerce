@@ -4,6 +4,7 @@ import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.CartItem;
 import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.CartItemRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 
 public class CartItemFixture {
     private static final Product DEFAULT_PRODUCT = ProductFixture.createDefaultProduct();
@@ -46,6 +47,45 @@ public class CartItemFixture {
     public static CartItemRequest createCartItemRequestWithProductId(Long productId) {
         return createDefaultCartItemRequest()
                 .productId(productId)
+                .build();
+    }
+
+    private static UpdateCartItemRequest.UpdateCartItemRequestBuilder createDefaultUpdateCartItemRequest() {
+        return UpdateCartItemRequest.builder()
+                .name(ProductFixture.DEFAULT_PRODUCT_NAME)
+                .sellerId(ProductFixture.DEFAULT_SELLER_ID)
+                .price(ProductFixture.DEFAULT_PRICE)
+                .productId(ProductFixture.DEFAULT_PRODUCT_ID)
+                .quantity(ProductFixture.DEFAULT_QUANTITY);
+    }
+
+    public static UpdateCartItemRequest createUpdateCartItemRequestWithProductId(Long productId) {
+        return createDefaultUpdateCartItemRequest()
+                .productId(productId)
+                .build();
+    }
+
+    public static UpdateCartItemRequest createUpdateCartItemRequestWithSellerId(Long sellerId) {
+        return createDefaultUpdateCartItemRequest()
+                .sellerId(sellerId)
+                .build();
+    }
+
+    public static UpdateCartItemRequest createUpdateCartItemRequestWithQuantity(int quantity) {
+        return createDefaultUpdateCartItemRequest()
+                .quantity(quantity)
+                .build();
+    }
+
+    public static UpdateCartItemRequest createUpdateCartItemRequestWithPrice(int price) {
+        return createDefaultUpdateCartItemRequest()
+                .price(price)
+                .build();
+    }
+
+    public static UpdateCartItemRequest createUpdateCartItemRequestWithName(String name) {
+        return createDefaultUpdateCartItemRequest()
+                .name(name)
                 .build();
     }
 }

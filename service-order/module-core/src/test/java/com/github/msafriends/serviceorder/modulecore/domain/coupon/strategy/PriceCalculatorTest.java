@@ -26,7 +26,7 @@ class PriceCalculatorTest {
             // given
             int totalPrice = 10_000;
             int expectedTotalPrice = 10_000;
-            Order order = OrderFixture.createDefaultOrder();
+            Order order = OrderFixture.createDefaultPendingOrder();
             List<CartItem> cartItems = List.of(CartItemFixture.createCartItemWithPrice(order, totalPrice));
 
             // when
@@ -46,7 +46,7 @@ class PriceCalculatorTest {
             // given
             int totalPrice = 10_000;
             int expectedDiscountedPrice = 8_100;
-            Order order = OrderFixture.createDefaultOrder();
+            Order order = OrderFixture.createDefaultPendingOrder();
             List<CartItem> cartItems = List.of(CartItemFixture.createCartItemWithPrice(order, totalPrice));
             List<OrderCoupon> coupons = List.of(
                     OrderCouponFixture.createCouponWithFixedDiscount(order, 1_000),
@@ -66,7 +66,7 @@ class PriceCalculatorTest {
             // given
             int totalPrice = 10_000;
             int expectedTotalPrice = 0;
-            Order order = OrderFixture.createDefaultOrder();
+            Order order = OrderFixture.createDefaultPendingOrder();
             List<CartItem> cartItems = List.of(CartItemFixture.createCartItemWithPrice(order, totalPrice));
             List<OrderCoupon> coupons = List.of(OrderCouponFixture.createCouponWithFixedDiscount(order, 12_000));
             order.addCoupons(coupons);
