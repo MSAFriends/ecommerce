@@ -76,26 +76,28 @@ public class Order extends BaseTimeEntity {
         validateOrderIsPending();
         validateSellerId(request.getSellerId());
 
-        Optional<CartItem> existingCartItem = findExistingCartItemByProductId(request.getProductId());
-        if (existingCartItem.isPresent()) {
-            updateExistingCartItem(existingCartItem.get(), request);
-        } else {
-            this.sellerId = request.getSellerId();
-            cartItems.add(UpdateCartItemRequest.toCartItem(this, request));
-        }
-
+        findExistingCartItemByProductId(request.getProductId())
+            .ifPresentOrElse(
+                    existingCartItem -> updateExistingCartItem(existingCartItem, request.getQuantity()),
+                    () -> addNewCartItem(request)
+            );
         recalculatePrice();
     }
 
-    private void updateExistingCartItem(CartItem existingCartItem, UpdateCartItemRequest request) {
-        int totalQuantity = existingCartItem.getProduct().getQuantity() + request.getQuantity();
+    private void addNewCartItem(UpdateCartItemRequest request) {
+        this.sellerId = request.getSellerId();
+        cartItems.add(UpdateCartItemRequest.toCartItem(this, request));
+    }
+
+    private void updateExistingCartItem(CartItem existingCartItem, int addedQuantity) {
+        int totalQuantity = existingCartItem.getProduct().getQuantity() + addedQuantity;
         if (totalQuantity == 0) {
             cartItems.remove(existingCartItem);
             if (cartItems.isEmpty()) {
                 this.sellerId = null;
             }
         } else {
-            existingCartItem.getProduct().addQuantity(request.getQuantity());
+            existingCartItem.getProduct().addQuantity(addedQuantity);
         }
     }
 
