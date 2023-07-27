@@ -38,11 +38,9 @@ public class Order extends BaseTimeEntity {
 
     private String request;
 
-    @Column(nullable = false)
-    private Integer totalPrice;
+    private int totalPrice;
 
-    @Column(nullable = false)
-    private Integer discountedPrice;
+    private int discountedPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
