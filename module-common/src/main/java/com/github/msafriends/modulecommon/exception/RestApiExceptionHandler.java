@@ -16,21 +16,21 @@ public class RestApiExceptionHandler {
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
 		ErrorResponse response = ErrorResponse.of(ErrorCode.AUTHENTICATION_FAILED);
-		log.debug("Authentication failed : {}", ex.getDetail());
+		log.debug("Authentication failed: {}", ex.getDetail());
 		return new ResponseEntity<>(response, response.getStatus());
 	}
 
 	@ExceptionHandler(AuthorizationException.class)
 	public ResponseEntity<ErrorResponse> handleAuthorizationException(AuthorizationException ex) {
 		ErrorResponse response = ErrorResponse.of(ErrorCode.AUTHORIZATION_FAILED);
-		log.debug("Request does not have authorization : {}", ex.getDetail());
+		log.debug("Request does not have authorization: {}", ex.getDetail());
 		return new ResponseEntity<>(response, response.getStatus());
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
 		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
-		log.debug("Parameter type is invalid");
+		log.debug("Parameter type is invalid: {}", ex.getMessage());
 		return new ResponseEntity<>(response, response.getStatus());
 	}
 
