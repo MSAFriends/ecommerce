@@ -2,6 +2,7 @@ package com.github.msafriends.serviceorder.moduleapi.service;
 
 import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
+import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class OrderService {
     }
 
     private Order getOrCreatePendingOrder(Long memberId) {
-        Optional<Order> pendingOrder = orderRepository.findPendingOrder(memberId);
+        Optional<Order> pendingOrder = orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING);
         return pendingOrder.orElseGet(() -> Order.createPendingOrderBuilder()
                 .memberId(memberId)
                 .build());
