@@ -1,23 +1,19 @@
 package domain.product;
 
+import static lombok.AccessLevel.*;
+
+import org.springframework.util.Assert;
+
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
-
-import static lombok.AccessLevel.PROTECTED;
 
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 public class Benefit {
-    @Min(value = 0)
-    @Max(value = 100)
     private int discount;
-    @Min(value = 0, message = "마일리지는 0보다 커야합니다.")
     private int mileage;
 
     @Builder
@@ -33,7 +29,7 @@ public class Benefit {
     }
 
     private void validateDiscount(int discount) {
-        Assert.isTrue(discount >= 0 && discount <= 100, "할인은 0과 100사이입니다.");
+        Assert.isTrue(discount >= 0 && discount <= 100, "할인율은 0과 100사이입니다.");
     }
 
     private void validateMileage(int mileage) {

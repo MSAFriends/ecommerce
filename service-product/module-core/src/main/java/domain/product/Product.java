@@ -1,118 +1,105 @@
 package domain.product;
 
-import domain.review.Review;
+import domain.productimage.ProductImage;
+import domain.category.Category;
+import domain.review.ProductReview;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.github.msafriends.modulecommon.base.BaseTimeEntity;
+import com.github.msafriends.modulecommon.exception.ErrorCode;
+import com.github.msafriends.modulecommon.exception.InvalidValueException;
+
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-public class Product {
-
-    @Id @GeneratedValue
+public class Product extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
-
-    @Column(nullable = false)
-    private Long sellerId;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Review> reviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductImage> productImages = new ArrayList<>();
-
-    @Column(unique = true)
-    @NotNull
+    @Column(unique = true, nullable = false)
     private Long code;
-    @NotNull
+    @Column(nullable = false)
     private String name;
-    private int price;
-    private int salePrice;
-    private float rating;
-    @NotNull
-    private String detailPageUrl;
-    @NotNull
-    private String delivery;
-    private int reviewCount;
-    private int buySatisfy;
-    @NotNull
-    private String isMinor;
+    @Embedded
+    private Price price;
     private int quantity;
+    @Column(nullable = false)
+    private String delivery;
+    private int buySatisfy;
     @Embedded
     private Benefit benefit;
-
-    @Deprecated(since = "BaseTimeEntity를 상속받아서 사용할 예정")
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Deprecated(since = "BaseTimeEntity를 상속받아서 사용할 예정")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AgeLimit ageLimit;
+    @Enumerated(EnumType.STRING)
+    private Size size;
+    @Column(nullable = false)
+    private Long sellerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductReview> productReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages = new ArrayList<>();
 
     @Builder
-    public Product(Long sellerId, List<ProductImage> productImages, Long code, String name, int price, int salePrice, float rating, String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String isMinor, int quantity, Benefit benefit) {
-        validateProduct(sellerId, code, name, detailPageUrl, delivery, isMinor, quantity, price, salePrice);
-        this.sellerId = sellerId;
-        this.productImages = productImages;
+    public Product(Long code, String name, Price price, int quantity, String delivery, int buySatisfy, Benefit benefit,
+        AgeLimit ageLimit, Size size, Long sellerId, Category category, List<ProductReview> productReviews,
+        List<ProductImage> productImages) {
+        validateProduct(sellerId, code, name, delivery, ageLimit, quantity);
         this.code = code;
         this.name = name;
         this.price = price;
-        this.salePrice = salePrice;
-        this.rating = rating;
-        this.detailPageUrl = detailPageUrl;
-        this.delivery = delivery;
-        this.reviewCount = reviewCount;
-        this.buySatisfy = buySatisfy;
-        this.isMinor = isMinor;
         this.quantity = quantity;
+        this.delivery = delivery;
+        this.buySatisfy = buySatisfy;
         this.benefit = benefit;
+        this.ageLimit = ageLimit;
+        this.size = size;
+        this.sellerId = sellerId;
+        this.category = category;
+        this.productReviews = productReviews;
+        this.productImages = productImages;
     }
 
-    private void validateProduct(Long sellerId, Long code, String name, String detailPageUrl, String delivery, String isMinor, int quantity, int price, int salePrice) {
-        validateSalePrice(price, salePrice);
-        validateNotNull(sellerId, code, name, detailPageUrl, delivery, isMinor);
+    public void associateSeller(Long sellerId){
+        this.sellerId =sellerId;
+    }
+    public void assignCategory(Category category){
+        this.category = category;
+    }
+    private void validateProduct(Long sellerId, Long code, String name, String delivery, AgeLimit ageLimit, int quantity) {
+        validateNotNull(sellerId, code, name, delivery, ageLimit);
         validateQuantity(quantity);
     }
 
      private void validateQuantity(int quantity) {
-         if (quantity < 0) {
-             throw new IllegalArgumentException("수량은 0보다 커야 합니다.");
+         if (isNegative(quantity)) {
+             throw new InvalidValueException(ErrorCode.INVALID_QUANTITY_ERROR, "수량은 0보다 커야 합니다.");
          }
      }
 
-     private void validateSalePrice(int price, int salePrice) {
-        if (price < 0) {
-            throw new IllegalArgumentException("가격은 0보다 커야 합니다.");
-        }
-
-        if (salePrice < 0) {
-            throw new IllegalArgumentException("할인 가격은 0보다 커야 합니다.");
-        }
-
-        if (salePrice > price) {
-            throw new IllegalArgumentException("할인 가격은 가격보다 작아야 합니다.");
-        }
+     private boolean isNegative(int value){
+       return value < 0;
      }
 
-     private void validateNotNull(Long sellerId, Long code, String name, String detailPageUrl, String delivery, String isMinor) {
+     private void validateNotNull(Long sellerId, Long code, String name,  String delivery, AgeLimit ageLimit) {
         Assert.notNull(sellerId, "sellerId must not be null");
         Assert.notNull(code, "code must not be null");
         Assert.notNull(name, "name must not be null");
-        Assert.notNull(detailPageUrl, "detailPageUrl must not be null");
         Assert.notNull(delivery, "delivery must not be null");
-        Assert.notNull(isMinor, "isMinor must not be null");
+        Assert.notNull(ageLimit, "isMinor must not be null");
     }
 }
