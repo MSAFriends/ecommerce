@@ -1,10 +1,12 @@
-package domain.product;
+package domain;
 
-import fixture.product.BenefitFixture;
-import fixture.product.ProductFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import domain.product.Product;
+import domain.productimage.ProductImage;
+import fixture.product.ProductFixture;
 
 public class ProductImageTest {
 
@@ -27,8 +29,7 @@ public class ProductImageTest {
     @DisplayName("상품 이미지 등록이 성공적으로 이루어진다.")
     void successRegisterProductImage() {
 
-        Benefit benefit = BenefitFixture.createDefaultBenefit();
-        Product product = ProductFixture.createProduct(benefit);
+        Product product = ProductFixture.createProduct();
         ProductImage productImage = ProductImage.builder()
                 .base(BASE)
                 .size100(SIZE_100)
