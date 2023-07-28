@@ -1,4 +1,4 @@
-package fixture.product;
+package common.fixture.product;
 
 import domain.product.Product;
 import domain.productimage.ProductImage;
