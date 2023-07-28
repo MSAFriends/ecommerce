@@ -26,7 +26,7 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
 
     public ListResponse<MemberCouponResponse> getMemberCoupons(Long memberId, LocalDateTime currentTime) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Member not exist."));
+        Member member = memberRepository.findByEmailOrElseThrow(memberId);
 
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberAndHasUsed(member, false);
         List<MemberCouponResponse> memberCouponResponses = memberCoupons.stream()
@@ -40,7 +40,7 @@ public class MemberCouponService {
     }
 
     public ListResponse<MemberCouponResponse> useMemberCoupons(Long memberId, MemberCouponUseRequest request, LocalDateTime currentTime) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Member not exist."));
+        Member member = memberRepository.findByEmailOrElseThrow(memberId);
         List<MemberCoupon> memberCoupons = member.getMemberCoupons().stream()
                 .filter(memberCoupon -> request.getMemberCouponIds().contains(memberCoupon.getId()))
                 .filter(memberCoupon -> memberCoupon.hasValidRangeCouponUse(currentTime))
@@ -65,7 +65,7 @@ public class MemberCouponService {
 
 
     public MemberCouponResponse generateMemberCoupon(Long memberId, MemberCouponRequest request) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Member not exist."));
+        Member member = memberRepository.findByEmailOrElseThrow(memberId);
         Coupon coupon = couponRepository.findById(request.getCouponId()).orElseThrow(() -> new RuntimeException("Coupon not exist."));
 
         validateHasMemberCouponAlready(member, coupon);
