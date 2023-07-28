@@ -10,6 +10,8 @@ import com.github.msafriends.modulecommon.dto.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestControllerAdvice
 public class RestApiExceptionHandler {
@@ -36,7 +38,10 @@ public class RestApiExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
+		String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+				.map(error -> String.format("%s %s", error.getField(), error.getDefaultMessage()))
+				.collect(Collectors.joining(","));
+		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, errorMessage);
 		log.debug("Argument validation has failed: {}", ex.getMessage());
 		return new ResponseEntity<>(response, response.getStatus());
 	}
