@@ -1,4 +1,4 @@
-package com.github.msafriends.moduleapi.external.service;
+package com.github.msafriends.moduleapi.service;
 
 import com.github.msafriends.moduleapi.dto.request.member.MemberSignupRequest;
 import com.github.msafriends.moduleapi.dto.response.member.MemberSignupResponse;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +26,10 @@ public class MemberService {
 
     public MemberSignupResponse createMember(MemberSignupRequest memberSignupRequest) {
         Member member = memberSignupRequest.toMember();
-        memberRepository.findByEmail(member.getEmail()).orElseThrow(() -> new RuntimeException("Member already exist."));
+        memberRepository.findByEmail(member.getEmail()).ifPresent(existingMember -> {
+            throw new RuntimeException("Member already exists.");
+        });
+
         memberRepository.save(member);
         generateSignUpThanksMemberCoupons(member);
         return MemberSignupResponse.from(member);
