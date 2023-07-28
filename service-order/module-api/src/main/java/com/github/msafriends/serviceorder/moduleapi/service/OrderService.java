@@ -4,6 +4,7 @@ import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderCartResponse;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class OrderService {
         return orderRepository.findAllByMemberId(memberId).stream()
                 .map(OrderResponse::from)
                 .toList();
+    }
+
+    public Optional<OrderCartResponse> getCartItemsByMemberId(Long memberId) {
+        return orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)
+                .map(OrderCartResponse::from);
     }
 
     @Transactional
