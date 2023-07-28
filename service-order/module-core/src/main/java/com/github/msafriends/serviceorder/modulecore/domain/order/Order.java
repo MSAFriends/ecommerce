@@ -99,6 +99,14 @@ public class Order extends BaseTimeEntity {
         }
     }
 
+    /**
+     * 장바구니에 상품이 없을 경우, 어떤 판매자의 상품인지 특정할 수 없습니다.
+     * <p>
+     * 이 경우, sellerId는 더 이상 유효하지 않으므로 null로 초기화합니다.
+     * 이 메서드는 주로 상품을 장바구니에서 제거하고 난 후 장바구니가 비어있는지 확인하는데 사용됩니다.
+     *
+     * @see #updateCartItem(UpdateCartItemRequest)
+     */
     private void resetSellerIdIfCartEmpty() {
         if (cartItems.isEmpty()) {
             this.sellerId = null;
