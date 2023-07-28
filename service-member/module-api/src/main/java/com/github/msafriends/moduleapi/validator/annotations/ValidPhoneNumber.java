@@ -1,4 +1,4 @@
-package com.github.msafriends.moduleapi.validator.anntations;
+package com.github.msafriends.moduleapi.validator.annotations;
 
 import com.github.msafriends.moduleapi.validator.PhoneNumberValidator;
 import jakarta.validation.Constraint;
