@@ -27,5 +27,4 @@ public class MemberInternalControllerV1 {
             @RequestBody MemberCouponUseRequest request) {
         return ResponseEntity.ok(memberCouponService.useMemberCoupons(memberId, request, LocalDateTime.now()));
     }
-
 }
