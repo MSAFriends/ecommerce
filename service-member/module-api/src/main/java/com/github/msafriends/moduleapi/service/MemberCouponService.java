@@ -5,6 +5,8 @@ import com.github.msafriends.moduleapi.dto.request.member.MemberCouponRequest;
 import com.github.msafriends.moduleapi.dto.request.member.MemberCouponUseRequest;
 import com.github.msafriends.moduleapi.dto.response.ListResponse;
 import com.github.msafriends.moduleapi.dto.response.coupon.MemberCouponResponse;
+import com.github.msafriends.modulecommon.exception.member.coupon.CouponAlreadyIssuedException;
+import com.github.msafriends.modulecommon.exception.member.coupon.CouponNotExistException;
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.coupon.MemberCoupon;
 import com.github.msafriends.modulecore.domain.member.Member;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +60,7 @@ public class MemberCouponService {
                 .filter(requestedCouponId -> memberCoupons.stream().noneMatch(memberCoupon -> memberCoupon.getId().equals(requestedCouponId))).toList();
 
         if (!missingCouponIds.isEmpty()) {
-            throw new RuntimeException("사용할 수 있는 쿠폰 중에 쿠폰 ID " + missingCouponIds + "에 해당하는 쿠폰이 없습니다.");
+            throw new CouponNotExistException(missingCouponIds);
         }
     }
 
@@ -77,7 +78,7 @@ public class MemberCouponService {
 
     private void validateHasMemberCouponAlready(Member member, Coupon coupon) {
         memberCouponRepository.findMemberCouponsByMemberAndCoupon(member, coupon).ifPresent(existingMemberCoupon -> {
-                    throw new RuntimeException("memberCoupon already exists.");
+                    throw new CouponAlreadyIssuedException(existingMemberCoupon.getId(), existingMemberCoupon.getCoupon().getName());
                 }
         );
     }

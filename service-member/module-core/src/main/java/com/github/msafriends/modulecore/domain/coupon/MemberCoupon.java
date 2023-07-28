@@ -1,5 +1,6 @@
 package com.github.msafriends.modulecore.domain.coupon;
 
+import com.github.msafriends.modulecommon.exception.member.coupon.CouponAlreadyUseException;
 import com.github.msafriends.modulecore.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -51,7 +52,7 @@ public class MemberCoupon {
 
     public void use(LocalDateTime currentTime) {
         if (this.hasUsed) {
-            throw new IllegalStateException("The coupon with ID " + this.getId() + " has already been used.");
+            throw new CouponAlreadyUseException(this.getId());
         }
         if (!hasValidRangeCouponUse(currentTime)) {
             throw new IllegalStateException("The coupon is not within its validity period.");
