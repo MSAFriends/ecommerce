@@ -9,12 +9,12 @@ import java.text.MessageFormat;
 public class PasswordValidator implements ConstraintValidator<ValidPassword, String> {
     private static final int MIN_SIZE = 8;
     private static final int MAX_SIZE = 20;
-    private static final String regex = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{" + MIN_SIZE
+    private static final String REGEX = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{" + MIN_SIZE
             + "," + MAX_SIZE + "}$";
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-        boolean isValidPassword = password.matches(regex);
+        boolean isValidPassword = password.matches(REGEX);
         if (!isValidPassword) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
