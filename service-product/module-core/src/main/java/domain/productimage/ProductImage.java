@@ -1,6 +1,7 @@
-package domain.product;
+package domain.productimage;
 
 
+import domain.product.Product;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
