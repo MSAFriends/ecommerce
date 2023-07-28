@@ -76,7 +76,10 @@ public class Order extends BaseTimeEntity {
 
         findExistingCartItemByProductId(request.getProductId())
             .ifPresentOrElse(
-                    existingCartItem -> updateExistingCartItem(existingCartItem, request.getQuantity()),
+                    existingCartItem -> {
+                        updateExistingCartItem(existingCartItem, request.getQuantity());
+                        resetSellerIdIfCartEmpty();
+                    },
                     () -> addNewCartItem(request)
             );
         recalculatePrice();
@@ -91,7 +94,6 @@ public class Order extends BaseTimeEntity {
         int totalQuantity = existingCartItem.getProduct().getQuantity() + addedQuantity;
         if (totalQuantity == 0) {
             cartItems.remove(existingCartItem);
-            resetSellerIdIfCartEmpty();
         } else {
             existingCartItem.getProduct().addQuantity(addedQuantity);
         }
