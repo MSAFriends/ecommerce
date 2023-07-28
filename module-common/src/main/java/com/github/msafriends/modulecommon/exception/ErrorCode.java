@@ -22,6 +22,8 @@ public enum ErrorCode {
 	EXPIRED_COUPON_ERROR(HttpStatus.BAD_REQUEST, "CO_001", "이미 만료된 쿠폰입니다."),
 	INVALID_COUPON_DATE(HttpStatus.INTERNAL_SERVER_ERROR, "CO_002", "쿠폰의 유효기간이 잘못되었습니다."),
 	INVALID_COUPON_STRATEGY(HttpStatus.INTERNAL_SERVER_ERROR, "CO_003", "유효하지 않은 비율정책입니다."),
+	COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "CO_004", "The coupon id = %d has already been used."),
+
 
 	INVALID_MAINTENANCE_TIME(HttpStatus.INTERNAL_SERVER_ERROR, "B_001", "은행 점검기간이 유효하게 설정되지 않았습니다."),
 
