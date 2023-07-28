@@ -1,6 +1,6 @@
 package com.github.msafriends.modulecore.domain.member;
 
-import com.github.msafriends.modulecore.domain.coupon.Coupon;
+import com.github.msafriends.modulecore.domain.coupon.MemberCoupon;
 import com.github.msafriends.modulecore.domain.notification.Notification;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +22,7 @@ public class Member {
     private Long id;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Coupon> coupons = new ArrayList<>();
+    private List<MemberCoupon> memberCoupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<FavoriteSellerSubscription> favoriteSellerSubscriptions = new ArrayList<>();
