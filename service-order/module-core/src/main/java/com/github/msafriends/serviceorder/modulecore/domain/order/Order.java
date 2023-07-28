@@ -91,11 +91,15 @@ public class Order extends BaseTimeEntity {
         int totalQuantity = existingCartItem.getProduct().getQuantity() + addedQuantity;
         if (totalQuantity == 0) {
             cartItems.remove(existingCartItem);
-            if (cartItems.isEmpty()) {
-                this.sellerId = null;
-            }
+            resetSellerIdIfCartEmpty();
         } else {
             existingCartItem.getProduct().addQuantity(addedQuantity);
+        }
+    }
+
+    private void resetSellerIdIfCartEmpty() {
+        if (cartItems.isEmpty()) {
+            this.sellerId = null;
         }
     }
 
