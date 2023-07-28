@@ -1,14 +1,18 @@
-package fixture.product;
+package common.fixture.product;
 
 import org.springframework.test.util.ReflectionTestUtils;
+
+import com.github.msafriends.serviceproduct.moduleapi.dto.ProductRequest;
+
+import common.fixture.category.CategoryFixture;
 import domain.product.AgeLimit;
 import domain.product.Benefit;
 import domain.product.Price;
 import domain.product.Product;
 import domain.product.Size;
-import fixture.category.CategoryFixture;
 
 public class ProductFixture {
+
     public static final Long TEST_PRODUCT_ID = 1L;
     public static final Long SELLER_ID = 1L;
     public static final Long CODE = 111111111L;
@@ -52,7 +56,6 @@ public class ProductFixture {
             .mileage(MILEAGE)
             .build();
     }
-
     public static Product createProduct() {
         return Product.builder()
                 .sellerId(SELLER_ID)
@@ -67,8 +70,19 @@ public class ProductFixture {
                 .build();
     }
 
-
-
+    public static ProductRequest createProductRequest(){
+        return ProductRequest.builder()
+            .code(CODE)
+            .price(createDefaultPrice())
+            .quantity(QUANTITY)
+            .name(NAME)
+            .categoryId(CategoryFixture.TEST_CATEGORY_ID)
+            .delivery(DELIVERY)
+            .ageLimit(AGE_LIMIT)
+            .benefit(createDefaultBenefit())
+            .buySatisfy(BUY_SATISFY)
+            .build();
+    }
 
     public static Product createProductWithId(Long id){
         Product product = createProduct();
