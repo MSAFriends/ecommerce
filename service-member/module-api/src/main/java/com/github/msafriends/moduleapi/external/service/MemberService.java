@@ -25,6 +25,7 @@ public class MemberService {
 
     public MemberSignupResponse createMember(MemberSignupRequest memberSignupRequest) {
         Member member = memberSignupRequest.toMember();
+        memberRepository.findByEmail(member.getEmail()).orElseThrow(() -> new RuntimeException("Member already exist."));
         memberRepository.save(member);
         generateSignUpThanksMemberCoupons(member);
         return MemberSignupResponse.from(member);
