@@ -50,18 +50,18 @@ public class MemberCoupon {
     }
 
     public void use(LocalDateTime currentTime) {
-        checkCouponValidity(currentTime);
         if (this.hasUsed) {
-            throw new IllegalStateException("The coupon has already been used.");
+            throw new IllegalStateException("The coupon with ID " + this.getId() + " has already been used.");
+        }
+        if (!hasValidRangeCouponUse(currentTime)) {
+            throw new IllegalStateException("The coupon is not within its validity period.");
         }
         this.hasUsed = true;
         this.usedAt = LocalDateTime.now();
     }
 
-    private void checkCouponValidity(LocalDateTime currentTime) {
-        if (currentTime.isBefore(startAt) || currentTime.isAfter(endAt)) {
-            throw new IllegalStateException("The coupon is not within its validity period.");
-        }
+    public boolean hasValidRangeCouponUse(LocalDateTime currentTime) {
+        return currentTime.isAfter(startAt) || currentTime.isBefore(endAt);
     }
 
     private void validateCouponExpirationDateCorrectness(LocalDateTime startAt, LocalDateTime endAt) {
