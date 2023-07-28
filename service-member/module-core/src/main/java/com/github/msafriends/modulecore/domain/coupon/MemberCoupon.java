@@ -52,7 +52,7 @@ public class MemberCoupon {
 
     public void use(LocalDateTime currentTime) {
         if (this.hasUsed) {
-            throw new CouponAlreadyUseException(this.getId());
+            throw new CouponAlreadyUseException(this.getId(), this.coupon.getName());
         }
         if (!hasValidRangeCouponUse(currentTime)) {
             throw new IllegalStateException("The coupon is not within its validity period.");

@@ -1,5 +1,6 @@
 package com.github.msafriends.modulecore.repository.member;
 
+import com.github.msafriends.modulecommon.exception.member.member.MemberNotExistException;
 import com.github.msafriends.modulecore.domain.member.Email;
 import com.github.msafriends.modulecore.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     default Member findByEmailOrElseThrow(Long memberId) {
         return this.findById(memberId).orElseThrow(() ->
-                new RuntimeException("Member not exist.")
+                new MemberNotExistException(memberId)
         );
     }
 }
