@@ -2,6 +2,7 @@ package com.github.msafriends.moduleapi.service;
 
 import com.github.msafriends.moduleapi.dto.request.member.MemberSignupRequest;
 import com.github.msafriends.moduleapi.dto.response.member.MemberSignupResponse;
+import com.github.msafriends.modulecommon.exception.member.member.MemberAlreadyExistException;
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.coupon.CouponGenerateType;
 import com.github.msafriends.modulecore.domain.coupon.MemberCoupon;
@@ -27,7 +28,7 @@ public class MemberService {
     public MemberSignupResponse createMember(MemberSignupRequest memberSignupRequest) {
         Member member = memberSignupRequest.toMember();
         memberRepository.findByEmail(member.getEmail()).ifPresent(existingMember -> {
-            throw new RuntimeException("Member already exists.");
+            throw new MemberAlreadyExistException(existingMember.getEmail().getValue());
         });
 
         memberRepository.save(member);

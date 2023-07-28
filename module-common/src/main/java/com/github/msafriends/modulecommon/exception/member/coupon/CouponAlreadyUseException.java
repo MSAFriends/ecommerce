@@ -5,7 +5,7 @@ import com.github.msafriends.modulecommon.exception.ErrorCode;
 
 public class CouponAlreadyUseException extends BusinessException {
 
-    public CouponAlreadyUseException(Long alreadyUseCouponId) {
-        super(ErrorCode.COUPON_ALREADY_USE, alreadyUseCouponId);
+    public CouponAlreadyUseException(Long alreadyUseMemberCouponId, String alreadyUseMemberCouponName) {
+        super(ErrorCode.COUPON_ALREADY_USE, alreadyUseMemberCouponId, alreadyUseMemberCouponName);
     }
 }
