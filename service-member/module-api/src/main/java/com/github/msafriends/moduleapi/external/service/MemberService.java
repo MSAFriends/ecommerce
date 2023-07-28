@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private static final int SIGN_UP_THANK_COUPON_EXPIRATION_RANGE = 30;
     private final MemberRepository memberRepository;
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
@@ -41,7 +40,7 @@ public class MemberService {
 
     private MemberCoupon createMemberCoupon(Member member, Coupon coupon) {
         LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime expirationDate = currentTime.plusDays(SIGN_UP_THANK_COUPON_EXPIRATION_RANGE);
+        LocalDateTime expirationDate = currentTime.plusDays(coupon.getValidationRange());
 
         return MemberCoupon.builder()
                 .member(member)

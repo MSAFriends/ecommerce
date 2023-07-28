@@ -40,27 +40,32 @@ public class Coupon {
     private int quantity;
 
     @Column(nullable = false)
+    private int validationRange;
+
+    @Column(nullable = false)
     private Integer maxQuantityPerMember;
 
     @Builder(builderClassName = "ByLimitedBuilder", builderMethodName = "ByLimitedBuilder")
-    public Coupon(String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, int quantity, Integer maxQuantityPerMember) {
+    public Coupon(String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, int quantity, int validationRange, Integer maxQuantityPerMember) {
         validateValue(value, discountType);
         this.name = name;
         this.discountType = discountType;
         this.value = value;
         this.generateType = generateType;
         this.quantity = quantity;
+        this.validationRange = validationRange;
         this.maxQuantityPerMember = generateMaxQuantityPerMember(maxQuantityPerMember);
     }
 
     @Builder(builderClassName = "ByUnLimitedBuilder", builderMethodName = "ByUnLimitedBuilder")
-    public Coupon(String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, Integer maxQuantityPerMember) {
+    public Coupon(String name, CouponDiscountType discountType, int value, CouponGenerateType generateType, int validationRange, Integer maxQuantityPerMember) {
         validateValue(value, discountType);
         this.name = name;
         this.discountType = discountType;
         this.value = value;
         this.generateType = generateType;
         this.quantity = DEFAULT_QUANTITY;
+        this.validationRange = validationRange;
         this.maxQuantityPerMember = generateMaxQuantityPerMember(maxQuantityPerMember);
     }
 

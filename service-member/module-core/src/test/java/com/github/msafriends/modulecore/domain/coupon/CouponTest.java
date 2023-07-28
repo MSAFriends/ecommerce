@@ -26,6 +26,7 @@ class CouponTest {
                     .maxQuantityPerMember(1)
                     .generateType(CouponGenerateType.BRONZE_GRADE_BENEFIT)
                     .quantity(100)
+                    .validationRange(30)
                     .build();
 
             assertThat(limitedCoupon.getName()).isEqualTo(COUPON_NAME);
@@ -55,6 +56,7 @@ class CouponTest {
                             .name(COUPON_NAME)
                             .value(-1000)
                             .discountType(CouponDiscountType.FIXED)
+                            .validationRange(30)
                             .build())
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Value must be greater than 0.");
