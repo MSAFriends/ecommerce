@@ -16,6 +16,10 @@ spring:
 #        globally_quoted_identifiers_skip_column_definitions: true
         show_sql: true
         format_sql:
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
 logging:
   level:
