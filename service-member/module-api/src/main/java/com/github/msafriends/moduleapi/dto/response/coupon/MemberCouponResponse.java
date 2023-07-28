@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberCouponResponse {
+    private Long id;
     private String name;
     private Boolean hasUsed;
     private LocalDateTime usedAt;
@@ -19,12 +20,14 @@ public class MemberCouponResponse {
 
     @Builder
     private MemberCouponResponse(
+            Long id,
             String name,
             Boolean hasUsed,
             LocalDateTime usedAt,
             LocalDateTime startAt,
             LocalDateTime endAt
     ) {
+        this.id = id;
         this.name = name;
         this.hasUsed = hasUsed;
         this.usedAt = usedAt;
@@ -34,6 +37,7 @@ public class MemberCouponResponse {
 
     public static MemberCouponResponse from(MemberCoupon memberCoupon) {
         return MemberCouponResponse.builder()
+                .id(memberCoupon.getId())
                 .name(memberCoupon.getCoupon().getName())
                 .hasUsed(memberCoupon.getHasUsed())
                 .usedAt(memberCoupon.getUsedAt())
