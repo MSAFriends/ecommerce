@@ -1,8 +1,8 @@
-package com.github.msafriends.moduleapi.external.controller.member;
+package com.github.msafriends.moduleapi.controller.external.member;
 
 import com.github.msafriends.moduleapi.dto.request.member.MemberSignupRequest;
 import com.github.msafriends.moduleapi.dto.response.member.MemberSignupResponse;
-import com.github.msafriends.moduleapi.external.service.MemberService;
+import com.github.msafriends.moduleapi.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/member")
-public class MemberControllerV1 {
+public class MemberExternalControllerV1 {
 
     private final MemberService memberService;
 

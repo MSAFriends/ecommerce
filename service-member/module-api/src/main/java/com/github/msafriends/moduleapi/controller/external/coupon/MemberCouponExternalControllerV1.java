@@ -1,8 +1,8 @@
-package com.github.msafriends.moduleapi.external.controller.coupon;
+package com.github.msafriends.moduleapi.controller.external.coupon;
 
 import com.github.msafriends.moduleapi.dto.request.member.MemberCouponRequest;
 import com.github.msafriends.moduleapi.dto.response.coupon.MemberCouponResponse;
-import com.github.msafriends.moduleapi.external.service.MemberCouponService;
+import com.github.msafriends.moduleapi.service.MemberCouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/coupon")
-public class MemberCouponControllerV1 {
+public class MemberCouponExternalControllerV1 {
 
     private final MemberCouponService memberCouponService;
 
