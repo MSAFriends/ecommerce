@@ -26,8 +26,10 @@ public class ProductInternalApiControllerV1 {
 		@Validated @RequestBody ProductRequest request
 	){
 		return ResponseEntity
-			.created(URI.create(
-				"/api/internal/v1/products/" + productService
-					.registerProduct(request.toEntity(sellerId)))).build();
+			.created(
+				URI.create("/api/internal/v1/products/"
+					+ productService.registerProduct(request.toEntity(sellerId)))
+			)
+			.build();
 	}
 }
