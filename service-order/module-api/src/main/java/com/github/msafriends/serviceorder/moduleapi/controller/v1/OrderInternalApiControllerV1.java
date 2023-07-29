@@ -30,11 +30,6 @@ public class OrderInternalApiControllerV1 {
         return ResponseEntity.ok(orderService.getOrderDetailsAwaitingAcceptance(memberId));
     }
 
-    @GetMapping("/members/{memberId}/orders")
-    public ResponseEntity<List<OrderResponse>> getAllOrders(@PathVariable("memberId") Long memberId) {
-        return ResponseEntity.ok(orderService.getAllOrdersByMemberId(memberId));
-    }
-
     @GetMapping("/orders/carts")
     public ResponseEntity<Optional<PendingOrderResponse>> getPendingOrder(@RequestHeader("Member-Id") Long memberId) {
         return ResponseEntity.ok(orderService.getPendingOrderByMemberId(memberId));
