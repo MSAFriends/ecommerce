@@ -7,22 +7,22 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class OrderCartResponse {
+public class PendingOrderResponse {
     private final Long id;
     private final Long memberId;
     private final PriceResponse price;
     private final List<CartItemResponse> cartItems;
 
     @Builder
-    public OrderCartResponse(Long id, Long memberId, PriceResponse price, List<CartItemResponse> cartItems) {
+    public PendingOrderResponse(Long id, Long memberId, PriceResponse price, List<CartItemResponse> cartItems) {
         this.id = id;
         this.memberId = memberId;
         this.price = price;
         this.cartItems = cartItems;
     }
 
-    public static OrderCartResponse from(final Order order) {
-        return OrderCartResponse.builder()
+    public static PendingOrderResponse from(final Order order) {
+        return PendingOrderResponse.builder()
                 .id(order.getId())
                 .memberId(order.getMemberId())
                 .price(PriceResponse.from(order))
