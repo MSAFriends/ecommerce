@@ -22,7 +22,7 @@ public enum ErrorCode {
 	MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST, "M_004", "멤버(id = %d)가 존재하지 않습니다."),
 
 
-	EXPIRED_COUPON_ERROR(HttpStatus.BAD_REQUEST, "CO_001", "이미 만료된 쿠폰입니다."),
+	COUPON_EXPIRED_ERROR(HttpStatus.BAD_REQUEST, "CO_001", "유효하지 않은 쿠폰입니다."),
 	INVALID_COUPON_DATE(HttpStatus.INTERNAL_SERVER_ERROR, "CO_002", "쿠폰의 유효기간이 잘못되었습니다."),
 	INVALID_COUPON_STRATEGY(HttpStatus.INTERNAL_SERVER_ERROR, "CO_003", "유효하지 않은 비율정책입니다."),
 	COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "CO_004", "이미 사용한 쿠폰(id = %d, 이름 = %s) 입니다."),
