@@ -12,8 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.github.msafriends.serviceproduct.moduleapi.repository.CategoryRepository;
-import com.github.msafriends.serviceproduct.moduleapi.repository.ProductRepository;
+import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
+import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 import com.github.msafriends.serviceproduct.moduleapi.service.ProductService;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;

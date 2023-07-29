@@ -1,14 +1,14 @@
 package domain;
 
-import domain.product.Product;
-import domain.review.ProductReview;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 import fixture.product.ProductFixture;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ProductReviewTest {
+class ProductReviewTest {
     private static final Long MEMBER_ID = 1L;
 
     private static final int RATING = 5;
