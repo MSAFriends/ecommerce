@@ -16,7 +16,7 @@ import com.github.msafriends.serviceproduct.moduleapi.repository.CategoryReposit
 import com.github.msafriends.serviceproduct.moduleapi.repository.ProductRepository;
 import com.github.msafriends.serviceproduct.moduleapi.service.ProductService;
 
-import domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import common.fixture.category.CategoryFixture;
 
 @ExtendWith(MockitoExtension.class)

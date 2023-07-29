@@ -1,10 +1,10 @@
 package com.github.msafriends.serviceproduct.moduleapi.dto;
 
-import domain.product.AgeLimit;
-import domain.product.Benefit;
-import domain.product.Price;
-import domain.product.Product;
-import domain.product.Size;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Size;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

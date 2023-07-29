@@ -1,7 +1,7 @@
 package fixture.reply;
 
-import domain.review.ProductReview;
-import domain.review.Reply;
+import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
+import com.github.msafriends.serviceproduct.modulecore.domain.review.Reply;
 import fixture.review.ProductReviewFixture;
 
 public class ReplyFixture {

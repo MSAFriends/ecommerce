@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.github.msafriends.modulecommon.exception.ErrorCode;
 import com.github.msafriends.modulecommon.exception.InvalidValueException;
 
-import domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import fixture.product.ProductFixture;
 
 public class ProductTest {
