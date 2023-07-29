@@ -1,4 +1,4 @@
-package domain.category;
+package com.github.msafriends.serviceproduct.modulecore.domain.category;
 
 import org.springframework.util.Assert;
 
@@ -19,18 +19,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
-
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "parent_id")
+	private Category parentCategory;
 	@Id
 	@Column(name = "category_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	@Column(unique = true, nullable = false)
 	private String categoryName;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	private Category parentCategory;
 
 	@Builder
 	public Category(String categoryName, Category category) {

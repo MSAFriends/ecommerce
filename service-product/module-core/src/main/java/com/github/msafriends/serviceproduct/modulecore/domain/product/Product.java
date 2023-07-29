@@ -1,8 +1,8 @@
-package domain.product;
+package com.github.msafriends.serviceproduct.modulecore.domain.product;
 
-import domain.productimage.ProductImage;
-import domain.category.Category;
-import domain.review.ProductReview;
+import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
+import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
+import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +23,13 @@ import com.github.msafriends.modulecommon.exception.InvalidValueException;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 public class Product extends BaseTimeEntity {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductReview> productReviews = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -46,13 +53,6 @@ public class Product extends BaseTimeEntity {
     private Size size;
     @Column(nullable = false)
     private Long sellerId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductReview> productReviews = new ArrayList<>();
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> productImages = new ArrayList<>();
 
     @Builder
     public Product(Long code, String name, Price price, int quantity, String delivery, int buySatisfy, Benefit benefit,
@@ -74,12 +74,10 @@ public class Product extends BaseTimeEntity {
         this.productImages = productImages;
     }
 
-    public void associateSeller(Long sellerId){
-        this.sellerId =sellerId;
-    }
     public void assignCategory(Category category){
         this.category = category;
     }
+
     private void validateProduct(Long sellerId, Long code, String name, String delivery, AgeLimit ageLimit, int quantity) {
         validateNotNull(sellerId, code, name, delivery, ageLimit);
         validateQuantity(quantity);

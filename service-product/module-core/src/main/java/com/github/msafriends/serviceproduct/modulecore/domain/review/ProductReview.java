@@ -1,7 +1,7 @@
-package domain.review;
+package com.github.msafriends.serviceproduct.modulecore.domain.review;
 
 
-import domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,20 +21,22 @@ import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 @NoArgsConstructor(access = PROTECTED)
 @DiscriminatorValue("PRODUCT")
 public class ProductReview extends BaseTimeEntity {
+    private static final int MAX_TITLE_LENGTH = 50;
+    private static final int MAX_CONTENT_LENGTH = 500;
+    private static final int MAX_RATING_VALUE = 5;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
     @Id
     @GeneratedValue
     @Column(name = "review_id")
     private Long id;
-    @Min(value = 0, message = "0점 이상의 점수를 입력해주세요")
-    @Max(value = 5, message = "5점 이하의 점수를 입력해주세요")
     private int rating;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = MAX_TITLE_LENGTH)
     private String title;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = MAX_CONTENT_LENGTH)
     private String content;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
     @NotNull
     private Long memberId;
 
@@ -52,8 +54,9 @@ public class ProductReview extends BaseTimeEntity {
         validateNotNull(product, memberId, title, content);
         validateRating(rating);
     }
+
     private void validateRating(int rating) {
-        Assert.isTrue(rating >= 0 && rating <= 5, "평점은 0 ~ 5점 사이로 입력해주세요.");
+        Assert.isTrue(rating >= 0 && rating <= MAX_RATING_VALUE, "평점은 0 ~ 5점 사이로 입력해주세요.");
     }
 
     private void validateNotNull(Product product, Long memberId, String title, String content){
