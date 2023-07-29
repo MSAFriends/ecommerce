@@ -1,6 +1,7 @@
 package com.github.msafriends.modulecommon.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,6 +11,7 @@ import com.github.msafriends.modulecommon.dto.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,10 +40,10 @@ public class RestApiExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-		String errorMessage = ex.getBindingResult().getFieldErrors().stream()
-				.map(error -> String.format("%s %s", error.getField(), error.getDefaultMessage()))
-				.collect(Collectors.joining(","));
-		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, errorMessage);
+		Map<String, String> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+				.collect(Collectors.toMap(FieldError::getField, error -> error.getDefaultMessage() != null ? error.getDefaultMessage() : ""));
+
+		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, fieldErrors);
 		log.debug("Argument validation has failed: {}", ex.getMessage());
 		return new ResponseEntity<>(response, response.getStatus());
 	}
