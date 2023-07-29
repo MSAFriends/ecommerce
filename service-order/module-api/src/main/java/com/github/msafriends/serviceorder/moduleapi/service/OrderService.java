@@ -8,7 +8,7 @@ import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.coupon.OrderCouponResponse;
-import com.github.msafriends.serviceorder.modulecore.dto.response.order.PendingOrderResponse;
+import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderPendingResponse;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,9 @@ public class OrderService {
                 .toList();
     }
 
-    public Optional<PendingOrderResponse> getPendingOrderByMemberId(Long memberId) {
+    public Optional<OrderPendingResponse> getOrderPendingByMemberId(Long memberId) {
         return orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)
-                .map(PendingOrderResponse::from);
+                .map(OrderPendingResponse::from);
     }
 
     @Transactional
