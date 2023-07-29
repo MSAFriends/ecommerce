@@ -5,6 +5,8 @@ import com.github.msafriends.modulecommon.exception.ErrorCode;
 import com.github.msafriends.modulecommon.exception.InvalidValueException;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.RecipientRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -83,6 +85,14 @@ public class Order extends BaseTimeEntity {
                     () -> addNewCartItem(request)
             );
         recalculatePrice();
+    }
+
+    public void confirm(ConfirmOrderRequest request) {
+        validateOrderIsPending();
+
+        this.request = request.getRequest();
+        this.recipient = RecipientRequest.toRecipient(request.getRecipient());
+        this.status = OrderStatus.AWAITING_ACCEPTANCE;
     }
 
     private void addNewCartItem(UpdateCartItemRequest request) {

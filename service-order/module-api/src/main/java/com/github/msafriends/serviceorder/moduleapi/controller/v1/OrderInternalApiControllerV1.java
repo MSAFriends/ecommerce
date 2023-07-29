@@ -1,5 +1,6 @@
 package com.github.msafriends.serviceorder.moduleapi.controller.v1;
 
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderCartResponse;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
@@ -24,14 +25,14 @@ public class OrderInternalApiControllerV1 {
         return ResponseEntity.ok(orderService.getOrder(orderId));
     }
 
-    @GetMapping("/members/{memberId}/orders")
-    public ResponseEntity<List<OrderResponse>> getOrders(@PathVariable("memberId") Long memberId) {
-        return ResponseEntity.ok(orderService.getOrdersByMemberId(memberId));
-    }
-
     @GetMapping("/orders/carts")
     public ResponseEntity<Optional<OrderCartResponse>> getCartItems(@RequestHeader("Member-Id") Long memberId) {
         return ResponseEntity.ok(orderService.getCartItemsByMemberId(memberId));
+    }
+
+    @GetMapping("/members/{memberId}/orders")
+    public ResponseEntity<List<OrderResponse>> getOrders(@PathVariable("memberId") Long memberId) {
+        return ResponseEntity.ok(orderService.getOrdersByMemberId(memberId));
     }
 
     @PostMapping("/orders")
@@ -40,6 +41,15 @@ public class OrderInternalApiControllerV1 {
             @Valid @RequestBody UpdateCartItemRequest request
     ) {
         return ResponseEntity.created(URI.create("/api/internal/v1/orders/" + orderService.addCartItemToOrder(memberId, request))).build();
+    }
+
+    @PostMapping("/orders/confirm")
+    public ResponseEntity<Void> confirmOrder(
+            @RequestHeader("Member-Id") Long memberId,
+            @Valid @RequestBody ConfirmOrderRequest request
+    ) {
+        orderService.confirmOrder(memberId, request);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/orders/{orderId}")

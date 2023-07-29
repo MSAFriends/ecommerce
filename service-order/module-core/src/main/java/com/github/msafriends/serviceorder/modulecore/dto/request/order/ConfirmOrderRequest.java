@@ -1,5 +1,6 @@
 package com.github.msafriends.serviceorder.modulecore.dto.request.order;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,6 +12,7 @@ public class ConfirmOrderRequest {
 
     private final List<Long> orderCouponIds;
 
+    @NotNull
     private final RecipientRequest recipient;
 
     @Builder
