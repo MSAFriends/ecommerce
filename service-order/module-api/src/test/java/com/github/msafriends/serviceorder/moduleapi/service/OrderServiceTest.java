@@ -1,7 +1,7 @@
 package com.github.msafriends.serviceorder.moduleapi.service;
 
 import com.github.msafriends.serviceorder.moduleapi.client.MemberServiceClient;
-import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
+import com.github.msafriends.serviceorder.modulecore.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
@@ -68,7 +68,7 @@ class OrderServiceTest {
             when(orderRepository.findAllByMemberId(memberId)).thenReturn(orders);
 
             // when
-            List<OrderResponse> result = orderService.getOrdersByMemberId(memberId);
+            List<OrderResponse> result = orderService.getAllOrdersByMemberId(memberId);
 
             // then
             assertThat(result).hasSize(2);

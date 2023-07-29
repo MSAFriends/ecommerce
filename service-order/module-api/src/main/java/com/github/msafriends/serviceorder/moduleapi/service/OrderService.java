@@ -1,14 +1,14 @@
 package com.github.msafriends.serviceorder.moduleapi.service;
 
 import com.github.msafriends.serviceorder.moduleapi.client.MemberServiceClient;
-import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
+import com.github.msafriends.serviceorder.modulecore.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.coupon.OrderCouponResponse;
-import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderCartResponse;
+import com.github.msafriends.serviceorder.modulecore.dto.response.order.PendingOrderResponse;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,15 +30,21 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
-    public List<OrderResponse> getOrdersByMemberId(Long memberId) {
+    public List<OrderResponse> getOrderDetailsAwaitingAcceptance(Long memberId) {
+        return orderRepository.findAllByMemberIdAndStatus(memberId, OrderStatus.AWAITING_ACCEPTANCE).stream()
+                .map(OrderResponse::from)
+                .toList();
+    }
+
+    public List<OrderResponse> getAllOrdersByMemberId(Long memberId) {
         return orderRepository.findAllByMemberId(memberId).stream()
                 .map(OrderResponse::from)
                 .toList();
     }
 
-    public Optional<OrderCartResponse> getCartItemsByMemberId(Long memberId) {
+    public Optional<PendingOrderResponse> getPendingOrderByMemberId(Long memberId) {
         return orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)
-                .map(OrderCartResponse::from);
+                .map(PendingOrderResponse::from);
     }
 
     @Transactional
