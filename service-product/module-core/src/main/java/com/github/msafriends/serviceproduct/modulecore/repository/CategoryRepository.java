@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.repository;
+package com.github.msafriends.serviceproduct.modulecore.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
