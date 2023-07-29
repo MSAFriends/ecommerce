@@ -1,4 +1,4 @@
-package domain.product;
+package com.github.msafriends.serviceproduct.modulecore.domain.product;
 
 public enum AgeLimit {
 	MINOR("미성년자"), ADULT("성인");

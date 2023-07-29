@@ -1,6 +1,6 @@
 package common.fixture.category;
 
-import domain.category.Category;
+import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 
 public class CategoryFixture {
 	public static final Long TEST_CATEGORY_ID = 1L;

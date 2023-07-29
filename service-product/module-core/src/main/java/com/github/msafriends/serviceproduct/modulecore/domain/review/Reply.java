@@ -1,4 +1,4 @@
-package domain.review;
+package com.github.msafriends.serviceproduct.modulecore.domain.review;
 
 import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 import com.github.msafriends.modulecommon.exception.ErrorCode;
@@ -20,16 +20,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reply extends BaseTimeEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(nullable = false, length = 500)
-	private String content;
-	@Column(nullable = false)
-	private Long sellerId;
+	private static final int MAX_CONTENT_LENGTH = 500;
+
 	@OneToOne
 	@JoinColumn(name = "review_id", nullable = false)
 	private ProductReview review;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "reply_id")
+	private Long id;
+	@Column(nullable = false, length = MAX_CONTENT_LENGTH)
+	private String content;
+	@Column(nullable = false)
+	private Long sellerId;
 
 	@Builder
 	public Reply(String content, Long sellerId, ProductReview review) {
@@ -45,7 +48,7 @@ public class Reply extends BaseTimeEntity {
 	}
 
 	private void validateContentLength(String content){
-		if(content.length() > 500) throw new InvalidValueException(ErrorCode.INVALID_INPUT_VALUE, "content는 500자 이상 작성하실수 없습니다.");
+		if(content.length() > MAX_CONTENT_LENGTH) throw new InvalidValueException(ErrorCode.INVALID_INPUT_VALUE, "content는 500자 이상 작성하실수 없습니다.");
 	}
 
 	private void validateNotNull(String content, Long sellerId, ProductReview review){

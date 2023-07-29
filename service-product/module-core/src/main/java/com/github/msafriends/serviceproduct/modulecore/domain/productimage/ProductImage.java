@@ -1,7 +1,7 @@
-package domain.productimage;
+package com.github.msafriends.serviceproduct.modulecore.domain.productimage;
 
 
-import domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,15 +13,12 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 public class ProductImage {
-
     @Id @GeneratedValue
     @Column(name = "product_image_id")
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-
     private String base;
     private String size100;
     private String size110;

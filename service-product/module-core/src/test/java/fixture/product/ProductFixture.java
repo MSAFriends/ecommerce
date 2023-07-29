@@ -1,12 +1,11 @@
 package fixture.product;
 
 import org.springframework.test.util.ReflectionTestUtils;
-import domain.product.AgeLimit;
-import domain.product.Benefit;
-import domain.product.Price;
-import domain.product.Product;
-import domain.product.Size;
-import fixture.category.CategoryFixture;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Size;
 
 public class ProductFixture {
     public static final Long TEST_PRODUCT_ID = 1L;

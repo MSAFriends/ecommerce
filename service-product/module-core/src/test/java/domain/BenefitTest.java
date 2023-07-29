@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import domain.product.Benefit;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
 
 class BenefitTest {
 

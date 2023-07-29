@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import domain.product.Product;
-import domain.productimage.ProductImage;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
 import fixture.product.ProductFixture;
 
 public class ProductImageTest {

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.github.msafriends.modulecommon.exception.InvalidValueException;
 
-import domain.review.Reply;
+import com.github.msafriends.serviceproduct.modulecore.domain.review.Reply;
 import fixture.reply.ReplyFixture;
 
 class ReplyTest {
