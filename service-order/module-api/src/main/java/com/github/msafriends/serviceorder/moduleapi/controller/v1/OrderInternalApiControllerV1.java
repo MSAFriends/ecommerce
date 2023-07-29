@@ -2,7 +2,7 @@ package com.github.msafriends.serviceorder.moduleapi.controller.v1;
 
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
-import com.github.msafriends.serviceorder.modulecore.dto.response.order.PendingOrderResponse;
+import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderPendingResponse;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import com.github.msafriends.serviceorder.moduleapi.service.OrderService;
 import jakarta.validation.Valid;
@@ -31,8 +31,8 @@ public class OrderInternalApiControllerV1 {
     }
 
     @GetMapping("/orders/carts")
-    public ResponseEntity<Optional<PendingOrderResponse>> getPendingOrder(@RequestHeader("Member-Id") Long memberId) {
-        return ResponseEntity.ok(orderService.getPendingOrderByMemberId(memberId));
+    public ResponseEntity<Optional<OrderPendingResponse>> getPendingOrder(@RequestHeader("Member-Id") Long memberId) {
+        return ResponseEntity.ok(orderService.getOrderPendingByMemberId(memberId));
     }
 
     @PostMapping("/orders")
