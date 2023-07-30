@@ -39,3 +39,6 @@ out/
 ### Docker ###
 .docker/
 .env
+
+/external-script/11street-data-export/configuration.py
+/external-script/11street-data-export/myvenv
