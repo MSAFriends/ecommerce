@@ -20,6 +20,9 @@ spring:
   sql:
     init:
       mode: always
+  cloud:
+    vault:
+      enabled: false
 
 logging:
   level:
