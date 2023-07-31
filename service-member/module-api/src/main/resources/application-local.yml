@@ -27,3 +27,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+eureka:
+  client:
+    enabled: false
