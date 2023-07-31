@@ -88,6 +88,16 @@ services:
       timeout: 10s
       retries: 10
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    networks:
+      - msafriends_network
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
 networks:
   msafriends_network:
     driver: bridge
