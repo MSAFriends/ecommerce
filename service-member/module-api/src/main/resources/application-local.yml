@@ -20,10 +20,13 @@ spring:
         show_sql: true
         format_sql:
     defer-datasource-initialization: true
-#  sql:
-#    init:
-#      mode: always
-#      schema-locations: classpath:sql/schema-h2.sql
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema-h2.sql
+  cloud:
+    vault:
+      enable:false
 
 logging:
   level:
