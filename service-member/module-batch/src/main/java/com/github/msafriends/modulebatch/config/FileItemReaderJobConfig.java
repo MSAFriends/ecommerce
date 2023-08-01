@@ -8,7 +8,6 @@ import com.github.msafriends.modulebatch.listener.JobCompletionNotificationListe
 import com.github.msafriends.modulebatch.processor.ElevenStreetItemProcessor;
 import com.github.msafriends.modulebatch.processor.ElevenStreetNewItemProcessor;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -20,10 +19,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
-import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
@@ -36,12 +32,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Objects;
 
 @Configuration
 @EnableBatchProcessing
@@ -81,28 +75,6 @@ public class FileItemReaderJobConfig {
     }
 
     @Bean
-    public FlatFileItemReader<ElevenStreetCSV> readerCopyVersionWithSeller() {
-        String outCSVName = "out_" + ELEVEN_STREET_CSV_FILE_NAME;
-        CSVCopier.copy(ELEVEN_STREET_CSV_FILE_NAME, outCSVName, "sellerId");
-
-        FlatFileItemReader flatFileItemReader = new FlatFileItemReaderBuilder<>()
-                .name(ITEM_READER_NAME)
-                .resource(new FileSystemResource("out_out.csv"))
-                .delimited()
-                .names("id", "ProductCode", "ProductName", "ProductPrice", "ProductImage", "ProductImage100",
-                        "ProductImage110", "ProductImage120", "ProductImage130", "ProductImage140", "ProductImage150",
-                        "ProductImage170", "ProductImage200", "ProductImage250", "ProductImage270", "ProductImage300",
-                        "Text1", "Text2", "SellerNick", "Seller", "SellerGrd", "Rating", "DetailPageUrl",
-                        "SalePrice", "Delivery", "ReviewCount", "BuySatisfy", "MinorYn", "Benefit", "sellerId")
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {
-                    {setTargetType(ElevenStreetCSV.class);}
-                })
-                .build();
-        flatFileItemReader.setLinesToSkip(1);
-        return flatFileItemReader;
-    }
-
-    @Bean
     @StepScope
     public JdbcBatchItemWriter<ElevenStreetCSV> stepWriterSellerTable() {
         QueryStrategyParams queryStrategyParams = getSellerQueryStrategyParams();
@@ -112,25 +84,6 @@ public class FileItemReaderJobConfig {
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
                 .sql(sql)
                 .dataSource(dataSource)
-                .build();
-    }
-
-    @SneakyThrows
-    @Bean
-    @StepScope
-    public JdbcPagingItemReader<ElevenStreetCSV> stepWriterCsvWithSellerTable() {
-        SqlPagingQueryProviderFactoryBean pagingQueryProviderFactoryBean = new SqlPagingQueryProviderFactoryBean();
-        pagingQueryProviderFactoryBean.setDataSource(dataSource);
-        pagingQueryProviderFactoryBean.setSelectClause("SELECT SELLER_ID");
-        pagingQueryProviderFactoryBean.setFromClause("FROM SELLERS");
-        pagingQueryProviderFactoryBean.setSortKey("SELLER_ID");
-
-        return new JdbcPagingItemReaderBuilder<ElevenStreetCSV>()
-                .name("myDataReader")
-                .dataSource(dataSource)
-                .queryProvider(Objects.requireNonNull(pagingQueryProviderFactoryBean.getObject()))
-                .pageSize(1000)
-                .rowMapper(new BeanPropertyRowMapper<>(ElevenStreetCSV.class))
                 .build();
     }
 
@@ -178,7 +131,7 @@ public class FileItemReaderJobConfig {
     public Step stepWriteCSVWithElevenStreetSellerData() {
         return new StepBuilder("step - loading elevenStreet seller data into csv", jobRepository)
                 .<ElevenStreetCSV, ElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
-                .reader(readerCopyVersionWithSeller())
+                .reader(reader())
                 .processor(newItemProcessor)
                 .writer(csvItemWriter())
                 .build();
