@@ -17,13 +17,13 @@ public class BatchExternalControllerV1 {
 
     @PostMapping("/init/seller")
     public ResponseEntity<String> runJob() throws Exception {
-        batchService.startMyJob();
+        batchService.startElevenStreetSellerDataMigrationJob();
         return ResponseEntity.ok("ok");
     }
 
     @PostMapping("/export/seller")
     public ResponseEntity<String> runCsvJob() throws Exception {
-        batchService.startCsvJob();
+        batchService.startExportCsvWithElevenStreetSellerDataJob();
         return ResponseEntity.ok("ok");
     }
 }

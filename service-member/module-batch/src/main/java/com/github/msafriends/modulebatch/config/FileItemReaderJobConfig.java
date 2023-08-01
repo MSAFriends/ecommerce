@@ -108,9 +108,9 @@ public class FileItemReaderJobConfig {
     }
 
     @Bean
-    @Qualifier("CsvWithElevenStreetSellerData")
+    @Qualifier("ExportCsvWithElevenStreetSellerData")
     public Job exportCsvWithElevenStreetSellerDataJob() {
-        return new JobBuilder("CsvWithElevenStreetSellerData", jobRepository)
+        return new JobBuilder("ExportCsvWithElevenStreetSellerData", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .start(stepWriteCSVWithElevenStreetSellerData())
@@ -129,7 +129,7 @@ public class FileItemReaderJobConfig {
 
     @Bean
     public Step stepWriteCSVWithElevenStreetSellerData() {
-        return new StepBuilder("step - loading elevenStreet seller data into csv", jobRepository)
+        return new StepBuilder("step - loading elevenStreet seller data into CSV", jobRepository)
                 .<ElevenStreetCSV, ElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
                 .reader(reader())
                 .processor(newItemProcessor)
@@ -140,7 +140,7 @@ public class FileItemReaderJobConfig {
     @Bean
     public ItemWriter<ElevenStreetCSV> csvItemWriter() {
         FlatFileItemWriter<ElevenStreetCSV> writer = new FlatFileItemWriter<>();
-        writer.setResource(new FileSystemResource("output.csv"));
+        writer.setResource(new FileSystemResource("productDataWithSellerId.csv"));
 
         writer.setHeaderCallback(writerItem -> writerItem.write("id,ProductCode,ProductName,ProductPrice,ProductImage,ProductImage100,"
                 + "ProductImage110,ProductImage120,ProductImage130,ProductImage140,ProductImage150,"
@@ -163,7 +163,6 @@ public class FileItemReaderJobConfig {
 
         return writer;
     }
-
 
     private QueryStrategyParams getSellerQueryStrategyParams() {
         return QueryStrategyParams.builder()

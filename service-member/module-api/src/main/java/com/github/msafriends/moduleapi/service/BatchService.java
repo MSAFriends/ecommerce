@@ -16,15 +16,15 @@ public class BatchService {
 
     public BatchService(
             JobLauncher jobLauncher,
-            @Qualifier("elevenStreetSellerDataMigration") Job myJob,
-            @Qualifier("CsvWithElevenStreetSellerData") Job csvJob
+            @Qualifier("elevenStreetSellerDataMigration") Job elevenStreetSellerDataMigrationJob,
+            @Qualifier("ExportCsvWithElevenStreetSellerData") Job ExportCsvWithElevenStreetSellerDataJob
     ) {
         this.jobLauncher = jobLauncher;
-        this.myJob = myJob;
-        this.csvJob = csvJob;
+        this.myJob = elevenStreetSellerDataMigrationJob;
+        this.csvJob = ExportCsvWithElevenStreetSellerDataJob;
     }
 
-    public void startMyJob() throws Exception {
+    public void startElevenStreetSellerDataMigrationJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                         .addLong(JOB_INSTANCE_KEY, System.currentTimeMillis())
                         .toJobParameters();
@@ -32,7 +32,7 @@ public class BatchService {
         jobLauncher.run(myJob, jobParameters);
     }
 
-    public void startCsvJob() throws Exception {
+    public void startExportCsvWithElevenStreetSellerDataJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong(JOB_INSTANCE_KEY, System.currentTimeMillis())
                 .toJobParameters();
