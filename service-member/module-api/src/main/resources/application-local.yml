@@ -26,7 +26,7 @@ spring:
       schema-locations: classpath:sql/schema-h2.sql
   cloud:
     vault:
-      enable:false
+      enabled: false
 
 logging:
   level:
