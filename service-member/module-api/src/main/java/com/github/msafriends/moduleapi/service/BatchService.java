@@ -13,7 +13,18 @@ import org.springframework.stereotype.Service;
 public class BatchService {
     private static final String JOB_INSTANCE_KEY = "time";
     private final JobLauncher jobLauncher;
-    private final @Qualifier("elevenStreetSellerDataMigration") Job myJob;
+    private final Job myJob;
+    private final Job csvJob;
+
+    public BatchService(
+            JobLauncher jobLauncher,
+            @Qualifier("elevenStreetSellerDataMigration") Job myJob,
+            @Qualifier("CsvWithElevenStreetSellerData") Job csvJob
+    ) {
+        this.jobLauncher = jobLauncher;
+        this.myJob = myJob;
+        this.csvJob = csvJob;
+    }
 
     public void startMyJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
@@ -21,5 +32,13 @@ public class BatchService {
                         .toJobParameters();
 
         jobLauncher.run(myJob, jobParameters);
+    }
+
+    public void startCsvJob() throws Exception {
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addLong(JOB_INSTANCE_KEY, System.currentTimeMillis())
+                .toJobParameters();
+
+        jobLauncher.run(csvJob, jobParameters);
     }
 }

@@ -41,8 +41,9 @@ public class ElevenStreetCSV {
     private String SellerNick;
     private String Seller;
     private int SellerGrd;
+    private Long sellerId;
 
-    public ElevenStreetCSV(Long id, String productCode, String productName, int productPrice, int salePrice, String rating, String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String minorYn, String benefit, String productImage, String productImage100, String productImage110, String productImage120, String productImage130, String productImage140, String productImage150, String productImage170, String productImage200, String productImage250, String productImage270, String productImage300, String text1, String text2, String sellerNick, String seller, int sellerGrd) {
+    public ElevenStreetCSV(Long id, String productCode, String productName, int productPrice, int salePrice, String rating, String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String minorYn, String benefit, String productImage, String productImage100, String productImage110, String productImage120, String productImage130, String productImage140, String productImage150, String productImage170, String productImage200, String productImage250, String productImage270, String productImage300, String text1, String text2, String sellerNick, String seller, int sellerGrd, Long sellerId) {
         this.id = id;
         ProductCode = productCode;
         ProductName = productName;
@@ -72,6 +73,7 @@ public class ElevenStreetCSV {
         SellerNick = sellerNick;
         Seller = seller;
         SellerGrd = sellerGrd;
+        this.sellerId = sellerId;
     }
 
     public static String[] getFieldNames() {

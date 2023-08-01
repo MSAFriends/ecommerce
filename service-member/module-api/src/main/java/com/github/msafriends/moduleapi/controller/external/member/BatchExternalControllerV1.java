@@ -20,4 +20,10 @@ public class BatchExternalControllerV1 {
         batchService.startMyJob();
         return ResponseEntity.ok("ok");
     }
+
+    @PostMapping("/export/seller")
+    public ResponseEntity<String> runCsvJob() throws Exception {
+        batchService.startCsvJob();
+        return ResponseEntity.ok("ok");
+    }
 }

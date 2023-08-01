@@ -12,7 +12,7 @@ spring:
       initialize-schema: ALWAYS
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
 #        globally_quoted_identifiers: true
@@ -20,10 +20,10 @@ spring:
         show_sql: true
         format_sql:
     defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:sql/schema-h2.sql
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath:sql/schema-h2.sql
 
 logging:
   level:
