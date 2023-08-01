@@ -1,8 +1,6 @@
 package com.github.msafriends.modulebatch.processor;
 
 import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
-import com.github.msafriends.modulecore.domain.member.Seller;
-import com.github.msafriends.modulecore.repository.member.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -59,7 +56,7 @@ public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetC
                     sellerId
             );
             log.info("step = {} {}", item.getId(), item.getProductName());
-            return newItem; // 새로
+            return newItem;
         } catch (Exception e) {
             log.error("exception = {}", e.getMessage());
         }
@@ -70,13 +67,5 @@ public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetC
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String sql = "SELECT seller_id FROM SELLERS WHERE nick_name = ?";
         return jdbcTemplate.queryForObject(sql, Long.class, nickName);
-    }
-
-    private String checkAndQuote(Object field) {
-        String fieldAsString = String.valueOf(field);
-        if (fieldAsString.contains(",")) {
-            return "\"" + fieldAsString + "\"";
-        }
-        return fieldAsString;
     }
 }
