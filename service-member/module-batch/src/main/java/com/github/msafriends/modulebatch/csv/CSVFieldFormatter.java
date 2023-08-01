@@ -3,7 +3,7 @@ package com.github.msafriends.modulebatch.csv;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 
 public class CSVFieldFormatter<T> extends BeanWrapperFieldExtractor<T> {
-    private String delimiter;
+    private final String delimiter;
 
     private CSVFieldFormatter(String delimiter, String[] names) {
         this.delimiter = delimiter;
