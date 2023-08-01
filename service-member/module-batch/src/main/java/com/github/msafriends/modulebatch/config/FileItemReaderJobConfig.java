@@ -2,11 +2,13 @@ package com.github.msafriends.modulebatch.config;
 
 import com.github.msafriends.modulebatch.config.strategy.ProfileBasedQueryStrategyProvider;
 import com.github.msafriends.modulebatch.config.strategy.QueryStrategyParams;
+import com.github.msafriends.modulebatch.csv.CSVFieldFormatter;
 import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
 import com.github.msafriends.modulebatch.listener.JobCompletionNotificationListener;
 import com.github.msafriends.modulebatch.processor.ElevenStreetItemProcessor;
 import com.github.msafriends.modulebatch.processor.ElevenStreetNewItemProcessor;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -15,6 +17,7 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
@@ -22,21 +25,22 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
 import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
-import java.io.Writer;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Configuration
@@ -56,7 +60,6 @@ public class FileItemReaderJobConfig {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
     private final JobCompletionNotificationListener listener;
-
 
     @Bean
     public FlatFileItemReader<ElevenStreetCSV> reader() {
@@ -184,7 +187,6 @@ public class FileItemReaderJobConfig {
     @Bean
     public ItemWriter<ElevenStreetCSV> csvItemWriter() {
         FlatFileItemWriter<ElevenStreetCSV> writer = new FlatFileItemWriter<>();
-
         writer.setResource(new FileSystemResource("output.csv"));
 
         writer.setHeaderCallback(writerItem -> writerItem.write("id,ProductCode,ProductName,ProductPrice,ProductImage,ProductImage100,"
@@ -193,13 +195,15 @@ public class FileItemReaderJobConfig {
                 + "Text1,Text2,SellerNick,Seller,SellerGrd,Rating,DetailPageUrl,"
                 + "SalePrice,Delivery,ReviewCount,BuySatisfy,MinorYn,Benefit,sellerId"));
 
+        var fieldExtractor = new CSVFieldFormatter.Builder<ElevenStreetCSV>()
+                .delimiter(",")
+                .names("id", "ProductCode", "ProductName", "ProductPrice", "ProductImage", "ProductImage100",
+                        "ProductImage110", "ProductImage120", "ProductImage130", "ProductImage140", "ProductImage150",
+                        "ProductImage170", "ProductImage200", "ProductImage250", "ProductImage270", "ProductImage300",
+                        "Text1", "Text2", "SellerNick", "Seller", "SellerGrd", "Rating", "DetailPageUrl",
+                        "SalePrice", "Delivery", "ReviewCount", "BuySatisfy", "MinorYn", "Benefit", "sellerId")
+                .build();
 
-        BeanWrapperFieldExtractor<ElevenStreetCSV> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] {"id", "ProductCode", "ProductName", "ProductPrice", "ProductImage", "ProductImage100",
-                "ProductImage110", "ProductImage120", "ProductImage130", "ProductImage140", "ProductImage150",
-                "ProductImage170", "ProductImage200", "ProductImage250", "ProductImage270", "ProductImage300",
-                "Text1", "Text2", "SellerNick", "Seller", "SellerGrd", "Rating", "DetailPageUrl",
-                "SalePrice", "Delivery", "ReviewCount", "BuySatisfy", "MinorYn", "Benefit", "sellerId"});
         DelimitedLineAggregator<ElevenStreetCSV> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setFieldExtractor(fieldExtractor);
         writer.setLineAggregator(lineAggregator);
