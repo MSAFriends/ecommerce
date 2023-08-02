@@ -10,23 +10,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Slf4j
-@SpringBootApplication(scanBasePackages = {"com.github.msafriends", "com.github.msafriends.modulecore"})
+@SpringBootApplication(scanBasePackages = {"com.github.msafriends"})
 @EntityScan("com.github.msafriends.modulecore")
 @EnableJpaRepositories("com.github.msafriends.modulecore")
 public class ModuleApiApplication {
-    @Autowired
-    private ApplicationContext applicationContext;
 
     public static void main(String[] args) {
         SpringApplication.run(ModuleApiApplication.class, args);
     }
-
-/*    @Override
-    public void run(String... args) throws Exception {
-        String[] beans = applicationContext.getBeanDefinitionNames();
-        for (String bean: beans) {
-            log.info("bean = {}", bean);
-        }
-    }*/
-
 }
