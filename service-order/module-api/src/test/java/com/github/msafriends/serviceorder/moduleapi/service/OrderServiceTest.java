@@ -1,7 +1,10 @@
 package com.github.msafriends.serviceorder.moduleapi.service;
 
-import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
+import com.github.msafriends.serviceorder.moduleapi.client.MemberServiceClient;
+import com.github.msafriends.serviceorder.modulecore.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
+import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
 import com.github.msafriends.serviceorder.modulecore.fixture.CartItemFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.OrderFixture;
@@ -13,10 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +29,9 @@ class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private MemberServiceClient memberServiceClient;
 
     @InjectMocks
     private OrderService orderService;
@@ -60,7 +68,7 @@ class OrderServiceTest {
             when(orderRepository.findAllByMemberId(memberId)).thenReturn(orders);
 
             // when
-            List<OrderResponse> result = orderService.getOrdersByMemberId(memberId);
+            List<OrderResponse> result = orderService.getAllOrdersByMemberId(memberId);
 
             // then
             assertThat(result).hasSize(2);
@@ -77,7 +85,7 @@ class OrderServiceTest {
             int quantity = 5;
             Long memberId = 1L;
             Order pendingOrder = OrderFixture.createDefaultPendingOrder();
-            when(orderRepository.findPendingOrder(memberId)).thenReturn(Optional.of(pendingOrder));
+            when(orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)).thenReturn(Optional.of(pendingOrder));
             when(orderRepository.save(pendingOrder)).thenReturn(pendingOrder);
 
             // when
@@ -86,6 +94,41 @@ class OrderServiceTest {
             // then
             assertThat(pendingOrder.getCartItems()).hasSize(1);
             assertThat(pendingOrder.getCartItems().get(0).getProduct().getQuantity()).isEqualTo(quantity);
+        }
+    }
+
+    @Nested
+    @DisplayName("주문 확정")
+    class ConfirmOrderTest {
+        @Test
+        @DisplayName("PENDING 상태인 주문이 없으면 예외를 던진다.")
+        void testConfirmOrderWithNoPendingOrder() {
+            // given
+            Long memberId = 1L;
+            ConfirmOrderRequest request = OrderFixture.createConfirmOrderRequestWithRequest("테스트 요청사항");
+            when(orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)).thenReturn(Optional.empty());
+
+            // expected
+            assertThatThrownBy(() -> orderService.confirmOrder(memberId, request))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessage("Order not found");
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 쿠폰을 적용하려고 하면 예외를 던진다.")
+        void testConfirmOrderWithNonExistingCoupon() {
+            // given
+            Long memberId = 1L;
+            ConfirmOrderRequest request = OrderFixture.createConfirmOrderRequestWithOrderCouponIds(List.of(1L));
+            Order pendingOrder = OrderFixture.createDefaultPendingOrder();
+
+            when(orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)).thenReturn(Optional.of(pendingOrder));
+            when(memberServiceClient.getAvailableCouponsByMemberId(memberId)).thenReturn(Collections.emptyList());
+
+            // expected
+            assertThatThrownBy(() -> orderService.confirmOrder(memberId, request))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessage("Coupon not found");
         }
     }
 

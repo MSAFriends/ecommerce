@@ -5,6 +5,8 @@ import com.github.msafriends.modulecommon.exception.ErrorCode;
 import com.github.msafriends.modulecommon.exception.InvalidValueException;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.RecipientRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -85,6 +87,14 @@ public class Order extends BaseTimeEntity {
         recalculatePrice();
     }
 
+    public void confirm(ConfirmOrderRequest request) {
+        validateOrderIsPending();
+
+        this.request = request.getRequest();
+        this.recipient = RecipientRequest.toRecipient(request.getRecipient());
+        this.status = OrderStatus.AWAITING_ACCEPTANCE;
+    }
+
     private void addNewCartItem(UpdateCartItemRequest request) {
         this.sellerId = request.getSellerId();
         cartItems.add(UpdateCartItemRequest.toCartItem(this, request));
@@ -99,6 +109,14 @@ public class Order extends BaseTimeEntity {
         }
     }
 
+    /**
+     * 장바구니에 상품이 없을 경우, 어떤 판매자의 상품인지 특정할 수 없습니다.
+     * <p>
+     * 이 경우, sellerId는 더 이상 유효하지 않으므로 null로 초기화합니다.
+     * 이 메서드는 주로 상품을 장바구니에서 제거하고 난 후 장바구니가 비어있는지 확인하는데 사용됩니다.
+     *
+     * @see #updateCartItem(UpdateCartItemRequest)
+     */
     private void resetSellerIdIfCartEmpty() {
         if (cartItems.isEmpty()) {
             this.sellerId = null;

@@ -1,7 +1,7 @@
 package fixture.product;
 
-import domain.product.Product;
-import domain.product.ProductImage;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
 
 public class ProductImageFixture {
 
