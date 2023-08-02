@@ -7,9 +7,12 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
 #        globally_quoted_identifiers: true
@@ -20,6 +23,7 @@ spring:
   sql:
     init:
       mode: always
+      schema-locations: classpath:sql/schema-h2.sql
   cloud:
     vault:
       enabled: false
