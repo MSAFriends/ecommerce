@@ -1,29 +1,28 @@
 package com.github.msafriends.serviceorder.moduleapi.service;
 
 import com.github.msafriends.serviceorder.moduleapi.client.MemberServiceClient;
-import com.github.msafriends.serviceorder.moduleapi.client.ProductServiceClient;
-import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
+import com.github.msafriends.serviceorder.modulecore.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
-import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
-import com.github.msafriends.serviceorder.modulecore.dto.request.order.OrderRequest;
-import com.github.msafriends.serviceorder.modulecore.dto.request.order.RecipientRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.coupon.OrderCouponResponse;
+import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderPendingResponse;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
-import com.github.msafriends.serviceorder.modulecore.dto.response.order.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberServiceClient memberServiceClient;
-    private final ProductServiceClient productServiceClient;
 
     public OrderResponse getOrder(Long orderId) {
         return orderRepository.findById(orderId)
@@ -31,30 +30,50 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
-    public List<OrderResponse> getOrdersByMemberId(Long memberId) {
+    public List<OrderResponse> getOrderDetailsAwaitingAcceptance(Long memberId) {
+        return orderRepository.findAllByMemberIdAndStatus(memberId, OrderStatus.AWAITING_ACCEPTANCE).stream()
+                .map(OrderResponse::from)
+                .toList();
+    }
+
+    public List<OrderResponse> getAllOrdersByMemberId(Long memberId) {
         return orderRepository.findAllByMemberId(memberId).stream()
                 .map(OrderResponse::from)
                 .toList();
     }
 
+    public Optional<OrderPendingResponse> getOrderPendingByMemberId(Long memberId) {
+        return orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)
+                .map(OrderPendingResponse::from);
+    }
+
     @Transactional
-    public Long createOrder(Long memberId, OrderRequest orderRequest) {
-        List<Product> products = getProducts(orderRequest);
-        validateIfProductStockIsEnough(orderRequest, products);
+    public Long addCartItemToOrder(Long memberId, UpdateCartItemRequest request) {
+        Order pendingOrder = getOrCreatePendingOrder(memberId);
+        pendingOrder.updateCartItem(request);
+        return orderRepository.save(pendingOrder).getId();
+    }
 
-        Order order = Order.builder()
-                .memberId(memberId)
-                .status(OrderStatus.PENDING)
-                .request(orderRequest.getRequest())
-                .products(products)
-                .recipient(RecipientRequest.toRecipient(orderRequest.getRecipient()))
-                .build();
+    public void confirmOrder(Long memberId, ConfirmOrderRequest request) {
+        Order order = orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.confirm(request);
+        applyCoupons(order, request.getOrderCouponIds());
+        orderRepository.save(order);
+    }
 
-        List<OrderCoupon> availableCoupons = OrderCouponResponse.toCoupons(order, memberServiceClient.getAvailableCouponsByMemberId(memberId));
-        validateIfCouponExists(orderRequest, availableCoupons);
-        order.addCoupons(availableCoupons);
+    private void applyCoupons(Order order, List<Long> orderCouponIds) {
+        List<OrderCouponResponse> availableCoupons = memberServiceClient.getAvailableCouponsByMemberId(order.getMemberId());
+        List<OrderCoupon> appliedCoupons = new ArrayList<>();
 
-        return orderRepository.save(order).getId();
+        orderCouponIds.forEach(couponId -> {
+            OrderCouponResponse coupon = availableCoupons.stream()
+                    .filter(c -> c.getId().equals(couponId))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Coupon not found"));
+            appliedCoupons.add(OrderCouponResponse.toCoupon(order, coupon));
+        });
+        order.addCoupons(appliedCoupons);
     }
 
     @Transactional
@@ -62,30 +81,10 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
-    private void validateIfCouponExists(OrderRequest orderRequest, List<OrderCoupon> availableCoupons) {
-        orderRequest.getOrderCouponIds().forEach(orderCouponId -> {
-            if (availableCoupons.stream().noneMatch(availableCoupon -> availableCoupon.getCouponId().equals(orderCouponId))) {
-                throw new RuntimeException(String.format("Coupon with ID %d not found", orderCouponId));
-            }
-        });
-    }
-
-    private void validateIfProductStockIsEnough(OrderRequest orderRequest, List<Product> products) {
-        orderRequest.getOrderItems().forEach(orderItemRequest -> {
-            Product product = products.stream()
-                    .filter(p -> p.getId().equals(orderItemRequest.getProductId()))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException(String.format("Product with ID %d not found", orderItemRequest.getProductId())));
-
-            if (product.getQuantity() < orderItemRequest.getQuantity()) {
-                throw new RuntimeException(String.format("Product stock for product ID %d is not enough", product.getId()));
-            }
-        });
-    }
-
-    private List<Product> getProducts(OrderRequest orderRequest) {
-        return orderRequest.getOrderItems().stream()
-                .map(orderItemRequest -> ProductResponse.toProduct(productServiceClient.getProduct(orderItemRequest.getProductId())))
-                .toList();
+    private Order getOrCreatePendingOrder(Long memberId) {
+        Optional<Order> pendingOrder = orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING);
+        return pendingOrder.orElseGet(() -> Order.createPendingOrderBuilder()
+                .memberId(memberId)
+                .build());
     }
 }

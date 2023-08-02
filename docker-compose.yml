@@ -21,13 +21,16 @@ services:
     networks:
       - msafriends_network
     depends_on:
-      - order-mysql
-      - discovery-service
-      - api-gateway-service
+      order-mysql:
+        condition: service_healthy
+      discovery-service:
+        condition: service_started
+      api-gateway-service:
+        condition: service_started
     env_file:
       - .env
     ports:
-      - "8002:8080"
+      - "8000:8080"
 
   order-mysql:
     image: mysql:8.0
@@ -38,9 +41,62 @@ services:
       - ./.docker/order-service/db/data:/var/lib/mysql
       - ./.docker/order-service/db/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "8502:3306"
+      - "8050:3306"
     env_file:
       - .env
+    environment:
+      MYSQL_DATABASE: ecommerce-order
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+  member-service:
+    image: ecommerce-service-member:latest
+    networks:
+      - msafriends_network
+    depends_on:
+      member-mysql:
+          condition: service_healthy
+      discovery-service:
+          condition: service_started
+      api-gateway-service:
+        condition: service_started
+    env_file:
+      - .env
+    ports:
+      - "8200:8080"
+
+  member-mysql:
+    image: mysql:8.0
+    networks:
+      - msafriends_network
+    volumes:
+      - ./.docker/member-service/db/conf.d:/etc/mysql/conf.d
+      - ./.docker/member-service/db/data:/var/lib/mysql
+      - ./.docker/member-service/db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "8250:3306"
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ecommerce-member
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    networks:
+      - msafriends_network
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
 
 networks:
   msafriends_network:

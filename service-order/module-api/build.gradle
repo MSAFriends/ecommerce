@@ -7,10 +7,15 @@ dependencies {
     testImplementation testFixtures(project(':service-order:module-core'))
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-    implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+    runtimeOnly 'com.h2database:h2'
 }
 
 ext {

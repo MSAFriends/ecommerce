@@ -25,7 +25,7 @@ public class MemberFixture {
         return Seller.builder()
                 .nickName(SELLER_NICK_NAME)
                 .userName(SELLER_NAME)
-                .grd(GRD)
+                .grade(GRD)
                 .build();
     }
 }

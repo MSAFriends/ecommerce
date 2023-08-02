@@ -2,18 +2,18 @@ package com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy;
 
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.CouponDiscountType;
-import com.github.msafriends.serviceorder.modulecore.domain.order.OrderItem;
+import com.github.msafriends.serviceorder.modulecore.domain.order.CartItem;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 public class PriceCalculator {
-    private final List<OrderItem> orderItems;
+    private final List<CartItem> cartItems;
     private final List<OrderCoupon> coupons;
 
     public int calculateTotalPrice() {
-        return orderItems.stream()
+        return cartItems.stream()
                 .mapToInt(item -> item.getProduct().getPrice() * item.getProduct().getQuantity())
                 .sum();
     }

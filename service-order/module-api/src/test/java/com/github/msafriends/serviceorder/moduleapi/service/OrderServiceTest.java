@@ -1,16 +1,13 @@
 package com.github.msafriends.serviceorder.moduleapi.service;
 
 import com.github.msafriends.serviceorder.moduleapi.client.MemberServiceClient;
-import com.github.msafriends.serviceorder.moduleapi.client.ProductServiceClient;
-import com.github.msafriends.serviceorder.moduleapi.repository.OrderRepository;
+import com.github.msafriends.serviceorder.modulecore.repository.OrderRepository;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
-import com.github.msafriends.serviceorder.modulecore.dto.request.order.OrderRequest;
+import com.github.msafriends.serviceorder.modulecore.domain.order.OrderStatus;
+import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderResponse;
-import com.github.msafriends.serviceorder.modulecore.dto.response.order.ProductResponse;
-import com.github.msafriends.serviceorder.modulecore.fixture.OrderCouponFixture;
+import com.github.msafriends.serviceorder.modulecore.fixture.CartItemFixture;
 import com.github.msafriends.serviceorder.modulecore.fixture.OrderFixture;
-import com.github.msafriends.serviceorder.modulecore.fixture.OrderItemFixture;
-import com.github.msafriends.serviceorder.modulecore.fixture.ProductFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +33,6 @@ class OrderServiceTest {
     @Mock
     private MemberServiceClient memberServiceClient;
 
-    @Mock
-    private ProductServiceClient productServiceClient;
-
     @InjectMocks
     private OrderService orderService;
 
@@ -49,7 +44,7 @@ class OrderServiceTest {
         void testGetOrder() {
             // given
             Long orderId = 1L;
-            Order order = OrderFixture.createDefaultOrderWithId(orderId);
+            Order order = OrderFixture.createPendingOrderWithId(orderId);
             OrderResponse orderResponse = OrderFixture.createOrderResponse(order);
 
             when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
@@ -67,13 +62,13 @@ class OrderServiceTest {
             // given
             Long memberId = 1L;
             List<Order> orders = List.of(
-                    OrderFixture.createDefaultOrderWithId(1L),
-                    OrderFixture.createDefaultOrderWithId(2L));
+                    OrderFixture.createPendingOrderWithId(1L),
+                    OrderFixture.createPendingOrderWithId(2L));
 
             when(orderRepository.findAllByMemberId(memberId)).thenReturn(orders);
 
             // when
-            List<OrderResponse> result = orderService.getOrdersByMemberId(memberId);
+            List<OrderResponse> result = orderService.getAllOrdersByMemberId(memberId);
 
             // then
             assertThat(result).hasSize(2);
@@ -81,85 +76,59 @@ class OrderServiceTest {
     }
 
     @Nested
-    @DisplayName("주문을 생성한다.")
-    class CreateOrderTest {
-
+    @DisplayName("주문 변경")
+    class UpdateOrderTest {
         @Test
-        @DisplayName("존재하지 않는 상품 ID로 주문을 하면 실패한다.")
-        void testCreateOrderWithNonExistingProductId() {
+        @DisplayName("PENDING 상태인 주문에 대해, 주문 항목의 수량을 변경한다.")
+        void testUpdateOrderWithPendingOrder() {
             // given
+            int quantity = 5;
             Long memberId = 1L;
-            Long nonExistingProductId = 2L;
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderItems(
-                    List.of(OrderItemFixture.createOrderItemRequestWithProductId(nonExistingProductId)));
-
-            when(productServiceClient.getProduct(nonExistingProductId)).thenReturn(null);
-
-            // expected
-            assertThatThrownBy(() -> orderService.createOrder(memberId, request))
-                    .isInstanceOf(NullPointerException.class);
-        }
-
-        @Test
-        @DisplayName("재고가 부족한 경우에 주문을 하면 실패한다.")
-        void testCreateOrderWithInsufficientStock() {
-            // given
-            Long memberId = 1L;
-            int currentQuantity = 0;
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderItems(
-                    List.of(OrderItemFixture.createOrderItemRequestWithQuantity(currentQuantity)));
-
-            when(productServiceClient.getProduct(anyLong())).thenReturn(mock(ProductResponse.class));
-
-            // expected
-            assertThatThrownBy(() -> orderService.createOrder(memberId, request))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("quantity must be positive");
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 쿠폰 ID로 주문을 하면 실패한다.")
-        void testCreateOrderWithNonExistingCouponId() {
-            // given
-            Long memberId = 1L;
-            Long existingCouponId = 1L;
-            Long nonExistingCouponId = 2L;
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderCouponIds(List.of(nonExistingCouponId));
-
-            when(productServiceClient.getProduct(anyLong())).thenReturn(
-                    ProductFixture.createDefaultProductResponseWithQuantity(1));
-            when(memberServiceClient.getAvailableCouponsByMemberId(memberId)).thenReturn(List.of(
-                    OrderCouponFixture.createFixedDiscountOrderCouponResponseWithId(existingCouponId)));
-
-            // expected
-            assertThatThrownBy(() -> orderService.createOrder(memberId, request))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage(String.format("Coupon with ID %d not found", nonExistingCouponId));
-        }
-
-        @Test
-        @DisplayName("성공적으로 주문을 생성한다.")
-        void testCreateOrder() {
-            // given
-            Long memberId = 1L;
-            Long orderId = 1L;
-            Long existingProductId = 1L;
-            Long existingCouponId = 1L;
-            Order order = OrderFixture.createDefaultOrderWithId(orderId);
-            OrderRequest request = OrderFixture.createOrderRequestWithOrderItems(
-                    List.of(OrderItemFixture.createOrderItemRequestWithProductId(existingProductId)));
-
-            when(productServiceClient.getProduct(existingProductId)).thenReturn(
-                    ProductFixture.createDefaultProductResponseWithQuantity(1));
-            when(memberServiceClient.getAvailableCouponsByMemberId(memberId)).thenReturn(List.of(
-                    OrderCouponFixture.createFixedDiscountOrderCouponResponseWithId(existingCouponId)));
-            when(orderRepository.save(any(Order.class))).thenReturn(order);
+            Order pendingOrder = OrderFixture.createDefaultPendingOrder();
+            when(orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)).thenReturn(Optional.of(pendingOrder));
+            when(orderRepository.save(pendingOrder)).thenReturn(pendingOrder);
 
             // when
-            Long result = orderService.createOrder(memberId, request);
+            orderService.addCartItemToOrder(memberId, CartItemFixture.createUpdateCartItemRequestWithQuantity(quantity));
+
+            // then
+            assertThat(pendingOrder.getCartItems()).hasSize(1);
+            assertThat(pendingOrder.getCartItems().get(0).getProduct().getQuantity()).isEqualTo(quantity);
+        }
+    }
+
+    @Nested
+    @DisplayName("주문 확정")
+    class ConfirmOrderTest {
+        @Test
+        @DisplayName("PENDING 상태인 주문이 없으면 예외를 던진다.")
+        void testConfirmOrderWithNoPendingOrder() {
+            // given
+            Long memberId = 1L;
+            ConfirmOrderRequest request = OrderFixture.createConfirmOrderRequestWithRequest("테스트 요청사항");
+            when(orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)).thenReturn(Optional.empty());
 
             // expected
-            assertThat(result).isEqualTo(orderId);
+            assertThatThrownBy(() -> orderService.confirmOrder(memberId, request))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessage("Order not found");
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 쿠폰을 적용하려고 하면 예외를 던진다.")
+        void testConfirmOrderWithNonExistingCoupon() {
+            // given
+            Long memberId = 1L;
+            ConfirmOrderRequest request = OrderFixture.createConfirmOrderRequestWithOrderCouponIds(List.of(1L));
+            Order pendingOrder = OrderFixture.createDefaultPendingOrder();
+
+            when(orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)).thenReturn(Optional.of(pendingOrder));
+            when(memberServiceClient.getAvailableCouponsByMemberId(memberId)).thenReturn(Collections.emptyList());
+
+            // expected
+            assertThatThrownBy(() -> orderService.confirmOrder(memberId, request))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessage("Coupon not found");
         }
     }
 

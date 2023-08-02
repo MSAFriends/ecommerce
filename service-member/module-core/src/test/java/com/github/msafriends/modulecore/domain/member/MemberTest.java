@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-
 class MemberTest {
     private static final String MEMBER_ADDRESS = "서울시 서대문구 홍제동";
 

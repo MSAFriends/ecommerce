@@ -15,17 +15,17 @@ public class OrderResponse {
     private final PriceResponse price;
     private final String request;
     private final RecipientResponse recipient;
-    private final List<OrderItemResponse> orderItems;
+    private final List<CartItemResponse> cartItems;
 
     @Builder
-    public OrderResponse(Long id, Long memberId, OrderStatus status, PriceResponse price, String request, RecipientResponse recipient, List<OrderItemResponse> orderItems) {
+    public OrderResponse(Long id, Long memberId, OrderStatus status, PriceResponse price, String request, RecipientResponse recipient, List<CartItemResponse> cartItems) {
         this.id = id;
         this.memberId = memberId;
         this.status = status;
         this.price = price;
         this.request = request;
         this.recipient = recipient;
-        this.orderItems = orderItems;
+        this.cartItems = cartItems;
     }
 
     public static OrderResponse from(final Order order) {
@@ -36,7 +36,7 @@ public class OrderResponse {
                 .request(order.getRequest())
                 .recipient(RecipientResponse.from(order.getRecipient()))
                 .price(PriceResponse.from(order))
-                .orderItems(OrderItemResponse.from(order.getOrderItems()))
+                .cartItems(CartItemResponse.from(order.getCartItems()))
                 .build();
     }
 }

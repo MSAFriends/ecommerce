@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.github.msafriends")
 @EntityScan(basePackages = "com.github.msafriends.serviceorder.modulecore.domain")
 public class ModuleApiApplication {
 
