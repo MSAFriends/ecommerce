@@ -1,4 +1,4 @@
-package src.main.java.com.github.msafriends.modulebatch.csv;
+package com.github.msafriends.modulebatch.csv;
 
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 

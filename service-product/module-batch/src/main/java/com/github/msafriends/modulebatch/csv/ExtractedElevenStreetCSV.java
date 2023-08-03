@@ -1,11 +1,6 @@
-package src.main.java.com.github.msafriends.modulebatch.csv;
-
-import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
-import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
-import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
+package com.github.msafriends.modulebatch.csv;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExtractedElevenStreetCSV implements ElevenStreetCSV {
+public class ExtractedElevenStreetCSV {
     private Long code;
     private String name;
     private int priceValue;

@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.controller.v1;
+package com.github.msafriends.serviceproduct.moduleapi.controller.external.v1;
 
 import java.net.URI;
 

@@ -1,4 +1,4 @@
-package src.main.java.com.github.msafriends.modulebatch.config.strategy;
+package com.github.msafriends.modulebatch.config.strategy;
 
 public class H2QueryStrategy implements QueryStrategy{
     private final String tableName;

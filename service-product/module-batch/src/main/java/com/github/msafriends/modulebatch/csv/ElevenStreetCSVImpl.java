@@ -1,4 +1,4 @@
-package src.main.java.com.github.msafriends.modulebatch.csv;
+package com.github.msafriends.modulebatch.csv;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ElevenStreetCSVImpl implements ElevenStreetCSV{
+public class ElevenStreetCSVImpl {
     private Long id;
     private String ProductCode;
     private String ProductName;

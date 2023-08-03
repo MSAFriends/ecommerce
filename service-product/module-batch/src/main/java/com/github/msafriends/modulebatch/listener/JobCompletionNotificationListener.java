@@ -1,4 +1,4 @@
-package src.main.java.com.github.msafriends.modulebatch.listener;
+package com.github.msafriends.modulebatch.listener;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;

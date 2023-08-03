@@ -1,4 +1,4 @@
-package src.main.java.com.github.msafriends.modulebatch.processor;
+package com.github.msafriends.modulebatch.processor;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import src.main.java.com.github.msafriends.modulebatch.csv.ElevenStreetCSVImpl;
+import com.github.msafriends.modulebatch.csv.ElevenStreetCSVImpl;
 
 @Slf4j
 @Component
