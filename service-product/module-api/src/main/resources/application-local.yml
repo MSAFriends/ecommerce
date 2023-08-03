@@ -3,7 +3,7 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:tcp://localhost/~/ecommerce-member;MODE=MySQL;NON_KEYWORDS=value;
+    url: jdbc:h2:mem://localhost/~/ecommerce-member;MODE=MySQL;NON_KEYWORDS=value;
     username: sa
     password:
     driver-class-name: org.h2.Driver
