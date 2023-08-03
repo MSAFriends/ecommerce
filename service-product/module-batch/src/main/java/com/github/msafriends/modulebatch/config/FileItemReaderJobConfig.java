@@ -1,37 +1,49 @@
-package src.main.java.com.github.msafriends.modulebatch.config;
+package com.github.msafriends.modulebatch.config;
+
+import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.support.CompositeItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.github.msafriends.modulebatch.config.strategy.ProfileBasedQueryStrategyProvider;
+import com.github.msafriends.modulebatch.config.strategy.QueryStrategyParams;
+import com.github.msafriends.modulebatch.csv.ElevenStreetCSVImpl;
+import com.github.msafriends.modulebatch.csv.ExtractedElevenStreetCSV;
+import com.github.msafriends.modulebatch.listener.JobCompletionNotificationListener;
+import com.github.msafriends.modulebatch.processor.ElevenStreetItemProcessor;
+import com.github.msafriends.modulebatch.processor.ElevenStreetNewItemProcessor;
+
 import lombok.RequiredArgsConstructor;
-import src.main.java.com.github.msafriends.modulebatch.config.strategy.QueryStrategyParams;
-import src.main.java.com.github.msafriends.modulebatch.csv.ElevenStreetCSVImpl;
-import src.main.java.com.github.msafriends.modulebatch.listener.JobCompletionNotificationListener;
-import src.main.java.com.github.msafriends.modulebatch.processor.ElevenStreetItemProcessor;
-import src.main.java.com.github.msafriends.modulebatch.processor.ElevenStreetNewItemProcessor;
 
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
 public class FileItemReaderJobConfig {
-
+    private static final int CHUNK_SIZE = 1000;
     private static final String ITEM_READER_NAME = "elevenStreetItemReader";
     private static final String ELEVEN_STREET_CSV_FILE_NAME = "productDataWithSellerId.csv";
     private static final String ELEVEN_STREET_CSV_RESOURCE_URL = "/" + ELEVEN_STREET_CSV_FILE_NAME;
-
 
     private final DataSource dataSource;
     private final ElevenStreetItemProcessor processor;
@@ -62,14 +74,37 @@ public class FileItemReaderJobConfig {
 
     @Bean
     @StepScope
-    public JdbcBatchItemWriter<ElevenStreetCSVImpl> stepWriterProductTable(){
-
+    public JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductTable(){
+        QueryStrategyParams queryStrategyParams = getProductQueryStrategyParams();
+        String sql = new ProfileBasedQueryStrategyProvider(environment, queryStrategyParams).getQuery();
+        return new JdbcBatchItemWriterBuilder<ExtractedElevenStreetCSV>()
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+            .sql(sql)
+            .dataSource(dataSource)
+            .build();
     }
 
     @Bean
     @StepScope
-    public JdbcBatchItemWriter<ElevenStreetCSVImpl> stepWriterProductImageTable(){
+    public JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductImageTable(){
+        QueryStrategyParams queryStrategyParams = getProductImageQueryStrategyParams();
+        String sql = new ProfileBasedQueryStrategyProvider(environment, queryStrategyParams).getQuery();
+        return new JdbcBatchItemWriterBuilder<ExtractedElevenStreetCSV>()
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+            .sql(sql)
+            .dataSource(dataSource)
+            .build();
+    }
 
+    @Bean
+    @StepScope
+    public CompositeItemWriter<ExtractedElevenStreetCSV> compositeItemWriter(
+        @Qualifier("stepWriterProductTable") JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductTable,
+        @Qualifier("stepWriterProductImageTable") JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductImageTable
+    ){
+        CompositeItemWriter<ExtractedElevenStreetCSV> writer  = new CompositeItemWriter<>();
+        writer.setDelegates(List.of(stepWriterProductTable, stepWriterProductImageTable));
+        return writer;
     }
 
     private QueryStrategyParams getProductQueryStrategyParams(){
@@ -78,6 +113,26 @@ public class FileItemReaderJobConfig {
             .columnNames(new String[]{"code", "name", "price_value", "sale_price_value", "quantity", "delivery", "discount", "mileage", "age_limit", "seller_id"})
             //Value는 CSV 기준
             .columnValues(new String[]{":code", ":name", ":priceValue", ":salePriceValue", ":quantity", ":delivery", ":discount", ":mileage", ":ageLimit", ":sellerId"})
+            .build();
+    }
+
+    @Bean
+    public Step stepElevenStreetProductAndProductImageDataMigration(){
+        return new StepBuilder("step - loading elevenStreet seller data into database", jobRepository)
+            .<ElevenStreetCSVImpl, ExtractedElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
+            .reader(reader())
+            .processor(newItemProcessor)
+            .writer(compositeItemWriter(stepWriterProductTable(), stepWriterProductImageTable()))
+            .build();
+    }
+
+    @Bean
+    @Qualifier("elevenStreetProductAndProductImageDataMigration")
+    public Job elevenStreetSellerDataMigrationJob(){
+        return new JobBuilder("elevenStreetProductAndProductImageDataMigration", jobRepository)
+            .incrementer(new RunIdIncrementer())
+            .listener(listener)
+            .start(stepElevenStreetProductAndProductImageDataMigration())
             .build();
     }
 
@@ -99,7 +154,7 @@ public class FileItemReaderJobConfig {
                 ":size130", ":size140",
                 ":size150", ":size170",
                 ":size200", ":size250",
-                ":size270", ":size_300"
+                ":size270", ":size300"
             })
             .build();
     }
