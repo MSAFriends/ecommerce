@@ -73,6 +73,10 @@ public class Coupon {
         this.memberCoupons.add(memberCoupon);
     }
 
+    public void reduceQuantity(int quantity) {
+        this.quantity = this.quantity - quantity;
+    }
+
     private int generateMaxQuantityPerMember(Integer maxQuantityPerMember) {
         if (maxQuantityPerMember == null) {
             return DEFAULT_MAX_QUANTITY_MEMBER;
