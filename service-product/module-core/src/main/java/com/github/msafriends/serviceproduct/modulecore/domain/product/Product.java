@@ -19,9 +19,10 @@ import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 import com.github.msafriends.modulecommon.exception.ErrorCode;
 import com.github.msafriends.modulecommon.exception.InvalidValueException;
 
-@Entity
-@NoArgsConstructor(access = PROTECTED)
 @Getter
+@Entity
+@Table(name = "products")
+@NoArgsConstructor(access = PROTECTED)
 public class Product extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

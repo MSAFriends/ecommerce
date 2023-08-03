@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PROTECTED;
 
-@Entity
-@NoArgsConstructor(access = PROTECTED)
 @Getter
+@Entity
+@Table(name = "product_images")
+@NoArgsConstructor(access = PROTECTED)
 public class ProductImage {
     @Id @GeneratedValue
     @Column(name = "product_image_id")
@@ -20,16 +21,27 @@ public class ProductImage {
     @JoinColumn(name = "product_id")
     private Product product;
     private String base;
+    @Column(name = "size_100")
     private String size100;
+    @Column(name = "size_110")
     private String size110;
+    @Column(name = "size_120")
     private String size120;
+    @Column(name = "size_130")
     private String size130;
+    @Column(name = "size_140")
     private String size140;
+    @Column(name = "size_150")
     private String size150;
+    @Column(name = "size_170")
     private String size170;
+    @Column(name = "size_200")
     private String size200;
+    @Column(name = "size_250")
     private String size250;
+    @Column(name = "size_270")
     private String size270;
+    @Column(name = "size_300")
     private String size300;
 
     @Builder
