@@ -15,6 +15,7 @@ public class ExtractedElevenStreetCSV {
     private int salePriceValue;
     private int quantity;
     private String delivery;
+    private int buySatisfy;
     private int discount;
     private int mileage;
     private String ageLimit;
@@ -34,15 +35,16 @@ public class ExtractedElevenStreetCSV {
     private String size300;
 
     public ExtractedElevenStreetCSV(Long code, String name, int priceValue, int salePriceValue, int quantity,
-        String delivery, int discount, int mileage, String ageLimit, Long sellerId, Long productId, String base,
-        String size100, String size110, String size120, String size130, String size140, String size150, String size170,
-        String size200, String size250, String size270, String size300) {
+        String delivery, int buySatisfy, int discount, int mileage, String ageLimit, Long sellerId, Long productId,
+        String base, String size100, String size110, String size120, String size130, String size140, String size150,
+        String size170, String size200, String size250, String size270, String size300) {
         this.code = code;
         this.name = name;
         this.priceValue = priceValue;
         this.salePriceValue = salePriceValue;
         this.quantity = quantity;
         this.delivery = delivery;
+        this.buySatisfy = buySatisfy;
         this.discount = discount;
         this.mileage = mileage;
         this.ageLimit = ageLimit;
