@@ -10,7 +10,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.msafriends.modulebatch.csv.ElevenStreetCSVImpl;
+import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,25 +24,29 @@ import com.github.msafriends.modulebatch.csv.ExtractedElevenStreetCSV;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetCSVImpl, ExtractedElevenStreetCSV> {
+public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetCSV, ExtractedElevenStreetCSV> {
+    private static Long PRODUCT_ID_LIMIT = 13406L;
+
     private final DataSource dataSource;
 
     @Override
     @Transactional
-    public ExtractedElevenStreetCSV process(ElevenStreetCSVImpl item) throws Exception {
+    public ExtractedElevenStreetCSV process(ElevenStreetCSV item) throws Exception {
         String benefit = item.getBenefit();
+        Random random = new Random();
         ExtractedElevenStreetCSV processedItem = new ExtractedElevenStreetCSV(
             Long.parseLong(item.getProductCode()),
             item.getProductName(),
             item.getProductPrice(),
             item.getSalePrice(),
-            new Random().nextInt(30000),
+            random.nextInt(30000),
             item.getDelivery(),
+            item.getBuySatisfy(),
             extractIntValue(benefit, "Discount"),
             extractIntValue(benefit, "Mileage"),
             extractAgeLimit(item.getMinorYn()),
             item.getSellerId(),
-            item.getId(),
+            diversion(item.getId(), random),
             item.getProductImage(),
             item.getProductImage100(),
             item.getProductImage110(),
@@ -60,6 +64,10 @@ public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetC
         return processedItem;
     }
 
+    private Long diversion(Long id, Random random){
+        if(id > PRODUCT_ID_LIMIT) return random.nextLong(PRODUCT_ID_LIMIT);
+        return id;
+    }
     private String extractAgeLimit(String isMinor){
         return isMinor.equals("Y") ? "MINOR" : "ADULT";
     }
