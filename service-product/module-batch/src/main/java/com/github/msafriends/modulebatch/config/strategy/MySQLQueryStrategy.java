@@ -19,10 +19,8 @@ public class MySQLQueryStrategy implements QueryStrategy{
     public String getInsertSQL() {
         String columns = String.join(", ", columnNames);
         String values = String.join(", ", columnValues);
-        if(tableName.equals("product")){
+        if(tableName.equals("product"))
             return String.format("INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s = %s", tableName, columns, values, uniqueColumnName, uniqueColumnValue);
-        }else {
-            return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, values);
-        }
+        return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, values);
     }
 }

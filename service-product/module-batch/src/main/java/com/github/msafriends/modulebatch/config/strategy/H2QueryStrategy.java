@@ -17,10 +17,8 @@ public class H2QueryStrategy implements QueryStrategy{
     public String getInsertSQL() {
         String columns = String.join(", ", columnNames);
         String values = String.join(", ", columnValues);
-        if(tableName.equals("products")){
+        if(tableName.equals("products"))
             return String.format("MERGE INTO %s (%s) KEY (%s) VALUES (%s)", tableName, columns, uniqueColumnName, values);
-        }else {
-            return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, values);
-        }
+        return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, values);
     }
 }
