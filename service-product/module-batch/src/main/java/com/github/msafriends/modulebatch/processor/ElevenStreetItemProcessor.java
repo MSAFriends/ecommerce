@@ -12,6 +12,7 @@ import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
 @Component
 @RequiredArgsConstructor
 public class ElevenStreetItemProcessor implements ItemProcessor<ElevenStreetCSV, ElevenStreetCSV> {
+
     @Override
     @Transactional
     public ElevenStreetCSV process(ElevenStreetCSV item) throws Exception {

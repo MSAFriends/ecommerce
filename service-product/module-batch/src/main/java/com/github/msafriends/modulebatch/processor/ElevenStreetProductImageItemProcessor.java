@@ -1,10 +1,6 @@
 package com.github.msafriends.modulebatch.processor;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
@@ -15,19 +11,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
-import com.github.msafriends.modulebatch.csv.ProductElevenStreetCSV;
 import com.github.msafriends.modulebatch.csv.ProductImageElevenStreetCSV;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * input : ElevenStreetCSV
- * output : ElevenStreetCSV
- */
 @Slf4j
 @Component
-
 public class ElevenStreetProductImageItemProcessor implements ItemProcessor<ElevenStreetCSV, ProductImageElevenStreetCSV> {
     private final JdbcTemplate jdbcTemplate;
     private final DataSource dataSource;
