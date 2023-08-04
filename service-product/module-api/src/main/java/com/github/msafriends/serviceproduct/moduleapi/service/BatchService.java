@@ -11,19 +11,29 @@ import org.springframework.stereotype.Service;
 public class BatchService {
     private static final String JOB_INSTANCE_KEY = "time";
     private final JobLauncher jobLauncher;
-    private final Job dataMigrationJob;
+    private final Job productJob;
+    private final Job productImageJob;
 
     public BatchService(
         JobLauncher jobLauncher,
-        @Qualifier("elevenStreetProductAndProductImageDataMigration") Job dataMigrationJob) {
+        @Qualifier("elevenStreetProductDataMigration") Job productJob,
+        @Qualifier("elevenStreetProductImageDataMigration") Job productImageJob
+    ) {
         this.jobLauncher = jobLauncher;
-        this.dataMigrationJob = dataMigrationJob;
+        this.productJob = productJob;
+        this.productImageJob = productImageJob;
     }
 
-    public void startElevenStreetProductAndProductImageDataMigration() throws Exception{
+    public void startElevenStreetProductMigration() throws Exception{
         JobParameters jobParameters = new JobParametersBuilder()
             .addLong(JOB_INSTANCE_KEY, System.currentTimeMillis())
             .toJobParameters();
-        jobLauncher.run(dataMigrationJob, jobParameters);
+        jobLauncher.run(productJob, jobParameters);
+    }
+    public void startElevenStreetProductImageMigration() throws Exception{
+        JobParameters jobParameters = new JobParametersBuilder()
+            .addLong(JOB_INSTANCE_KEY, System.currentTimeMillis())
+            .toJobParameters();
+        jobLauncher.run(productImageJob, jobParameters);
     }
 }

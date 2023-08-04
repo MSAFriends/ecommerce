@@ -17,9 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 public class BatchExternalControllerV1 {
     private final BatchService batchService;
 
-    @PostMapping("/init/migration")
-    public ResponseEntity<String> runJob() throws Exception{
-        batchService.startElevenStreetProductAndProductImageDataMigration();
+    @PostMapping("/init/product/migration")
+    public ResponseEntity<String> runProductJob() throws Exception{
+        batchService.startElevenStreetProductMigration();
+        return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping("/init/product-image/migration")
+    public ResponseEntity<String> runProductImageJob() throws Exception{
+        batchService.startElevenStreetProductImageMigration();
         return ResponseEntity.ok("ok");
     }
 }
