@@ -15,7 +15,7 @@ import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.github.msafriends.modulebatch.csv.ExtractedElevenStreetCSV;
+import com.github.msafriends.modulebatch.csv.ProductElevenStreetCSV;
 
 /**
  * input : ElevenStreetCSV
@@ -24,17 +24,15 @@ import com.github.msafriends.modulebatch.csv.ExtractedElevenStreetCSV;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetCSV, ExtractedElevenStreetCSV> {
-    private static Long PRODUCT_ID_LIMIT = 13406L;
-
+public class ElevenStreetProductItemProcessor implements ItemProcessor<ElevenStreetCSV, ProductElevenStreetCSV> {
     private final DataSource dataSource;
 
     @Override
     @Transactional
-    public ExtractedElevenStreetCSV process(ElevenStreetCSV item) throws Exception {
+    public ProductElevenStreetCSV process(ElevenStreetCSV item) throws Exception {
         String benefit = item.getBenefit();
         Random random = new Random();
-        ExtractedElevenStreetCSV processedItem = new ExtractedElevenStreetCSV(
+        ProductElevenStreetCSV processedItem = new ProductElevenStreetCSV(
             Long.parseLong(item.getProductCode()),
             item.getProductName(),
             item.getProductPrice(),
@@ -45,29 +43,12 @@ public class ElevenStreetNewItemProcessor implements ItemProcessor<ElevenStreetC
             extractIntValue(benefit, "Discount"),
             extractIntValue(benefit, "Mileage"),
             extractAgeLimit(item.getMinorYn()),
-            item.getSellerId(),
-            diversion(item.getId(), random),
-            item.getProductImage(),
-            item.getProductImage100(),
-            item.getProductImage110(),
-            item.getProductImage120(),
-            item.getProductImage130(),
-            item.getProductImage140(),
-            item.getProductImage150(),
-            item.getProductImage170(),
-            item.getProductImage200(),
-            item.getProductImage250(),
-            item.getProductImage270(),
-            item.getProductImage300()
+            item.getSellerId()
         );
         log.info("step = {} {}", item.getId(), item.getProductName());
         return processedItem;
     }
 
-    private Long diversion(Long id, Random random){
-        if(id > PRODUCT_ID_LIMIT) return random.nextLong(PRODUCT_ID_LIMIT);
-        return id;
-    }
     private String extractAgeLimit(String isMinor){
         return isMinor.equals("Y") ? "MINOR" : "ADULT";
     }
