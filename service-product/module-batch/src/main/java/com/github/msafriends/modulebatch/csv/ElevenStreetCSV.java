@@ -10,14 +10,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ElevenStreetCSVImpl {
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class ElevenStreetCSV {
     private Long id;
     private String ProductCode;
     private String ProductName;
     private int ProductPrice;
     private int SalePrice;
-    private String rating;
+    private String Rating;
     private String DetailPageUrl;
     private String Delivery;
     private int ReviewCount;
@@ -43,20 +43,13 @@ public class ElevenStreetCSVImpl {
     private int SellerGrd;
     private Long sellerId;
 
-    public ElevenStreetCSVImpl(Long id, String productCode, String productName, int productPrice, int salePrice,
-        String rating,
-        String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String minorYn, String benefit,
-        String productImage, String productImage100, String productImage110, String productImage120,
-        String productImage130,
-        String productImage140, String productImage150, String productImage170, String productImage200,
-        String productImage250, String productImage270, String productImage300, String text1, String text2,
-        String sellerNick, String seller, int sellerGrd, Long sellerId) {
+    public ElevenStreetCSV(Long id, String productCode, String productName, int productPrice, int salePrice, String rating, String detailPageUrl, String delivery, int reviewCount, int buySatisfy, String minorYn, String benefit, String productImage, String productImage100, String productImage110, String productImage120, String productImage130, String productImage140, String productImage150, String productImage170, String productImage200, String productImage250, String productImage270, String productImage300, String text1, String text2, String sellerNick, String seller, int sellerGrd, Long sellerId) {
         this.id = id;
         ProductCode = productCode;
         ProductName = productName;
         ProductPrice = productPrice;
         SalePrice = salePrice;
-        this.rating = rating;
+        Rating = rating;
         DetailPageUrl = detailPageUrl;
         Delivery = delivery;
         ReviewCount = reviewCount;
@@ -83,8 +76,8 @@ public class ElevenStreetCSVImpl {
         this.sellerId = sellerId;
     }
 
-    private static String[] getFieldNames(){
-        Field[] fields = ElevenStreetCSVImpl.class.getFields();
+    public static String[] getFieldNames() {
+        Field[] fields = ElevenStreetCSV.class.getDeclaredFields();
         return Arrays.stream(fields)
             .map(Field::getName)
             .toArray(String[]::new);
