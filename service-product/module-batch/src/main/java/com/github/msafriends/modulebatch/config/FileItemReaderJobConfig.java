@@ -33,7 +33,6 @@ import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
 import com.github.msafriends.modulebatch.csv.ProductElevenStreetCSV;
 import com.github.msafriends.modulebatch.csv.ProductImageElevenStreetCSV;
 import com.github.msafriends.modulebatch.listener.JobCompletionNotificationListener;
-import com.github.msafriends.modulebatch.processor.ElevenStreetItemProcessor;
 import com.github.msafriends.modulebatch.processor.ElevenStreetProductImageItemProcessor;
 import com.github.msafriends.modulebatch.processor.ElevenStreetProductItemProcessor;
 
@@ -49,7 +48,6 @@ public class FileItemReaderJobConfig {
     private static final String ELEVEN_STREET_CSV_RESOURCE_URL = "/" + ELEVEN_STREET_CSV_FILE_NAME;
 
     private final DataSource dataSource;
-    private final ElevenStreetItemProcessor processor;
     private final ElevenStreetProductItemProcessor productProcessor;
     private final ElevenStreetProductImageItemProcessor productImageProcessor;
     private final Environment environment;
@@ -124,7 +122,6 @@ public class FileItemReaderJobConfig {
         return QueryStrategyParams.builder()
             .tableName("products")
             .columnNames(new String[]{"code", "name", "price_value", "sale_price_value", "quantity", "delivery", "buy_satisfy", "discount", "mileage", "age_limit", "seller_id"})
-            //Value는 CSV 기준
             .columnValues(new String[]{":code", ":name", ":priceValue", ":salePriceValue", ":quantity", ":delivery", ":buySatisfy", ":discount", ":mileage", ":ageLimit", ":sellerId"})
             .uniqueColumnName("code")
             .uniqueColumnValue(":code")
@@ -143,6 +140,7 @@ public class FileItemReaderJobConfig {
             .skipLimit(10)
             .build();
     }
+
     @Bean
     public Step stepElevenStreetProductImageDataMigration(){
         return new StepBuilder("step - loading elevenStreet productImage data into database", jobRepository)
@@ -165,6 +163,7 @@ public class FileItemReaderJobConfig {
             .start(stepElevenStreetProductDataMigration())
             .build();
     }
+
     @Bean
     @Qualifier("elevenStreetProductImageDataMigration")
     public Job elevenStreetProductImageDataMigrationJob(){
