@@ -30,10 +30,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.github.msafriends.modulebatch.config.strategy.ProfileBasedQueryStrategyProvider;
 import com.github.msafriends.modulebatch.config.strategy.QueryStrategyParams;
 import com.github.msafriends.modulebatch.csv.ElevenStreetCSV;
-import com.github.msafriends.modulebatch.csv.ExtractedElevenStreetCSV;
+import com.github.msafriends.modulebatch.csv.ProductElevenStreetCSV;
+import com.github.msafriends.modulebatch.csv.ProductImageElevenStreetCSV;
 import com.github.msafriends.modulebatch.listener.JobCompletionNotificationListener;
 import com.github.msafriends.modulebatch.processor.ElevenStreetItemProcessor;
-import com.github.msafriends.modulebatch.processor.ElevenStreetNewItemProcessor;
+import com.github.msafriends.modulebatch.processor.ElevenStreetProductImageItemProcessor;
+import com.github.msafriends.modulebatch.processor.ElevenStreetProductItemProcessor;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,7 +50,8 @@ public class FileItemReaderJobConfig {
 
     private final DataSource dataSource;
     private final ElevenStreetItemProcessor processor;
-    private final ElevenStreetNewItemProcessor newItemProcessor;
+    private final ElevenStreetProductItemProcessor productProcessor;
+    private final ElevenStreetProductImageItemProcessor productImageProcessor;
     private final Environment environment;
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
@@ -75,10 +78,10 @@ public class FileItemReaderJobConfig {
 
     @Bean
     @StepScope
-    public JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductTable(){
+    public JdbcBatchItemWriter<ProductElevenStreetCSV> stepWriterProductTable(){
         QueryStrategyParams queryStrategyParams = getProductQueryStrategyParams();
         String sql = new ProfileBasedQueryStrategyProvider(environment, queryStrategyParams).getQuery();
-        return new JdbcBatchItemWriterBuilder<ExtractedElevenStreetCSV>()
+        return new JdbcBatchItemWriterBuilder<ProductElevenStreetCSV>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
             .sql(sql)
             .dataSource(dataSource)
@@ -87,10 +90,10 @@ public class FileItemReaderJobConfig {
 
     @Bean
     @StepScope
-    public JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductImageTable(){
+    public JdbcBatchItemWriter<ProductImageElevenStreetCSV> stepWriterProductImageTable(){
         QueryStrategyParams queryStrategyParams = getProductImageQueryStrategyParams();
         String sql = new ProfileBasedQueryStrategyProvider(environment, queryStrategyParams).getQuery();
-        return new JdbcBatchItemWriterBuilder<ExtractedElevenStreetCSV>()
+        return new JdbcBatchItemWriterBuilder<ProductImageElevenStreetCSV>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
             .sql(sql)
             .dataSource(dataSource)
@@ -99,20 +102,20 @@ public class FileItemReaderJobConfig {
 
     @Bean
     @StepScope
-    public CompositeItemWriter<ExtractedElevenStreetCSV> compositeProductWriter(
-        @Qualifier("stepWriterProductTable") JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductTable
+    public CompositeItemWriter<ProductElevenStreetCSV> compositeProductWriter(
+        @Qualifier("stepWriterProductTable") JdbcBatchItemWriter<ProductElevenStreetCSV> stepWriterProductTable
     ){
-        CompositeItemWriter<ExtractedElevenStreetCSV> writer  = new CompositeItemWriter<>();
+        CompositeItemWriter<ProductElevenStreetCSV> writer  = new CompositeItemWriter<>();
         writer.setDelegates(List.of(stepWriterProductTable));
         return writer;
     }
 
     @Bean
     @StepScope
-    public CompositeItemWriter<ExtractedElevenStreetCSV> compositeProductImageWriter(
-        @Qualifier("stepWriterProductImageTable") JdbcBatchItemWriter<ExtractedElevenStreetCSV> stepWriterProductImageTable
+    public CompositeItemWriter<ProductImageElevenStreetCSV> compositeProductImageWriter(
+        @Qualifier("stepWriterProductImageTable") JdbcBatchItemWriter<ProductImageElevenStreetCSV> stepWriterProductImageTable
     ){
-       CompositeItemWriter<ExtractedElevenStreetCSV> writer = new CompositeItemWriter<>();
+       CompositeItemWriter<ProductImageElevenStreetCSV> writer = new CompositeItemWriter<>();
        writer.setDelegates(List.of(stepWriterProductImageTable));
        return writer;
     }
@@ -131,9 +134,9 @@ public class FileItemReaderJobConfig {
     @Bean
     public Step stepElevenStreetProductDataMigration(){
         return new StepBuilder("step - loading elevenStreet product data into database", jobRepository)
-            .<ElevenStreetCSV, ExtractedElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
+            .<ElevenStreetCSV, ProductElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
             .reader(reader())
-            .processor(newItemProcessor)
+            .processor(productProcessor)
             .writer(compositeProductWriter(stepWriterProductTable()))
             .faultTolerant()
             .skip(FlatFileParseException.class)
@@ -143,9 +146,9 @@ public class FileItemReaderJobConfig {
     @Bean
     public Step stepElevenStreetProductImageDataMigration(){
         return new StepBuilder("step - loading elevenStreet productImage data into database", jobRepository)
-            .<ElevenStreetCSV, ExtractedElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
+            .<ElevenStreetCSV, ProductImageElevenStreetCSV>chunk(CHUNK_SIZE, transactionManager)
             .reader(reader())
-            .processor(newItemProcessor)
+            .processor(productImageProcessor)
             .writer(compositeProductImageWriter(stepWriterProductImageTable()))
             .faultTolerant()
             .skip(FlatFileParseException.class)
