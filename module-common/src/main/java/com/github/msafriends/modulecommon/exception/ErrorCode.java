@@ -38,9 +38,11 @@ public enum ErrorCode {
 	INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "CA_002", "유효하지 않은 카드 유효기간 날짜 형식입니다."),
 	INVALID_PASSWORD_ERROR(HttpStatus.BAD_REQUEST, "CA_003", "잘못된 비밀번호 입니다."),
 
+
 	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다."),
 	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다."),
-	INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "P_003", "재고가 충분하지 않습니다. (id = %d, remain = %d)");
+	INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "P_003", "재고가 충분하지 않습니다. (id = %d, remain = %d)"),
+	INVALID_ORDER_ERROR(HttpStatus.BAD_REQUEST, "P_004", "유효하지 않은 주문입니다.");
 
 	private final HttpStatus status;
 	private final String code;

@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.msafriends.modulecommon.exception.EntityNotFoundException;
+import com.github.msafriends.modulecommon.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
@@ -44,6 +46,8 @@ public class ProductService {
 		Map<Long, Integer> requestMap = updateStockRequests.stream()
 			.collect(Collectors.toMap(UpdateStockRequest::getProductId, UpdateStockRequest::getQuantity));
 		List<Product> foundProducts = productRepository.findProductsByIdIn(orderedIds);
+		if(orderedIds.size() != foundProducts.size())
+			throw new EntityNotFoundException(ErrorCode.INVALID_ORDER_ERROR, "유효하지 않은 상품 id가 주문에 포함되어 있습니다.");
 		foundProducts.forEach(product -> product.updateStockQuantity(requestMap.get(product.getId())));
 	}
 }
