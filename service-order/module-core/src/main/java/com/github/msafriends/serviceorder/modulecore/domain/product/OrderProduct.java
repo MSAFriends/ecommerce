@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class OrderProduct {
 
     @Column(name = "product_id", nullable = false)
     private Long id;
@@ -26,7 +26,7 @@ public class Product {
     private int price;
 
     @Builder
-    public Product(Long id, String name, int quantity, int price) {
+    public OrderProduct(Long id, String name, int quantity, int price) {
         validateProduct(id, name, quantity, price);
 
         this.id = id;
