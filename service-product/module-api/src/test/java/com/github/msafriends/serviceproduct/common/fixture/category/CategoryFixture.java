@@ -27,6 +27,25 @@ public class CategoryFixture {
 	public static final Category MINOR_CATEGORY = createMinorCategory(MINOR_CATEGORY_NAME, SUB_CATEGORY_ID_A, MAIN_CATEGORY_ID_A);
 	public static final Category MINOR_CATEGORY_WITH_ID = createMinorCategoryWithId(TEST_MINOR_CATEGORY_ID, MINOR_CATEGORY_NAME, SUB_CATEGORY_ID_A, MAIN_CATEGORY_ID_A);
 
+	public static List<Category> createEntireCategoryTree(){
+		List<Category> categoryTree = new ArrayList<>();
+		List<Category> mainCategories = createMainCategoryWithIdList(1, 3);
+		List<Category> subCategoriesA = createSubCategoryListWithParentA(3, 5);
+		List<Category> subCategoriesB = createSubCategoryListWithParentB(5, 7);
+		List<Category> minorCategoriesA = createMinorCategoryWithParentA(7, 10);
+		List<Category> minorCategoriesB = createMinorCategoryWithParentB(10, 13);
+		List<Category> minorCategoriesC = createMinorCategoryWithParentC(13, 16);
+		List<Category> minorCategoriesD = createMinorCategoryWithParentD(16, 18);
+		categoryTree.addAll(mainCategories);
+		categoryTree.addAll(subCategoriesA);
+		categoryTree.addAll(subCategoriesB);
+		categoryTree.addAll(minorCategoriesA);
+		categoryTree.addAll(minorCategoriesB);
+		categoryTree.addAll(minorCategoriesC);
+		categoryTree.addAll(minorCategoriesD);
+		return categoryTree;
+	}
+
 	public static CategoryRequest createCategoryRequest(Long parentId){
 		return CategoryRequest.builder()
 			.parentCategoryId(parentId)
@@ -99,7 +118,7 @@ public class CategoryFixture {
 	public static List<Category> createMinorCategoryWithParentA(final int from, final int to){
 		List<Category> minorCategories = new ArrayList<>();
 		for (int i = from; i < to; i++) {
-			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,(long)(i % 9) + 3, SUB_CATEGORY_ID_A));
+			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i, SUB_CATEGORY_ID_A, MAIN_CATEGORY_ID_A));
 		}
 		return minorCategories;
 	}
@@ -107,7 +126,7 @@ public class CategoryFixture {
 	public static List<Category> createMinorCategoryWithParentB(final int from, final int to){
 		List<Category> minorCategories = new ArrayList<>();
 		for (int i = from; i < to; i++) {
-			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,(long)(i % 9) + 3, SUB_CATEGORY_ID_B));
+			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,SUB_CATEGORY_ID_B, MAIN_CATEGORY_ID_A));
 		}
 		return minorCategories;
 	}
@@ -115,7 +134,7 @@ public class CategoryFixture {
 	public static List<Category> createMinorCategoryWithParentC(final int from, final int to){
 		List<Category> minorCategories = new ArrayList<>();
 		for (int i = from; i < to; i++) {
-			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,(long)(i % 9) + 3, SUB_CATEGORY_ID_C));
+			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,SUB_CATEGORY_ID_C, MAIN_CATEGORY_ID_B));
 		}
 		return minorCategories;
 	}
@@ -123,7 +142,7 @@ public class CategoryFixture {
 	public static List<Category> createMinorCategoryWithParentD(final int from, final int to){
 		List<Category> minorCategories = new ArrayList<>();
 		for (int i = from; i < to; i++) {
-			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,(long)(i % 9) + 3, SUB_CATEGORY_ID_D));
+			minorCategories.add(createMinorCategoryWithId((long)i, "minor category : " + i,SUB_CATEGORY_ID_D, MAIN_CATEGORY_ID_B));
 		}
 		return minorCategories;
 	}
