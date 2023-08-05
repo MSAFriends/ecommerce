@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
     List<MemberCoupon> findAllByMemberAndHasUsed(Member member, boolean hasUsed);
-    Optional<MemberCoupon> findMemberCouponsByMemberAndCoupon(Member member, Coupon coupon);
+    List<MemberCoupon> findMemberCouponsByMemberAndCoupon(Member member, Coupon coupon);
 }

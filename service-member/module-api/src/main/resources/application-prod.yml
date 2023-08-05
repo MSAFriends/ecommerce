@@ -12,6 +12,11 @@ spring:
         backend: ecommerce
         application-name: ${spring.application.name}
 
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema-mysql.sql
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

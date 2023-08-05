@@ -28,6 +28,8 @@ public enum ErrorCode {
 	COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "CO_004", "이미 사용한 쿠폰(id = %d, 이름 = %s) 입니다."),
 	COUPON_ALREADY_ISSUED(HttpStatus.BAD_REQUEST, "CO_005", "이미 발급받은 쿠폰(id = %d, 이름 = %s) 입니다."),
 	COUPON_NOT_EXIST(HttpStatus.NOT_FOUND, "CO_006", "사용할 수 있는 쿠폰 id 중에 %s에 해당하는 쿠폰들이 없습니다."),
+	COUPON_EXCEED_LIMITED_QUANTITY(HttpStatus.BAD_REQUEST, "CO_007", "하루에 발급을 받을 수 있는 쿠폰의 개수는 %d개 입니다."),
+	COUPON_OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "CO_008", "현재 발급 받으실 수 있는 쿠폰의 수량이 남아있지 않습니다."),
 
 
 	INVALID_MAINTENANCE_TIME(HttpStatus.INTERNAL_SERVER_ERROR, "B_001", "은행 점검기간이 유효하게 설정되지 않았습니다."),
