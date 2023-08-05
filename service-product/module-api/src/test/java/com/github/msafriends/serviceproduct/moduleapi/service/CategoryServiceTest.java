@@ -33,7 +33,7 @@ class CategoryServiceTest {
 
     @Nested
     @DisplayName("카테고리 등록 테스트")
-    class registerCategoryTest{
+    class RegisterCategoryTest{
 
         @Test
         @DisplayName("최상위 Root부모 카테고리 등록 테스트")
@@ -66,65 +66,39 @@ class CategoryServiceTest {
 
     @Nested
     @DisplayName("카테고리 조회 테스트")
-    class findAllCategoriesTest {
-        @Test
-        @DisplayName("전체 카테고리 조회 테스트")
-        void readAllCategoriesTest() throws Exception {
-            //given
-            when(categoryRepository.findAllParentCategories())
-                .thenReturn(CategoryFixture.createMainCategoryWithIdList(1, 3));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id == 1)))
-                .thenReturn(CategoryFixture.createSubCategoryListWithParentA(3, 5));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id == 2)))
-                .thenReturn(CategoryFixture.createSubCategoryListWithParentB(5, 7));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id == 3)))
-                .thenReturn(CategoryFixture.createMinorCategoryWithParentA(7, 10));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id == 4)))
-                .thenReturn(CategoryFixture.createMinorCategoryWithParentB(10, 13));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id == 5)))
-                .thenReturn(CategoryFixture.createMinorCategoryWithParentC(13, 16));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id == 6)))
-                .thenReturn(CategoryFixture.createMinorCategoryWithParentD(16, 18));
-            when(categoryRepository.findAllByParentCategoryId(ArgumentMatchers.longThat(id -> id > 6)))
-                .thenReturn(new ArrayList<>());
-            //when
-            List<CategoryResponse> allCategories = categoryService.findAllCategories();
-            //then
-            Assertions.assertThat(allCategories)
-                .hasSize(2);
-            Assertions.assertThat(
-                allCategories
-                    .get(0)
-                    .getChildCategories())
-                .hasSize(2);
-            Assertions.assertThat(
-                allCategories
-                    .get(0)
-                    .getChildCategories()
-                    .get(0)
-                    .getChildCategories())
-                .hasSize(3);
-            Assertions.assertThat(
-                allCategories
-                    .get(0)
-                    .getChildCategories()
-                    .get(0)
-                    .getChildCategories()
-                    .get(0)
-                    .getChildCategories())
-                .isEmpty();
-        }
+    class FindAllCategoriesTest {
 
         @Test
-        @DisplayName("카테고리 단건 조회 테스트")
-        void findCategoryByIdTest() throws Exception {
+        @DisplayName("전체 카테고리 조회 테스트")
+        void findAllCategories2() throws Exception {
             //given
-            when(categoryRepository.findByIdOrThrow(ArgumentMatchers.longThat(id -> id >= 1 && id <=2))).thenReturn(
-                SUB_CATEGORY_WITH_ID);
+            when(categoryRepository.findAll()).thenReturn(CategoryFixture.createEntireCategoryTree());
             //when
-            Category category = categoryService.readCategoryById(2L);
+            List<CategoryResponse> allCategories2 = categoryService.findAllCategories();
             //then
-            Assertions.assertThat(category.getId()).isEqualTo(SUB_CATEGORY_WITH_ID.getId());
+            Assertions.assertThat(allCategories2)
+                .hasSize(2);
+            Assertions.assertThat(
+                    allCategories2
+                        .get(0)
+                        .getChildCategories())
+                .hasSize(2);
+            Assertions.assertThat(
+                    allCategories2
+                        .get(0)
+                        .getChildCategories()
+                        .get(0)
+                        .getChildCategories())
+                .hasSize(3);
+            Assertions.assertThat(
+                    allCategories2
+                        .get(0)
+                        .getChildCategories()
+                        .get(0)
+                        .getChildCategories()
+                        .get(0)
+                        .getChildCategories())
+                .isEmpty();
         }
     }
 }
