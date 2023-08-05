@@ -1,10 +1,16 @@
 package com.github.msafriends.serviceproduct.common.fixture.product;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.Assert;
 
 import com.github.msafriends.serviceproduct.moduleapi.dto.ProductRequest;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
+import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
@@ -69,6 +75,30 @@ public class ProductFixture {
                 .benefit(createDefaultBenefit())
                 .build();
     }
+    public static Product createProductWithQuantity(int quantity) {
+        return Product.builder()
+            .sellerId(SELLER_ID)
+            .quantity(quantity)
+            .code(CODE)
+            .price(DEFAULT_PRICE)
+            .name(NAME)
+            .delivery(DELIVERY)
+            .buySatisfy(BUY_SATISFY)
+            .ageLimit(AGE_LIMIT)
+            .size(DEFAULT_SIZE)
+            .benefit(createDefaultBenefit())
+            .build();
+    }
+
+    public static List<UpdateStockRequest> createUpdateStockRequestList(int productNumbers, int...quantities){
+        if(productNumbers != quantities.length)
+            Assert.state(false, "not valid test condition");
+        List<UpdateStockRequest> requests = new ArrayList<>();
+        for (int i = 1; i <= quantities.length; i++) {
+            requests.add(UpdateStockRequest.builder().productId((long)i).quantity(quantities[i - 1]).build());
+        }
+        return requests;
+    }
 
     public static ProductRequest createProductRequest(){
         return ProductRequest.builder()
@@ -84,12 +114,19 @@ public class ProductFixture {
             .build();
     }
 
-    public static Product createProductWithId(Long id){
-        Product product = createProduct();
+    public static Product createProductWithIdAndQuantity(Long id, int quantity){
+        Product product = createProductWithQuantity(quantity);
         ReflectionTestUtils.setField(product, "id", id);
         return product;
     }
 
+    public static List<Product> createOrderedProduct(int fixedQuantity,int productNumbers){
+        List<Product> orderedProducts = new ArrayList<>();
+        for (int i = 1; i <= productNumbers; i++) {
+            orderedProducts.add(createProductWithIdAndQuantity((long)i, fixedQuantity));
+        }
+        return orderedProducts;
+    }
 
     public static Product createInvalidPriceProduct(int price, int salePrice) {
         return Product.builder()
