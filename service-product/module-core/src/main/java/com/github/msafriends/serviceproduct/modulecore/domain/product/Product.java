@@ -1,5 +1,6 @@
 package com.github.msafriends.serviceproduct.modulecore.domain.product;
 
+import com.github.msafriends.modulecommon.exception.product.NotEnoughStockException;
 import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
@@ -75,10 +76,6 @@ public class Product extends BaseTimeEntity {
         this.productImages = productImages;
     }
 
-    public void assignCategory(Category category){
-        this.category = category;
-    }
-
     private void validateProduct(Long sellerId, Long code, String name, String delivery, AgeLimit ageLimit, int quantity) {
         validateNotNull(sellerId, code, name, delivery, ageLimit);
         validateQuantity(quantity);
@@ -100,5 +97,15 @@ public class Product extends BaseTimeEntity {
         Assert.notNull(name, "name must not be null");
         Assert.notNull(delivery, "delivery must not be null");
         Assert.notNull(ageLimit, "isMinor must not be null");
+    }
+
+    public void assignCategory(Category category){
+        this.category = category;
+    }
+
+    public void updateStockQuantity(int orderedQuantity){
+        if(this.quantity + orderedQuantity < 0)
+            throw new NotEnoughStockException(id, quantity);
+        this.quantity += orderedQuantity;
     }
 }

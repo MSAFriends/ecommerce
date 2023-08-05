@@ -33,6 +33,7 @@ public enum ErrorCode {
 	ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "O_001", "주문(id = %d)이 존재하지 않습니다."),
 	PENDING_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "O_002", "주문이 존재하지 않거나, 처리할 수 없는 상태입니다."),
 	ORDER_COUPON_NOT_EXIST(HttpStatus.NOT_FOUND, "O_003", "주문(id = %d)에 해당하는 쿠폰이 존재하지 않습니다."),
+  NOT_ENOUGH_STOCK(HttpStatus.BAD_REQUEST, "O_004", "재고가 부족합니다."),
 
 	INVALID_MAINTENANCE_TIME(HttpStatus.INTERNAL_SERVER_ERROR, "B_001", "은행 점검기간이 유효하게 설정되지 않았습니다."),
 
@@ -42,7 +43,8 @@ public enum ErrorCode {
 
 	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다."),
 	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다."),
-	NOT_ENOUGH_STOCK(HttpStatus.BAD_REQUEST, "P_003", "재고가 부족합니다.");
+	INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "P_003", "재고가 충분하지 않습니다. (id = %d, remain = %d)"),
+	INVALID_ORDER_ERROR(HttpStatus.BAD_REQUEST, "P_004", "유효하지 않은 주문입니다.");
 
 	private final HttpStatus status;
 	private final String code;

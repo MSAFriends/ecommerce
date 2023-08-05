@@ -45,4 +45,15 @@ class ProductControllerTest extends AcceptanceTest {
 			.andExpect(status().isCreated())
 			.andExpect(redirectedUrl("/api/internal/v1/products/" + 1L));
 	}
+
+	@Test
+	@DisplayName("주문 재고 증감 API 테스트")
+	void bulkUpdateStockTest() throws Exception {
+		//given
+		ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post("/api/internal/v1/products/stocks")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(createUpdateStockRequestList(3, -2, -3, -5)))
+		);
+		action.andExpect(status().isOk());
+	}
 }
