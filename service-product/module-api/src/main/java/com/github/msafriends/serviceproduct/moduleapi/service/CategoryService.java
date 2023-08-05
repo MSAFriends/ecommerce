@@ -2,6 +2,8 @@ package com.github.msafriends.serviceproduct.moduleapi.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -24,32 +26,21 @@ public class CategoryService {
     }
 
     public List<CategoryResponse> findAllCategories(){
-        List<Category> rootParents = categoryRepository.findAllParentCategories();
-        List<CategoryResponse> categoryReponses = rootParents
-            .stream()
-            .map(CategoryResponse::fromCategory)
-            .toList();
-        categoryReponses.forEach(this::getChildCategories);
-        return categoryReponses;
+        List<Category> allCategories = categoryRepository.findAll();
+        Map<Long, CategoryResponse> categoryResponseMap = allCategories.stream()
+            .collect(Collectors.toMap(
+                Category::getId,
+                CategoryResponse::from));
+        List<CategoryResponse> rootCategoryResponses = new ArrayList<>();
+        allCategories.forEach(category -> {
+            CategoryResponse categoryResponse = categoryResponseMap.get(category.getId());
+            if (category.getParentCategory() == null) {
+                rootCategoryResponses.add(categoryResponse);
+            } else {
+                var parent = categoryResponseMap.get(category.getParentCategory().getId());
+                parent.getChildCategories().add(categoryResponse);
+            }
+        });
+        return rootCategoryResponses;
     }
-
-    private void getChildCategories(CategoryResponse parentCategory){
-        List<CategoryResponse> childs = categoryRepository
-            .findAllByParentCategoryId(parentCategory.getCategoryId())
-            .stream()
-            .map(CategoryResponse::fromCategory)
-            .toList();
-        if(!childs.isEmpty()) {
-            parentCategory.setChildCategories(childs);
-        }else {
-            parentCategory.setChildCategories(new ArrayList<>());
-        }
-        childs.forEach(this::getChildCategories);
-    }
-
-    public Category readCategoryById(Long id){
-        return categoryRepository.findByIdOrThrow(id);
-    }
-
-
 }
