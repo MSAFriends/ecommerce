@@ -39,7 +39,8 @@ public enum ErrorCode {
 	INVALID_PASSWORD_ERROR(HttpStatus.BAD_REQUEST, "CA_003", "잘못된 비밀번호 입니다."),
 
 	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다."),
-	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다.");
+	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다."),
+	INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "P_003", "재고가 충분하지 않습니다. (id = %d, remain = %d)");
 
 	private final HttpStatus status;
 	private final String code;
