@@ -1,8 +1,8 @@
-package common.fixture.review;
+package com.github.msafriends.serviceproduct.common.fixture.review;
 
+import com.github.msafriends.serviceproduct.common.fixture.product.ProductFixture;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
-import common.fixture.product.ProductFixture;
 
 public class ProductReviewFixture {
     private static final Long MEMBER_ID = 1L;
