@@ -14,43 +14,7 @@ services:
     depends_on:
       - discovery-service
     ports:
-      - "8010:8080"
-
-  order-service:
-    image: ecommerce-service-order:latest
-    networks:
-      - msafriends_network
-    depends_on:
-      order-mysql:
-        condition: service_healthy
-      discovery-service:
-        condition: service_started
-      api-gateway-service:
-        condition: service_started
-    env_file:
-      - .env
-    ports:
-      - "8000:8080"
-
-  order-mysql:
-    image: mysql:8.0
-    networks:
-      - msafriends_network
-    volumes:
-      - ./.docker/order-service/db/conf.d:/etc/mysql/conf.d
-      - ./.docker/order-service/db/data:/var/lib/mysql
-      - ./.docker/order-service/db/initdb.d:/docker-entrypoint-initdb.d
-    ports:
-      - "8050:3306"
-    env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: ecommerce-order
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 20s
-      timeout: 10s
-      retries: 10
+      - "8080:8080"
 
   member-service:
     image: ecommerce-service-member:latest
@@ -66,7 +30,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8200:8080"
+      - "8000:8080"
 
   member-mysql:
     image: mysql:8.0
@@ -77,11 +41,83 @@ services:
       - ./.docker/member-service/db/data:/var/lib/mysql
       - ./.docker/member-service/db/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "8250:3306"
+      - "3306:3306"
     env_file:
       - .env
     environment:
       MYSQL_DATABASE: ecommerce-member
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+  order-service:
+    image: ecommerce-service-order:latest
+    networks:
+      - msafriends_network
+    depends_on:
+      order-mysql:
+        condition: service_healthy
+      discovery-service:
+        condition: service_started
+      api-gateway-service:
+        condition: service_started
+    env_file:
+      - .env
+    ports:
+      - "8010:8080"
+
+  order-mysql:
+    image: mysql:8.0
+    networks:
+      - msafriends_network
+    volumes:
+      - ./.docker/order-service/db/conf.d:/etc/mysql/conf.d
+      - ./.docker/order-service/db/data:/var/lib/mysql
+      - ./.docker/order-service/db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ecommerce-order
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+  product-service:
+    image: ecommerce-service-product:latest
+    networks:
+      - msafriends_network
+    depends_on:
+      product-mysql:
+        condition: service_healthy
+      discovery-service:
+        condition: service_started
+      api-gateway-service:
+        condition: service_started
+    env_file:
+      - .env
+    ports:
+      - "8020:8080"
+
+  product-mysql:
+    image: mysql:8.0
+    networks:
+      - msafriends_network
+    volumes:
+      - ./.docker/product-service/db/conf.d:/etc/mysql/conf.d
+      - ./.docker/product-service/db/data:/var/lib/mysql
+      - ./.docker/product-service/db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3308:3306"
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ecommerce-product
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 20s
