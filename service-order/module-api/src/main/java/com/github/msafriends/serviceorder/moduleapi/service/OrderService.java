@@ -66,19 +66,8 @@ public class OrderService {
         Order order = orderRepository.findByMemberIdAndStatus(memberId, OrderStatus.PENDING)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.PENDING_ORDER_NOT_EXIST));
 
-        try {
-            productServiceClient.bulkUpdateProductStocks(UpdateStockRequest.from(order.getCartItems(), false));
-        } catch (FeignException ex) {
-            throw new InvalidStateException(ErrorCode.NOT_ENOUGH_STOCK);
-        }
-
-        try {
-            ListResponse<MemberCouponResponse> response = memberServiceClient.useCoupons(memberId, new MemberCouponUseRequest(request.getOrderCouponIds()));
-            order.addCoupons(MemberCouponResponse.from(response.getValues()));
-        } catch (FeignException ex) {
-            productServiceClient.bulkUpdateProductStocks(UpdateStockRequest.from(order.getCartItems(), true));
-            throw new InvalidStateException(ErrorCode.ORDER_COUPON_NOT_EXIST, order.getId());
-        }
+        updateProductStocks(order, true);
+        useMemberCoupons(memberId, request, order);
 
         order.confirm(request);
         orderRepository.save(order);
@@ -87,6 +76,24 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long orderId) {
         orderRepository.deleteById(orderId);
+    }
+
+    private void updateProductStocks(Order order, boolean decrement) {
+        try {
+            productServiceClient.bulkUpdateProductStocks(UpdateStockRequest.from(order.getCartItems(), decrement));
+        } catch (FeignException ex) {
+            throw new InvalidStateException(ErrorCode.NOT_ENOUGH_STOCK);
+        }
+    }
+
+    private void useMemberCoupons(Long memberId, ConfirmOrderRequest request, Order order) {
+        try {
+            ListResponse<MemberCouponResponse> response = memberServiceClient.useCoupons(memberId, new MemberCouponUseRequest(request.getOrderCouponIds()));
+            order.addCoupons(MemberCouponResponse.from(response.getValues()));
+        } catch (FeignException ex) {
+            updateProductStocks(order, false);
+            throw new InvalidStateException(ErrorCode.ORDER_COUPON_NOT_EXIST, order.getId());
+        }
     }
 
     private Order getOrCreatePendingOrder(Long memberId) {
