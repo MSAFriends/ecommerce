@@ -1,8 +1,13 @@
 package com.github.msafriends.serviceproduct.moduleapi.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
@@ -29,5 +34,16 @@ public class ProductService {
 	@Transactional
 	public Long registerProduct(Product product){
 		return productRepository.save(product).getId();
+	}
+
+	@Transactional
+	public void updateStocks(List<UpdateStockRequest> updateStockRequests){
+		List<Long> orderedIds = updateStockRequests.stream()
+            .map(UpdateStockRequest::getProductId)
+			.toList();
+		Map<Long, Integer> requestMap = updateStockRequests.stream()
+			.collect(Collectors.toMap(UpdateStockRequest::getProductId, UpdateStockRequest::getQuantity));
+		List<Product> foundProducts = productRepository.findProductsByIdIn(orderedIds);
+		foundProducts.forEach(product -> product.updateStockQuantity(requestMap.get(product.getId())));
 	}
 }
