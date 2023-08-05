@@ -21,7 +21,6 @@ public enum ErrorCode {
 	MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "M_003", "이미 '%s'라는 이메일로 가입된 계정이 존재합니다."),
 	MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST, "M_004", "멤버(id = %d)가 존재하지 않습니다."),
 
-
 	COUPON_EXPIRED_ERROR(HttpStatus.BAD_REQUEST, "CO_001", "유효하지 않은 쿠폰입니다."),
 	INVALID_COUPON_DATE(HttpStatus.INTERNAL_SERVER_ERROR, "CO_002", "쿠폰의 유효기간이 잘못되었습니다."),
 	INVALID_COUPON_STRATEGY(HttpStatus.INTERNAL_SERVER_ERROR, "CO_003", "유효하지 않은 비율정책입니다."),
@@ -29,6 +28,9 @@ public enum ErrorCode {
 	COUPON_ALREADY_ISSUED(HttpStatus.BAD_REQUEST, "CO_005", "이미 발급받은 쿠폰(id = %d, 이름 = %s) 입니다."),
 	COUPON_NOT_EXIST(HttpStatus.NOT_FOUND, "CO_006", "사용할 수 있는 쿠폰 id 중에 %s에 해당하는 쿠폰들이 없습니다."),
 
+	ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "O_001", "주문(id = %d)이 존재하지 않습니다."),
+	PENDING_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "O_002", "주문이 존재하지 않거나, 처리할 수 없는 상태입니다."),
+	ORDER_COUPON_NOT_EXIST(HttpStatus.NOT_FOUND, "O_003", "주문(id = %d)에 해당하는 쿠폰이 존재하지 않습니다."),
 
 	INVALID_MAINTENANCE_TIME(HttpStatus.INTERNAL_SERVER_ERROR, "B_001", "은행 점검기간이 유효하게 설정되지 않았습니다."),
 
@@ -37,7 +39,8 @@ public enum ErrorCode {
 	INVALID_PASSWORD_ERROR(HttpStatus.BAD_REQUEST, "CA_003", "잘못된 비밀번호 입니다."),
 
 	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다."),
-	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다.");
+	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다."),
+	NOT_ENOUGH_STOCK(HttpStatus.BAD_REQUEST, "P_003", "재고가 부족합니다.");
 
 	private final HttpStatus status;
 	private final String code;
