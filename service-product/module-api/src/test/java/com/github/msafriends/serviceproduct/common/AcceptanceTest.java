@@ -1,4 +1,4 @@
-package common;
+package com.github.msafriends.serviceproduct.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
