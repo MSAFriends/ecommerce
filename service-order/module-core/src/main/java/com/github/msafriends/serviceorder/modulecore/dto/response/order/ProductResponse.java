@@ -1,6 +1,6 @@
 package com.github.msafriends.serviceorder.modulecore.dto.response.order;
 
-import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
+import com.github.msafriends.serviceorder.modulecore.domain.product.OrderProduct;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,7 +18,7 @@ public class ProductResponse {
         this.price = price;
     }
 
-    public static ProductResponse from(final Product product) {
+    public static ProductResponse from(final OrderProduct product) {
         return ProductResponse.builder()
                 .id(product.getId())
                 .quantity(product.getQuantity())
@@ -26,8 +26,8 @@ public class ProductResponse {
                 .build();
     }
 
-    public static Product toProduct(final ProductResponse productResponse) {
-        return Product.builder()
+    public static OrderProduct toProduct(final ProductResponse productResponse) {
+        return OrderProduct.builder()
                 .id(productResponse.getId())
                 .quantity(productResponse.getQuantity())
                 .price(productResponse.getPrice())

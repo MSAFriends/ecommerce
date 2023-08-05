@@ -2,12 +2,12 @@ package com.github.msafriends.serviceorder.modulecore.fixture;
 
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
 import com.github.msafriends.serviceorder.modulecore.domain.order.CartItem;
-import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
+import com.github.msafriends.serviceorder.modulecore.domain.product.OrderProduct;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.CartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 
 public class CartItemFixture {
-    private static final Product DEFAULT_PRODUCT = ProductFixture.createDefaultProduct();
+    private static final OrderProduct DEFAULT_PRODUCT = ProductFixture.createDefaultProduct();
 
     private static CartItem.CartItemBuilder createDefaultCartItemBuilder(Order order) {
         return CartItem.builder()
