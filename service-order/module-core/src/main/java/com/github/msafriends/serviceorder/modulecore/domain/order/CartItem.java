@@ -1,7 +1,7 @@
 package com.github.msafriends.serviceorder.modulecore.domain.order;
 
 import com.github.msafriends.modulecommon.base.BaseTimeEntity;
-import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
+import com.github.msafriends.serviceorder.modulecore.domain.product.OrderProduct;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,21 +26,21 @@ public class CartItem extends BaseTimeEntity {
     private Order order;
 
     @Embedded
-    private Product product;
+    private OrderProduct product;
 
     @Builder
-    public CartItem(Order order, Product product) {
+    public CartItem(Order order, OrderProduct product) {
         validateCartItem(order, product);
 
         this.order = order;
         this.product = product;
     }
 
-    private void validateCartItem(Order order, Product product) {
+    private void validateCartItem(Order order, OrderProduct product) {
         validateNotNull(order, product);
     }
 
-    private void validateNotNull(Order order, Product product) {
+    private void validateNotNull(Order order, OrderProduct product) {
         Assert.notNull(order, "order must not be null");
         Assert.notNull(product, "product must not be null");
     }
