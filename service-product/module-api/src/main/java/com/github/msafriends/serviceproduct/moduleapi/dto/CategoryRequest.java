@@ -25,6 +25,4 @@ public class CategoryRequest {
             .categoryName(categoryName)
             .build();
     }
-
-
 }
