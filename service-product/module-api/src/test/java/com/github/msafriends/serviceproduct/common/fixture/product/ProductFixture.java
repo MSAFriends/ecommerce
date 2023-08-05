@@ -1,10 +1,10 @@
-package common.fixture.product;
+package com.github.msafriends.serviceproduct.common.fixture.product;
 
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.github.msafriends.serviceproduct.moduleapi.dto.ProductRequest;
 
-import common.fixture.category.CategoryFixture;
+import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
@@ -76,7 +76,7 @@ public class ProductFixture {
             .price(createDefaultPrice())
             .quantity(QUANTITY)
             .name(NAME)
-            .categoryId(CategoryFixture.TEST_CATEGORY_ID)
+            .categoryId(CategoryFixture.MAIN_CATEGORY_ID_A)
             .delivery(DELIVERY)
             .ageLimit(AGE_LIMIT)
             .benefit(createDefaultBenefit())

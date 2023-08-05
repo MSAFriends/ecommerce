@@ -1,6 +1,6 @@
-package domain.product.service;
+package com.github.msafriends.serviceproduct.moduleapi.service;
 
-import static common.fixture.product.ProductFixture.*;
+import static com.github.msafriends.serviceproduct.common.fixture.product.ProductFixture.*;
 import static org.mockito.Mockito.*;
 
 import org.assertj.core.api.Assertions;
@@ -12,12 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
-import com.github.msafriends.serviceproduct.moduleapi.service.ProductService;
-
-import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
-import common.fixture.category.CategoryFixture;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
@@ -49,9 +47,9 @@ public class ProductServiceTest {
 			//given
 			Product product = createProduct();
 			when(productRepository.save(product)).thenReturn(createProductWithId(TEST_PRODUCT_ID));
-			when(categoryRepository.findByIdOrThrow(CategoryFixture.TEST_CATEGORY_ID)).thenReturn(CategoryFixture.createMainCategory());
+			when(categoryRepository.findByIdOrThrow(CategoryFixture.MAIN_CATEGORY_ID_A)).thenReturn(CategoryFixture.createMainCategory(CategoryFixture.MAIN_CATEGORY_NAME));
 			//when
-			Long productId = productService.registerProduct(CategoryFixture.TEST_CATEGORY_ID, product);
+			Long productId = productService.registerProduct(CategoryFixture.MAIN_CATEGORY_ID_A, product);
 			//then
 			Assertions.assertThat(productId).isEqualTo(TEST_PRODUCT_ID);
 		}
