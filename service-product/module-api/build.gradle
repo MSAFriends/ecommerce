@@ -1,0 +1,17 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':service-product:module-core')
+    implementation project(':service-product:module-batch')
+    testImplementation project(':service-product:module-core')
+    runtimeOnly 'com.h2database:h2'
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
