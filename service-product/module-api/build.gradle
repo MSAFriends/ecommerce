@@ -5,7 +5,9 @@ dependencies {
     implementation project(':service-product:module-core')
     implementation project(':service-product:module-batch')
     testImplementation project(':service-product:module-core')
+
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 }
 
 bootJar {
