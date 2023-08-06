@@ -1,7 +1,3 @@
-plugins {
-    id 'com.palantir.docker' version '0.35.0'
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -9,25 +5,9 @@ dependencies {
     implementation project(':service-product:module-core')
     implementation project(':service-product:module-batch')
     testImplementation project(':service-product:module-core')
+
     runtimeOnly 'com.h2database:h2'
-
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
-    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
-    implementation 'io.github.openfeign:feign-micrometer'
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
-}
-
-ext {
-    set('springCloudVersion', "2022.0.3")
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
 }
 
 bootJar {
@@ -36,12 +16,4 @@ bootJar {
 
 jar {
     enabled = false
-}
-
-docker {
-    println(tasks.bootJar.outputs.files)
-    name rootProject.name + '-service-product:latest'
-    dockerfile file('../../Dockerfile')
-    files tasks.bootJar.outputs.files
-    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
 }
