@@ -22,29 +22,35 @@ public class ProductRequest {
 	@NotBlank
 	private String name;
 	@NotNull
-	private Price price;
+	private int price;
+	private int salesPrice;
 	@Min(value = 0)
 	@NotNull
 	private Integer quantity;
 	@NotNull
 	private String delivery;
 	private Integer buySatisfy;
-	private Benefit benefit;
+	private Integer discount;
+	private Integer mileage;
 	@NotNull
 	private AgeLimit ageLimit;
 	private Size size;
 	private Long categoryId;
 
 	@Builder
-	public ProductRequest(Long code, String name, Price price, Integer quantity, String delivery, Integer buySatisfy,
-		Benefit benefit, AgeLimit ageLimit, Size size, Long categoryId) {
+	public ProductRequest(Long sellerId, Long code, String name, int price, int salesPrice, Integer quantity,
+		String delivery, Integer buySatisfy, Integer discount, Integer mileage, AgeLimit ageLimit, Size size,
+		Long categoryId) {
+		this.sellerId = sellerId;
 		this.code = code;
 		this.name = name;
 		this.price = price;
+		this.salesPrice = salesPrice;
 		this.quantity = quantity;
 		this.delivery = delivery;
 		this.buySatisfy = buySatisfy;
-		this.benefit = benefit;
+		this.discount = discount;
+		this.mileage = mileage;
 		this.ageLimit = ageLimit;
 		this.size = size;
 		this.categoryId = categoryId;
@@ -55,13 +61,20 @@ public class ProductRequest {
 			.sellerId(sellerId)
 			.name(name)
 			.code(code)
-			.price(price)
+			.price(Price
+				.builder().
+				priceValue(price)
+				.salePriceValue(salesPrice)
+				.build())
 			.quantity(quantity)
 			.delivery(delivery)
 			.buySatisfy(buySatisfy)
 			.ageLimit(ageLimit)
 			.size(size)
-			.benefit(benefit)
+			.benefit(Benefit.builder()
+				.discount(discount)
+				.mileage(mileage)
+				.build())
 			.build();
 	}
 }
