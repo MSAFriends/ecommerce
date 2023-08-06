@@ -44,6 +44,9 @@ public class Order extends BaseTimeEntity {
 
     private int discountedPrice;
 
+    @Version
+    private int version;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;

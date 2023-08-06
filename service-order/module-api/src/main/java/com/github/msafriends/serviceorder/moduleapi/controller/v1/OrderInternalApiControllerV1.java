@@ -1,5 +1,6 @@
 package com.github.msafriends.serviceorder.moduleapi.controller.v1;
 
+import com.github.msafriends.serviceorder.moduleapi.service.OptimisticLockOrderFacade;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.response.order.OrderPendingResponse;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequestMapping("/api/internal/v1")
 public class OrderInternalApiControllerV1 {
     private final OrderService orderService;
+    private final OptimisticLockOrderFacade retryOrderService;
 
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable("orderId") Long orderId) {
@@ -40,7 +42,7 @@ public class OrderInternalApiControllerV1 {
             @RequestHeader("Member-Id") Long memberId,
             @Valid @RequestBody UpdateCartItemRequest request
     ) {
-        return ResponseEntity.created(URI.create("/api/internal/v1/orders/" + orderService.addCartItemToOrder(memberId, request))).build();
+        return ResponseEntity.created(URI.create("/api/internal/v1/orders/" + retryOrderService.optimisticAddCartItemToOrder(memberId, request))).build();
     }
 
     @PostMapping("/orders/confirm")

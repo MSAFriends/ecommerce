@@ -13,6 +13,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-tracing-bridge-otel'
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+    implementation 'io.github.openfeign:feign-micrometer'
 
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     runtimeOnly 'com.h2database:h2'
