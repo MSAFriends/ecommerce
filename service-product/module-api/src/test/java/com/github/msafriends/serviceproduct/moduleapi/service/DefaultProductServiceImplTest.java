@@ -6,6 +6,9 @@ import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,14 +28,14 @@ import com.github.msafriends.serviceproduct.modulecore.repository.CategoryReposi
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductServiceTest {
+public class DefaultProductServiceImplTest {
 
 	@Mock
 	ProductRepository productRepository;
 	@Mock
 	CategoryRepository categoryRepository;
 	@InjectMocks
-	ProductService productService;
+	DefaultProductServiceImpl defaultProductServiceImpl;
 
 	@Nested
 	@DisplayName("상품 등록 테스트")
@@ -44,7 +47,7 @@ public class ProductServiceTest {
 			Product product = createProduct();
 			when(productRepository.save(product)).thenReturn(createProductWithIdAndQuantity(TEST_PRODUCT_ID, 10));
 			//when
-			Long productId = productService.registerProduct(product);
+			Long productId = defaultProductServiceImpl.registerProduct(product);
 			//then
 			Assertions.assertThat(productId).isEqualTo(TEST_PRODUCT_ID);
 		}
@@ -56,7 +59,7 @@ public class ProductServiceTest {
 			when(productRepository.save(product)).thenReturn(createProductWithIdAndQuantity(TEST_PRODUCT_ID, 10));
 			when(categoryRepository.findByIdOrThrow(CategoryFixture.MAIN_CATEGORY_ID_A)).thenReturn(CategoryFixture.createMainCategory(CategoryFixture.MAIN_CATEGORY_NAME));
 			//when
-			Long productId = productService.registerProduct(CategoryFixture.MAIN_CATEGORY_ID_A, product);
+			Long productId = defaultProductServiceImpl.registerProduct(CategoryFixture.MAIN_CATEGORY_ID_A, product);
 			//then
 			Assertions.assertThat(productId).isEqualTo(TEST_PRODUCT_ID);
 		}
@@ -74,7 +77,7 @@ public class ProductServiceTest {
 			when(productRepository.findProductsByIdIn(Arrays.asList(1L,2L,3L)))
 				.thenReturn(orderedProduct);
 			//when
-			assertDoesNotThrow(() -> productService.updateStocks(updateStockRequestList));
+			assertDoesNotThrow(() -> defaultProductServiceImpl.updateStocks(updateStockRequestList));
 		}
 
 		@Test
@@ -86,7 +89,7 @@ public class ProductServiceTest {
 				.thenReturn(createOrderedProduct(10, 3));
 			//when
 			NotEnoughStockException notEnoughStockException = assertThrows(NotEnoughStockException.class,
-				() -> productService.updateStocks(updateStockRequestList));
+				() -> defaultProductServiceImpl.updateStocks(updateStockRequestList));
 			//then
 			System.out.println(notEnoughStockException.getDetail());
 			Assertions.assertThat(notEnoughStockException.getErrorCode()).isEqualTo(ErrorCode.INVALID_ORDER_QUANTITY);
