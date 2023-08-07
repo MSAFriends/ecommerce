@@ -15,20 +15,20 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.msafriends.serviceproduct.moduleapi.service.ProductService;
+import com.github.msafriends.serviceproduct.moduleapi.service.DefaultProductServiceImpl;
 
 import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 
 
 class ProductControllerTest extends AcceptanceTest {
 	@MockBean
-	ProductService productService;
+	DefaultProductServiceImpl defaultProductServiceImpl;
 	@Autowired
 	ObjectMapper objectMapper;
 
 	@BeforeEach
 	void setup(){
-		when(productService.registerProduct(any())).thenReturn(1L);
+		when(defaultProductServiceImpl.registerProduct(any())).thenReturn(1L);
 	}
 
 	@Test
