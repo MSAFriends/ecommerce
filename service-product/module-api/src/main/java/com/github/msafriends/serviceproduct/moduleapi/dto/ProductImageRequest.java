@@ -4,8 +4,12 @@ package com.github.msafriends.serviceproduct.moduleapi.dto;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.*;
 
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 public class ProductImageRequest {
 
     private String base;
@@ -21,7 +25,7 @@ public class ProductImageRequest {
     private String size270;
     private String size300;
 
-    public static ProductImage toEntity(ProductImageRequest request, Product product) {
+    public static ProductImage toProductImage(ProductImageRequest request, Product product) {
         return ProductImage.builder()
                 .base(request.getBase())
                 .product(product)

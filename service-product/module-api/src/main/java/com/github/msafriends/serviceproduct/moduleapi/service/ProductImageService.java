@@ -21,14 +21,14 @@ public class ProductImageService {
 
     @Transactional
     public void registerProductImage(ProductImageRequest request, Long productId) {
-        productImageRepository.save(ProductImageRequest.toEntity(request, productRepository.getProductByIdOrThrow(productId)));
+        productImageRepository.save(ProductImageRequest.toProductImage(request, productRepository.getProductByIdOrThrow(productId)));
     }
 
     public ProductImageResponse getProductImage(Long productImageId) {
         return ProductImageResponse.from(productImageRepository.findByIdOrThrow(productImageId));
     }
 
-    public List<ProductImageResponse> getProductImageList(Long productId) {
+    public List<ProductImageResponse> getProductImages(Long productId) {
         return productImageRepository.findAllByProductId(productId)
                 .stream()
                 .map(ProductImageResponse::from)

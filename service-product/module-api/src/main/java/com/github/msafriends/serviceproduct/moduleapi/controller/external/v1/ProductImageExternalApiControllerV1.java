@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/products/{productId}/image")
+@RequestMapping("/api/v1/products/{productId}/images")
 public class ProductImageExternalApiControllerV1 {
 
     private final ProductImageService productImageService;
@@ -30,7 +29,7 @@ public class ProductImageExternalApiControllerV1 {
 
     @GetMapping
     public ResponseEntity<List<ProductImageResponse>> getProductImageList(@PathVariable Long productId) {
-        return ResponseEntity.ok(productImageService.getProductImageList(productId));
+        return ResponseEntity.ok(productImageService.getProductImages(productId));
     }
 
     @DeleteMapping("/{productImageId}")

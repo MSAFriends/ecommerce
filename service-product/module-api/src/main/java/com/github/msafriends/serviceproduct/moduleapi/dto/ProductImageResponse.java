@@ -1,10 +1,8 @@
 package com.github.msafriends.serviceproduct.moduleapi.dto;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
-import lombok.Getter;
 
 
-@Getter
 public record ProductImageResponse(
         Long id,
         String base,
