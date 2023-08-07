@@ -103,13 +103,13 @@ public class ProductFixture {
     public static ProductRequest createProductRequest(){
         return ProductRequest.builder()
             .code(CODE)
-            .price(createDefaultPrice())
+            .price(100)
             .quantity(QUANTITY)
             .name(NAME)
             .categoryId(CategoryFixture.MAIN_CATEGORY_ID_A)
             .delivery(DELIVERY)
             .ageLimit(AGE_LIMIT)
-            .benefit(createDefaultBenefit())
+            .discount(1000)
             .buySatisfy(BUY_SATISFY)
             .build();
     }
