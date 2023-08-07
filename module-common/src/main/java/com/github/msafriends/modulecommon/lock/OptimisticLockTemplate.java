@@ -1,25 +1,27 @@
 package com.github.msafriends.modulecommon.lock;
 
 import jakarta.persistence.OptimisticLockException;
-import org.springframework.stereotype.Component;
 
-@Component
-public class OptimisticLockTemplate {
-    private static final int RETRY_WAIT_TIME = 50;
+public interface OptimisticLockTemplate {
+    int DEFAULT_RETRY_WAIT_TIME = 50;
 
-    public <T> T execute(OptimisticLockCallback<T> callback) {
+    default <T> T execute(OperationCallback<T> callback) {
+        return execute(callback, DEFAULT_RETRY_WAIT_TIME);
+    }
+
+    default <T> T execute(OperationCallback<T> callback, int retryWaitTime) {
         while (true) {
             try {
-                return callback.doInLock();
+                return callback.execute();
             } catch (OptimisticLockException e) {
-                handleOptimisticLockingFailure();
+                handleOptimisticLockingFailure(retryWaitTime);
             }
         }
     }
 
-    private void handleOptimisticLockingFailure() {
+    private void handleOptimisticLockingFailure(int retryWaitTime) {
         try {
-            Thread.sleep(RETRY_WAIT_TIME);
+            Thread.sleep(retryWaitTime);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
