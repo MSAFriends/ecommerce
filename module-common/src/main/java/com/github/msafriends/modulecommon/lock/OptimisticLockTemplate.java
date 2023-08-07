@@ -2,24 +2,28 @@ package com.github.msafriends.modulecommon.lock;
 
 import jakarta.persistence.OptimisticLockException;
 
+import java.util.concurrent.Callable;
+
 public interface OptimisticLockTemplate {
     int DEFAULT_RETRY_WAIT_TIME = 50;
 
-    default <T> T execute(OperationCallback<T> callback) {
+    static <T> T execute(Callable<T> callback) {
         return execute(callback, DEFAULT_RETRY_WAIT_TIME);
     }
 
-    default <T> T execute(OperationCallback<T> callback, int retryWaitTime) {
+    static <T> T execute(Callable<T> callback, int retryWaitTime) {
         while (true) {
             try {
-                return callback.execute();
+                return callback.call();
             } catch (OptimisticLockException e) {
                 handleOptimisticLockingFailure(retryWaitTime);
+            } catch (Exception e) {
+                throw new RuntimeException("Unexpected exception", e);
             }
         }
     }
 
-    private void handleOptimisticLockingFailure(int retryWaitTime) {
+    private static void handleOptimisticLockingFailure(int retryWaitTime) {
         try {
             Thread.sleep(retryWaitTime);
         } catch (InterruptedException e) {
