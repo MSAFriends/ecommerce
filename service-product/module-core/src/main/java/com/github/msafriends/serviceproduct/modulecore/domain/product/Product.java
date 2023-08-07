@@ -25,6 +25,10 @@ import com.github.msafriends.modulecommon.exception.InvalidValueException;
 @Table(name = "products")
 @NoArgsConstructor(access = PROTECTED)
 public class Product extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -32,10 +36,8 @@ public class Product extends BaseTimeEntity {
     private List<ProductReview> productReviews = new ArrayList<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long id;
+    @Version
+    private Long version;
     @Column(unique = true, nullable = false)
     private Long code;
     @Column(nullable = false)
