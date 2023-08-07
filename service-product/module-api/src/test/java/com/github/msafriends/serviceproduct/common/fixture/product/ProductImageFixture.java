@@ -1,4 +1,4 @@
-package common.fixture.product;
+package com.github.msafriends.serviceproduct.common.fixture.product;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;

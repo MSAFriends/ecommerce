@@ -1,8 +1,8 @@
-package common.fixture.reply;
+package com.github.msafriends.serviceproduct.common.fixture.reply;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.Reply;
-import common.fixture.review.ProductReviewFixture;
+import com.github.msafriends.serviceproduct.common.fixture.review.ProductReviewFixture;
 
 public class ReplyFixture {
 

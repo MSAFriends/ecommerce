@@ -1,6 +1,6 @@
-package domain.product.controller;
+package com.github.msafriends.serviceproduct.moduleapi.controller.internal.v1;
 
-import static common.fixture.product.ProductFixture.*;
+import static com.github.msafriends.serviceproduct.common.fixture.product.ProductFixture.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.msafriends.serviceproduct.moduleapi.service.ProductService;
 
-import common.AcceptanceTest;
+import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 
 
 class ProductControllerTest extends AcceptanceTest {
@@ -44,5 +44,16 @@ class ProductControllerTest extends AcceptanceTest {
 			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(redirectedUrl("/api/internal/v1/products/" + 1L));
+	}
+
+	@Test
+	@DisplayName("주문 재고 증감 API 테스트")
+	void bulkUpdateStockTest() throws Exception {
+		//given
+		ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post("/api/internal/v1/products/stocks")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(createUpdateStockRequestList(3, -2, -3, -5)))
+		);
+		action.andExpect(status().isOk());
 	}
 }

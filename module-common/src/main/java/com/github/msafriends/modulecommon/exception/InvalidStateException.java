@@ -5,7 +5,7 @@ public class InvalidStateException extends BusinessException {
         super(errorCode);
     }
 
-    public InvalidStateException(ErrorCode errorCode, String detail) {
-        super(errorCode, detail);
+    public InvalidStateException(ErrorCode errorCode, Object... args) {
+        super(errorCode, args);
     }
 }

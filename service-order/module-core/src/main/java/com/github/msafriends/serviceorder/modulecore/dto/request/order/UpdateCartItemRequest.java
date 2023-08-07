@@ -2,7 +2,7 @@ package com.github.msafriends.serviceorder.modulecore.dto.request.order;
 
 import com.github.msafriends.serviceorder.modulecore.domain.order.CartItem;
 import com.github.msafriends.serviceorder.modulecore.domain.order.Order;
-import com.github.msafriends.serviceorder.modulecore.domain.product.Product;
+import com.github.msafriends.serviceorder.modulecore.domain.product.OrderProduct;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
@@ -31,8 +31,8 @@ public class UpdateCartItemRequest {
         this.price = price;
     }
 
-    public static Product toProduct(final UpdateCartItemRequest request) {
-        return Product.builder()
+    public static OrderProduct toProduct(final UpdateCartItemRequest request) {
+        return OrderProduct.builder()
                 .id(request.getProductId())
                 .name(request.getName())
                 .price(request.getPrice())
