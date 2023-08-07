@@ -5,9 +5,21 @@ dependencies {
     implementation project(':service-product:module-core')
     implementation project(':service-product:module-batch')
     testImplementation project(':service-product:module-core')
-
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.springframework.data:spring-data-redis:3.1.2'
+    implementation 'io.lettuce:lettuce-core:6.2.5.RELEASE'
+    implementation 'org.redisson:redisson:3.23.2'
+}
+ext {
+    set('springCloudVersion', "2022.0.3")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 bootJar {
