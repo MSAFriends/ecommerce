@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service;
+package com.github.msafriends.serviceproduct.moduleapi.service.product;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ public interface ProductService {
     Long registerProduct(Product product);
     void updateStocks(List<UpdateStockRequest> updateStockRequests);
     List<Product>readProductsBySellerId(Long sellerId);
-    List<Product>readProductByCategoryId(Long categoryId);
+    List<Product>readProductsByCategoryId(Long categoryId);
 }
