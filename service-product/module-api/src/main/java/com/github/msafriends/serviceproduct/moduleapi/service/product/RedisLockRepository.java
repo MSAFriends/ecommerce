@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service;
+package com.github.msafriends.serviceproduct.moduleapi.service.product;
 
 import java.time.Duration;
 
