@@ -3,7 +3,9 @@ package com.github.msafriends.serviceproduct.moduleapi.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.github.msafriends.serviceproduct.moduleapi.dto.ReviewUpdateRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
@@ -24,7 +26,7 @@ public class ProductReviewService {
         return productReviewRepository.save(productReview).getId();
     }
 
-    public List<ProductReview> findReviewAboutProduct(Long productId){
+    public List<ProductReview> findReviewByProductId(Long productId){
         return productReviewRepository.findAllByProductId(productId);
     }
 
@@ -32,7 +34,9 @@ public class ProductReviewService {
         return productReviewRepository.findAllByMemberId(memberId);
     }
 
-    public void updateReview(Long reviewId){
-
+    @Transactional
+    public void updateReview(Long reviewId, ReviewUpdateRequest request){
+        ProductReview foundReview = productReviewRepository.findByIdOrThrow(reviewId);
+        foundReview.update(request.getRating(), request.getTitle(), request.getContent());
     }
 }

@@ -62,6 +62,12 @@ public class ProductReview extends BaseTimeEntity {
         this.product = product;
     }
 
+    public void update(final int rating, final String title, final String content){
+        this.rating = rating;
+        this.title = title;
+        this.content = content;
+    }
+
     private void validateProductReview(int rating, Product product, Long memberId, String title, String content){
         validateNotNull(product, memberId, title, content);
         validateRating(rating);
