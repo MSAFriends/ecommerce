@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service;
+package com.github.msafriends.serviceproduct.moduleapi.service.product;
 
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class DefaultProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Product> readProductByCategoryId(Long categoryId) {
+	public List<Product> readProductsByCategoryId(Long categoryId) {
 		return productRepository.findProductByCategoryId(categoryId);
 	}
 }
