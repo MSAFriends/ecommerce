@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service;
+package com.github.msafriends.serviceproduct.moduleapi.service.product.batch;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
