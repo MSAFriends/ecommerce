@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.msafriends.serviceproduct.moduleapi.service.DefaultProductServiceImpl;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.DefaultProductServiceImpl;
 
 import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 
