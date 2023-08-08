@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service.facade;
+package com.github.msafriends.serviceproduct.moduleapi.service.product.facade;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
-import com.github.msafriends.serviceproduct.moduleapi.service.ProductService;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
 
 @Component
 public class RedissonLockProductFacade {
