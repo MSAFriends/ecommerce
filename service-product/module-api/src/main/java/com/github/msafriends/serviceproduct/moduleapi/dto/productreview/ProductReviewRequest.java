@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.dto;
+package com.github.msafriends.serviceproduct.moduleapi.dto.productreview;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
