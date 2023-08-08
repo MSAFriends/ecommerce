@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service;
+package com.github.msafriends.serviceproduct.moduleapi.service.product;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +41,6 @@ public class OptimisticLockProductService implements ProductService{
         return productRepository.save(product).getId();
     }
 
-
     @Transactional
     @Override
     public void updateStocks(List<UpdateStockRequest> updateStockRequests) {
@@ -58,11 +57,11 @@ public class OptimisticLockProductService implements ProductService{
 
     @Override
     public List<Product> readProductsBySellerId(Long sellerId) {
-        return null;
+         return productRepository.findProductsBySellerId(sellerId);
     }
 
     @Override
-    public List<Product> readProductByCategoryId(Long categoryId) {
-        return null;
+    public List<Product> readProductsByCategoryId(Long categoryId) {
+        return productRepository.findProductByCategoryId(categoryId);
     }
 }

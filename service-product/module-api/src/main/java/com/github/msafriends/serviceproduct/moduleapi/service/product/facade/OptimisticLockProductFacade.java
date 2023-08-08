@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service.facade;
+package com.github.msafriends.serviceproduct.moduleapi.service.product.facade;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
-import com.github.msafriends.serviceproduct.moduleapi.service.OptimisticLockProductService;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.OptimisticLockProductService;
 
 import lombok.RequiredArgsConstructor;
 

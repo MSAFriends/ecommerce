@@ -1,12 +1,12 @@
-package com.github.msafriends.serviceproduct.moduleapi.service.facade;
+package com.github.msafriends.serviceproduct.moduleapi.service.product.facade;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
-import com.github.msafriends.serviceproduct.moduleapi.service.DefaultProductServiceImpl;
-import com.github.msafriends.serviceproduct.moduleapi.service.RedisLockRepository;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.DefaultProductServiceImpl;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.RedisLockRepository;
 
 @Component
 public class LettuceLockProductFacade {

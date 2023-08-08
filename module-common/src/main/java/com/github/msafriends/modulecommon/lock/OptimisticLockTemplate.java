@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 public class OptimisticLockTemplate {
     private static final int RETRY_WAIT_TIME = 50;
 
-    public <T> T execute(OptimisticLockCallback<T> callback) {
+    public <T> T execute(OperationCallback<T> callback) {
         while (true) {
             try {
-                return callback.doInLock();
+                return callback.execute();
             } catch (OptimisticLockException e) {
                 handleOptimisticLockingFailure();
             }
