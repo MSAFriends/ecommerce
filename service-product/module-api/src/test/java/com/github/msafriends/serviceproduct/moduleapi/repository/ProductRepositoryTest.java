@@ -3,6 +3,7 @@ package com.github.msafriends.serviceproduct.moduleapi.repository;
 import java.util.Arrays;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,9 +86,9 @@ class ProductRepositoryTest {
     void findProductsByIdWithPessimisticLocTest() throws Exception {
         //given
         List<Long> list = Arrays.asList(1L, 2L, 3L, 4L);
-        List<Product> orderedProducts = productRepository.findProductsByIdIn(list);
         //when
-        orderedProducts.forEach(p -> System.out.println(p.getId()));
+        List<Product> orderedProducts = productRepository.findProductsByIdIn(list);
         //then
+        Assertions.assertThat(orderedProducts).hasSize(4);
     }
 }
