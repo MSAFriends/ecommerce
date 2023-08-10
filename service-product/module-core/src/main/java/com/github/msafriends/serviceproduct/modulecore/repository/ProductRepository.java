@@ -18,15 +18,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             .orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_EXIST, id));
     }
 
-    List<Product> findProductsBySellerId(Long sellerId);
+    List<Product> findTop1000ProductsBySellerId(Long sellerId);
 
     List<Product> findProductsByIdIn(List<Long> ids);
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE p.id in :ids")
     List<Product> findProductsByIdInWithPessimisticLock(List<Long> ids);
 
-    @Query("SELECT p FROM Product p WHERE p.category=:categoryId")
-    List<Product> findProductByCategoryId(Long categoryId);
+    List<Product> findTop1000ProductByCategoryId(Long categoryId);
 
     @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT p FROM Product p WHERE p.id  in :ids")

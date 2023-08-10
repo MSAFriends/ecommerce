@@ -10,5 +10,5 @@ public interface ProductService {
     Long registerProduct(Product product);
     void updateStocks(List<UpdateStockRequest> updateStockRequests);
     List<Product>readProductsBySellerId(Long sellerId);
-    List<Product>readProductsByCategoryId(Long categoryId);
+    List<Product> readProductsByCategoryId(Long categoryId);
 }
