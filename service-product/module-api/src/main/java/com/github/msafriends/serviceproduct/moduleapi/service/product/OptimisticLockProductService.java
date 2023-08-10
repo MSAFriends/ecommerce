@@ -57,11 +57,11 @@ public class OptimisticLockProductService implements ProductService{
 
     @Override
     public List<Product> readProductsBySellerId(Long sellerId) {
-         return productRepository.findProductsBySellerId(sellerId);
+         return productRepository.findTop1000ProductsBySellerId(sellerId);
     }
 
     @Override
     public List<Product> readProductsByCategoryId(Long categoryId) {
-        return productRepository.findProductByCategoryId(categoryId);
+        return productRepository.findTop1000ProductByCategoryId(categoryId);
     }
 }
