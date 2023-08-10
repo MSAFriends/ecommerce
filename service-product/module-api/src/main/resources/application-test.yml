@@ -5,8 +5,10 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/mydb
     username: root
-    password: Rkaodwja6^
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000
   batch:
     jdbc:
       initialize-schema: ALWAYS
