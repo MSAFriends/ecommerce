@@ -1,13 +1,12 @@
 package com.github.msafriends.serviceproduct.common.fixture.product;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.ProductRequest;
+import com.github.msafriends.serviceproduct.moduleapi.dto.product.ProductRequest;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
@@ -75,6 +74,36 @@ public class ProductFixture {
                 .benefit(createDefaultBenefit())
                 .build();
     }
+
+    public static Product createProductWithSellerId(Long sellerId) {
+        return Product.builder()
+            .sellerId(sellerId)
+            .code(CODE)
+            .price(DEFAULT_PRICE)
+            .name(NAME)
+            .delivery(DELIVERY)
+            .buySatisfy(BUY_SATISFY)
+            .ageLimit(AGE_LIMIT)
+            .size(DEFAULT_SIZE)
+            .benefit(createDefaultBenefit())
+            .build();
+    }
+
+    public static Product createProductWithCategoryId(Long categoryId) {
+        return Product.builder()
+            .sellerId(SELLER_ID)
+            .code(CODE)
+            .price(DEFAULT_PRICE)
+            .name(NAME)
+            .delivery(DELIVERY)
+            .buySatisfy(BUY_SATISFY)
+            .ageLimit(AGE_LIMIT)
+            .size(DEFAULT_SIZE)
+            .category(CategoryFixture.createMainCategoryWithId(categoryId, "메인 카테고리"))
+            .benefit(createDefaultBenefit())
+            .build();
+    }
+
     public static Product createProductWithQuantity(int quantity) {
         return Product.builder()
             .sellerId(SELLER_ID)
@@ -103,13 +132,13 @@ public class ProductFixture {
     public static ProductRequest createProductRequest(){
         return ProductRequest.builder()
             .code(CODE)
-            .price(createDefaultPrice())
+            .price(100)
             .quantity(QUANTITY)
             .name(NAME)
             .categoryId(CategoryFixture.MAIN_CATEGORY_ID_A)
             .delivery(DELIVERY)
             .ageLimit(AGE_LIMIT)
-            .benefit(createDefaultBenefit())
+            .discount(1000)
             .buySatisfy(BUY_SATISFY)
             .build();
     }

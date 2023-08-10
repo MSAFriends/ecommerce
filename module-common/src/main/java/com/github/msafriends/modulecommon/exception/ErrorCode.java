@@ -43,8 +43,15 @@ public enum ErrorCode {
 
 	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다."),
 	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다."),
+
+	PRODUCT_NOT_EXIST(HttpStatus.NOT_FOUND, "PR_001", "상품(id = %d)가 존재하지 않습니다."),
+	PRODUCT_IMAGE_NOT_EXIST(HttpStatus.NOT_FOUND, "PRI_002", "상품 이미지(id = %d)가 존재하지 않습니다."),
+
 	INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "P_003", "재고가 충분하지 않습니다. (id = %d, remain = %d)"),
-	INVALID_ORDER_ERROR(HttpStatus.BAD_REQUEST, "P_004", "유효하지 않은 주문입니다.");
+	INVALID_ORDER_ERROR(HttpStatus.BAD_REQUEST, "P_004", "유효하지 않은 주문입니다."),
+	PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST, "P_005", "상품(id = %d)을 찾을 수 없습니다."),
+
+	REVIEW_NOT_EXIST(HttpStatus.BAD_REQUEST, "R_001", "리뷰(id = %d)를 찾을 수 없습니다.");
 
 	private final HttpStatus status;
 	private final String code;
