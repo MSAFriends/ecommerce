@@ -4,8 +4,13 @@ import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Size;
 
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductResponse {
     private Long productId;
     private Long sellerId;
@@ -43,18 +48,20 @@ public class ProductResponse {
     }
 
     public static ProductResponse from(Product product){
-        return ProductResponse.builder()
+        ProductResponseBuilder builder = ProductResponse.builder()
             .productId(product.getId())
             .name(product.getName())
             .price(product.getPrice().getPriceValue())
             .salesPrice(product.getPrice().getSalePriceValue())
             .quantity(product.getQuantity())
             .code(product.getCode())
-            .categoryId(product.getCategory().getId())
             .mileage(product.getBenefit().getMileage())
             .ageLimit(product.getAgeLimit())
             .discount(product.getBenefit().getDiscount())
-            .buySatisfy(product.getBuySatisfy())
-            .build();
+            .buySatisfy(product.getBuySatisfy());
+        if(product.getCategory() != null){
+            return builder.categoryId(product.getCategory().getId()).build();
+        }
+        return builder.build();
     }
 }
