@@ -107,7 +107,7 @@ public class DefaultProductServiceImplTest {
 			for (int i = 0; i < 4; i++) {
 				list.add(createProductWithSellerId((RANDOM_ID)));
 			}
-			when(productRepository.findProductsBySellerId(RANDOM_ID)).thenReturn(list);
+			when(productRepository.findTop1000ProductsBySellerId(RANDOM_ID)).thenReturn(list);
 			//when
 			List<Product> foundProducts = defaultProductServiceImpl.readProductsBySellerId(RANDOM_ID);
 			//then
@@ -123,7 +123,7 @@ public class DefaultProductServiceImplTest {
 			for (int i = 0; i < 4; i++) {
 				list.add(createProductWithCategoryId(RANDOM_ID));
 			}
-			when(productRepository.findProductByCategoryId(RANDOM_ID)).thenReturn(list);
+			when(productRepository.findTop1000ProductByCategoryId(RANDOM_ID)).thenReturn(list);
 			//when
 			List<Product> foundProducts = defaultProductServiceImpl.readProductsByCategoryId(RANDOM_ID);
 			//then

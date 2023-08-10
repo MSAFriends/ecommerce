@@ -12,10 +12,10 @@ import com.github.msafriends.modulecommon.exception.EntityNotFoundException;
 import com.github.msafriends.modulecommon.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 
-import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -60,11 +60,11 @@ public class DefaultProductServiceImpl implements ProductService{
 	}
 
 	public List<Product>readProductsBySellerId(Long sellerId){
-		return productRepository.findProductsBySellerId(sellerId);
+		return productRepository.findTop1000ProductsBySellerId(sellerId);
 	}
 
 	@Override
 	public List<Product> readProductsByCategoryId(Long categoryId) {
-		return productRepository.findProductByCategoryId(categoryId);
+		return productRepository.findTop1000ProductByCategoryId(categoryId);
 	}
 }
