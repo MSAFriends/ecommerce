@@ -1,7 +1,9 @@
 package com.github.msafriends.serviceproduct.modulecore.repository;
 
-import java.util.List;
 
+import com.github.msafriends.modulecommon.exception.EntityNotFoundException;
+import com.github.msafriends.modulecommon.exception.ErrorCode;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findTop1000ProductsBySellerId(Long sellerId);
 
     List<Product> findProductsByIdIn(List<Long> ids);
+  
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE p.id in :ids")
     List<Product> findProductsByIdInWithPessimisticLock(List<Long> ids);
