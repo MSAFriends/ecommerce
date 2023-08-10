@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.moduleapi.dto.product.ProductRequest;
 import com.github.msafriends.serviceproduct.moduleapi.dto.product.ProductResponse;
-import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
-import com.github.msafriends.serviceproduct.moduleapi.service.product.facade.LettuceLockProductFacade;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.facade.OptimisticLockProductFacade;
 
 @RestController
 @RequestMapping("/api/internal/v1/products")
 public class ProductInternalApiControllerV1 {
-	private final LettuceLockProductFacade productFacade;
+	private final OptimisticLockProductFacade productFacade;
 	private final ProductService productService;
 
-	public ProductInternalApiControllerV1(LettuceLockProductFacade productFacade, @Qualifier("defaultProductService") ProductService productService) {
+	public ProductInternalApiControllerV1(OptimisticLockProductFacade productFacade, @Qualifier("defaultProductService") ProductService productService) {
 		this.productFacade = productFacade;
 		this.productService = productService;
 	}
