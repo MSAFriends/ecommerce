@@ -3,9 +3,12 @@ plugins {
     id 'java-library'
 }
 dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     implementation project(':module-common')
 }
 bootJar {

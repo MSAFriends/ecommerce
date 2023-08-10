@@ -1,20 +1,24 @@
 package com.github.msafriends.serviceproduct.modulecore.domain.review;
 
+import static lombok.AccessLevel.*;
 
+import org.springframework.util.Assert;
+
+import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import org.springframework.util.Assert;
-
-import static lombok.AccessLevel.*;
-
-import com.github.msafriends.modulecommon.base.BaseTimeEntity;
 
 @Entity
 @Getter
@@ -48,6 +52,20 @@ public class ProductReview extends BaseTimeEntity {
         this.content = content;
         this.product = product;
         this.memberId = memberId;
+    }
+
+    public void associateMember(Long memberId){
+        this.memberId = memberId;
+    }
+
+    public void associateProduct(Product product){
+        this.product = product;
+    }
+
+    public void update(final int rating, final String title, final String content){
+        this.rating = rating;
+        this.title = title;
+        this.content = content;
     }
 
     private void validateProductReview(int rating, Product product, Long memberId, String title, String content){
