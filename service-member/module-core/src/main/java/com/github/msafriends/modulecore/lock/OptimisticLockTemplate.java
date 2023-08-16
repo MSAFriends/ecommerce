@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceorder.modulecore.lock;
+package com.github.msafriends.modulecore.lock;
 
 import java.util.concurrent.Callable;
 
