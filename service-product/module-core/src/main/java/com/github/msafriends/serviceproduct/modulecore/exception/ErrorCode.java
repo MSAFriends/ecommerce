@@ -1,4 +1,4 @@
-package com.github.msafriends.modulecommon.exception;
+package com.github.msafriends.serviceproduct.modulecore.exception;
 
 import org.springframework.http.HttpStatus;
 
