@@ -1,13 +1,15 @@
 package com.github.msafriends.serviceorder.modulecore.domain.order;
 
-import com.github.msafriends.modulecommon.base.BaseTimeEntity;
-import com.github.msafriends.modulecommon.exception.ErrorCode;
-import com.github.msafriends.modulecommon.exception.InvalidValueException;
+
+import com.github.msafriends.serviceorder.modulecore.base.BaseTimeEntity;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.OrderCoupon;
 import com.github.msafriends.serviceorder.modulecore.domain.coupon.strategy.PriceCalculator;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.ConfirmOrderRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.RecipientRequest;
 import com.github.msafriends.serviceorder.modulecore.dto.request.order.UpdateCartItemRequest;
+import com.github.msafriends.serviceorder.modulecore.exception.ErrorCode;
+import com.github.msafriends.serviceorder.modulecore.exception.InvalidValueException;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

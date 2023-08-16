@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.github.msafriends.modulecommon.exception.EntityNotFoundException;
-import com.github.msafriends.modulecommon.exception.ErrorCode;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
+import com.github.msafriends.serviceproduct.modulecore.exception.EntityNotFoundException;
+import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	default Category findByIdOrThrow(Long id){

@@ -1,22 +1,23 @@
 package com.github.msafriends.moduleapi.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.github.msafriends.moduleapi.dto.request.member.MemberSignupRequest;
 import com.github.msafriends.moduleapi.dto.response.member.MemberSignupResponse;
-import com.github.msafriends.modulecommon.exception.member.member.MemberAlreadyExistException;
 import com.github.msafriends.modulecore.domain.coupon.Coupon;
 import com.github.msafriends.modulecore.domain.coupon.CouponGenerateType;
 import com.github.msafriends.modulecore.domain.coupon.MemberCoupon;
 import com.github.msafriends.modulecore.domain.member.Member;
+import com.github.msafriends.modulecore.exception.member.member.MemberAlreadyExistException;
 import com.github.msafriends.modulecore.repository.coupon.CouponRepository;
 import com.github.msafriends.modulecore.repository.coupon.MemberCouponRepository;
 import com.github.msafriends.modulecore.repository.member.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
