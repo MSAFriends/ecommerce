@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -18,7 +19,7 @@ import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.moduleapi.service.CategoryService;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
-
+@ActiveProfiles(value = "test")
 class CategoryInternalApiControllerV1Test extends AcceptanceTest {
     @MockBean
     CategoryService categoryService;

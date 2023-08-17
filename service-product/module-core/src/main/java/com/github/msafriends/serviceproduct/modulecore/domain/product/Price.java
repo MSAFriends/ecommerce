@@ -1,7 +1,7 @@
 package com.github.msafriends.serviceproduct.modulecore.domain.product;
 
-import com.github.msafriends.modulecommon.exception.ErrorCode;
-import com.github.msafriends.modulecommon.exception.InvalidValueException;
+import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
+import com.github.msafriends.serviceproduct.modulecore.exception.InvalidValueException;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

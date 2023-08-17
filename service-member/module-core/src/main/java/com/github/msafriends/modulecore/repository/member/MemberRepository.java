@@ -1,8 +1,9 @@
 package com.github.msafriends.modulecore.repository.member;
 
-import com.github.msafriends.modulecommon.exception.member.member.MemberNotExistException;
 import com.github.msafriends.modulecore.domain.member.Email;
 import com.github.msafriends.modulecore.domain.member.Member;
+import com.github.msafriends.modulecore.exception.member.member.MemberNotExistException;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

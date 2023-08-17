@@ -1,8 +1,9 @@
 package com.github.msafriends.serviceproduct.modulecore.domain.review;
 
-import com.github.msafriends.modulecommon.base.BaseTimeEntity;
-import com.github.msafriends.modulecommon.exception.ErrorCode;
-import com.github.msafriends.modulecommon.exception.InvalidValueException;
+
+import com.github.msafriends.serviceproduct.modulecore.base.BaseTimeEntity;
+import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
+import com.github.msafriends.serviceproduct.modulecore.exception.InvalidValueException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

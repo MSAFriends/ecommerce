@@ -1,8 +1,9 @@
 package com.github.msafriends.modulecore.domain.coupon;
 
-import com.github.msafriends.modulecommon.exception.member.coupon.CouponAlreadyUseException;
-import com.github.msafriends.modulecommon.exception.member.coupon.CouponExpiredException;
 import com.github.msafriends.modulecore.domain.member.Member;
+import com.github.msafriends.modulecore.exception.member.coupon.CouponAlreadyUseException;
+import com.github.msafriends.modulecore.exception.member.coupon.CouponExpiredException;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -17,12 +17,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.github.msafriends.modulecommon.exception.ErrorCode;
-import com.github.msafriends.modulecommon.exception.product.NotEnoughStockException;
+
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.moduleapi.service.product.DefaultProductServiceImpl;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
+import com.github.msafriends.serviceproduct.modulecore.exception.product.NotEnoughStockException;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 

@@ -4,7 +4,7 @@ import static lombok.AccessLevel.*;
 
 import org.springframework.util.Assert;
 
-import com.github.msafriends.modulecommon.base.BaseTimeEntity;
+import com.github.msafriends.serviceproduct.modulecore.base.BaseTimeEntity;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 
 import jakarta.persistence.Column;

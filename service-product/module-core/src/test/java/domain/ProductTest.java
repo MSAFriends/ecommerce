@@ -6,10 +6,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.github.msafriends.modulecommon.exception.ErrorCode;
-import com.github.msafriends.modulecommon.exception.InvalidValueException;
+
 
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
+import com.github.msafriends.serviceproduct.modulecore.exception.InvalidValueException;
+
 import fixture.product.ProductFixture;
 
 public class ProductTest {
@@ -50,7 +52,7 @@ public class ProductTest {
                     () -> ProductFixture.createInvalidPriceProduct(
                         ProductFixture.PRICE_VALUE, ProductFixture.PRICE_VALUE + ProductFixture.ADDITIONAL_PRICE_AMOUNT));
             Assertions.assertThat(ErrorCode.INVALID_PRICE_ERROR).isEqualTo(invalidValueException.getErrorCode());
-            Assertions.assertThat("할인 가격은 가격보다 작아야 합니다.").isEqualTo(invalidValueException.getDetail());
+            Assertions.assertThat("유효하지 않은 가격입니다.").isEqualTo(invalidValueException.getDetail());
         }
 
         @Test
@@ -61,7 +63,7 @@ public class ProductTest {
                 () -> ProductFixture.createInvalidPriceProduct(
                     ProductFixture.NEGATIVE_PRICE_VALUE, ProductFixture.SALE_PRICE_VALUE));
             Assertions.assertThat(invalidValueException.getErrorCode()).isEqualTo(ErrorCode.INVALID_PRICE_ERROR);
-            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo("가격은 0보다 커야 합니다.");
+            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo("유효하지 않은 가격입니다.");
         }
         @Test
         @DisplayName("Product의 할인 가격은 음수를 가질 수 없다.")
@@ -71,7 +73,7 @@ public class ProductTest {
                 () -> ProductFixture.createInvalidPriceProduct(
                     ProductFixture.PRICE_VALUE, ProductFixture.NEGATIVE_PRICE_VALUE));
             Assertions.assertThat(invalidValueException.getErrorCode()).isEqualTo(ErrorCode.INVALID_PRICE_ERROR);
-            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo("할인 가격은 0보다 커야 합니다.");
+            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo("유효하지 않은 가격입니다.");
         }
     }
 }
