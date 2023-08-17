@@ -1,9 +1,13 @@
 package com.github.msafriends.serviceproduct.modulecore.domain.product;
 
-import com.github.msafriends.modulecommon.exception.product.NotEnoughStockException;
+import com.github.msafriends.serviceproduct.modulecore.base.BaseTimeEntity;
 import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ProductImage;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
+import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
+import com.github.msafriends.serviceproduct.modulecore.exception.InvalidValueException;
+import com.github.msafriends.serviceproduct.modulecore.exception.product.NotEnoughStockException;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +20,7 @@ import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import com.github.msafriends.modulecommon.base.BaseTimeEntity;
-import com.github.msafriends.modulecommon.exception.ErrorCode;
-import com.github.msafriends.modulecommon.exception.InvalidValueException;
+
 
 @Getter
 @Entity

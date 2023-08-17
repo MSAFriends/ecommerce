@@ -2,26 +2,28 @@ package domain.product.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 import com.github.msafriends.serviceproduct.moduleapi.dto.ProductImageResponse;
 import com.github.msafriends.serviceproduct.moduleapi.service.ProductImageService;
-import common.AcceptanceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static common.fixture.product.ProductFixture.*;
-import static common.fixture.product.ProductImageFixture.*;
+import static com.github.msafriends.serviceproduct.common.fixture.product.ProductFixture.*;
+import static com.github.msafriends.serviceproduct.common.fixture.product.ProductImageFixture.*;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-public class ProductImageExternalApiControllerV1Test extends AcceptanceTest {
+@ActiveProfiles(value = "test")
+class ProductImageExternalApiControllerV1Test extends AcceptanceTest {
 
     @MockBean
     ProductImageService productImageService;

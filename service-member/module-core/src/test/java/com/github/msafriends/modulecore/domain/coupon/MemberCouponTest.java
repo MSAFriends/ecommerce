@@ -1,6 +1,7 @@
 package com.github.msafriends.modulecore.domain.coupon;
 
 import com.github.msafriends.modulecore.domain.member.Member;
+import com.github.msafriends.modulecore.exception.member.coupon.CouponAlreadyUseException;
 import com.github.msafriends.modulecore.fixture.CouponFixture;
 import com.github.msafriends.modulecore.fixture.MemberFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -86,7 +87,7 @@ public class MemberCouponTest {
             memberCoupon.use(CouponFixture.createExampleDate());
             assertThatThrownBy(() ->
                     memberCoupon.use(CouponFixture.createExampleDate()))
-                    .isInstanceOf(IllegalStateException.class)
+                    .isInstanceOf(CouponAlreadyUseException.class)
                     .hasMessage("The coupon has already been used.");
         }
 

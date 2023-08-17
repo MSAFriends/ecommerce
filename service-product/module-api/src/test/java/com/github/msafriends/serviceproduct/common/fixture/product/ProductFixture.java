@@ -20,7 +20,7 @@ public class ProductFixture {
 
     public static final Long TEST_PRODUCT_ID = 1L;
     public static final Long SELLER_ID = 1L;
-    public static final Long CODE = 111111111L;
+    public static final Long CODE = 1234115166789706L;
     public static final int PRICE_VALUE = 1000;
     public static final int NEGATIVE_PRICE_VALUE = -1;
     public static final int ADDITIONAL_PRICE_AMOUNT = 1000;
@@ -138,8 +138,9 @@ public class ProductFixture {
             .categoryId(CategoryFixture.MAIN_CATEGORY_ID_A)
             .delivery(DELIVERY)
             .ageLimit(AGE_LIMIT)
-            .discount(1000)
+            .discount(60)
             .buySatisfy(BUY_SATISFY)
+            .mileage(MILEAGE)
             .build();
     }
 

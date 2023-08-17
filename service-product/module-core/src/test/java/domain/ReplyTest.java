@@ -5,9 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.github.msafriends.modulecommon.exception.InvalidValueException;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.review.Reply;
+import com.github.msafriends.serviceproduct.modulecore.exception.InvalidValueException;
+
 import fixture.reply.ReplyFixture;
 
 class ReplyTest {

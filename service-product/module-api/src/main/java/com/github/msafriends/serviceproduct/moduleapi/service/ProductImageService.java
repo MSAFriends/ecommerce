@@ -21,7 +21,7 @@ public class ProductImageService {
 
     @Transactional
     public void registerProductImage(ProductImageRequest request, Long productId) {
-        productImageRepository.save(ProductImageRequest.toProductImage(request, productRepository.getProductByIdOrThrow(productId)));
+        productImageRepository.save(ProductImageRequest.toProductImage(request, productRepository.findByIdOrThrow(productId)));
     }
 
     public ProductImageResponse getProductImage(Long productImageId) {
