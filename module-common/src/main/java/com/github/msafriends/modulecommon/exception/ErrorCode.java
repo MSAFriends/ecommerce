@@ -49,7 +49,6 @@ public enum ErrorCode {
 
 	INVALID_ORDER_QUANTITY(HttpStatus.BAD_REQUEST, "P_003", "재고가 충분하지 않습니다. (id = %d, remain = %d)"),
 	INVALID_ORDER_ERROR(HttpStatus.BAD_REQUEST, "P_004", "유효하지 않은 주문입니다."),
-	PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST, "P_005", "상품(id = %d)을 찾을 수 없습니다."),
 
 	REVIEW_NOT_EXIST(HttpStatus.BAD_REQUEST, "R_001", "리뷰(id = %d)를 찾을 수 없습니다.");
 
