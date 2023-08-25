@@ -6,15 +6,14 @@ import java.util.List;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.product.ProductRequest;
-
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
-import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Size;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.ProductRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 
 public class ProductFixture {
 

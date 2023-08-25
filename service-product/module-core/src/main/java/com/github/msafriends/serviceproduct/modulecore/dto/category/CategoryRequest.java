@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.dto;
+package com.github.msafriends.serviceproduct.modulecore.dto.category;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 

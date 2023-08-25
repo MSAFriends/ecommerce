@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.dto;
+package com.github.msafriends.serviceproduct.modulecore.dto.category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter

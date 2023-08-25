@@ -1,10 +1,10 @@
 package com.github.msafriends.serviceproduct.moduleapi.controller.external.v1;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.ProductImageRequest;
-import com.github.msafriends.serviceproduct.moduleapi.dto.ProductImageResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
 import com.github.msafriends.serviceproduct.moduleapi.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

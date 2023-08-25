@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.ReviewUpdateRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.productreview.ReviewUpdateRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;

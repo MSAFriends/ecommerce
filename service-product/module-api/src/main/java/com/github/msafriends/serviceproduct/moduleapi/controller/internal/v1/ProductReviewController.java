@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.productreview.ProductReviewRequest;
-import com.github.msafriends.serviceproduct.moduleapi.dto.product.ProductResponse;
-import com.github.msafriends.serviceproduct.moduleapi.dto.productreview.ProductReviewResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.productreview.ProductReviewRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.productreview.ProductReviewResponse;
 import com.github.msafriends.serviceproduct.moduleapi.service.ProductReviewService;
 
 import lombok.RequiredArgsConstructor;

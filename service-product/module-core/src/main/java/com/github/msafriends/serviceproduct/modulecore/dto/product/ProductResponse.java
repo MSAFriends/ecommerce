@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.dto.product;
+package com.github.msafriends.serviceproduct.modulecore.dto.product;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;

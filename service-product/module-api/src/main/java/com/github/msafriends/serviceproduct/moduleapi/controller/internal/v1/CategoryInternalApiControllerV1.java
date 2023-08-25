@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.CategoryRequest;
-import com.github.msafriends.serviceproduct.moduleapi.dto.CategoryResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.category.CategoryRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.category.CategoryResponse;
 import com.github.msafriends.serviceproduct.moduleapi.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;

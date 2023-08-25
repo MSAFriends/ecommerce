@@ -1,26 +1,21 @@
 package com.github.msafriends.serviceproduct.moduleapi.service;
 
 import static com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
-import com.github.msafriends.serviceproduct.moduleapi.dto.CategoryResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.category.CategoryResponse;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 

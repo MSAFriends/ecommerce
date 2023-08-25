@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.dto;
+package com.github.msafriends.serviceproduct.modulecore.dto.product;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
