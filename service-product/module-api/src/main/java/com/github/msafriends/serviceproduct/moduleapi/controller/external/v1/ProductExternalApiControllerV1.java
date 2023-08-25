@@ -5,11 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.DiscountOrder;
@@ -25,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/external/v1/products")
 public class ProductExternalApiControllerV1 {
     private final ProductQueryRepository productQueryRepository;
+    private final ProductService productService;
 
     @GetMapping
     public Page<ProductResponse> findProductsWithConditions(
@@ -42,5 +47,25 @@ public class ProductExternalApiControllerV1 {
         List<Product> products = productQueryRepository.readProductsWithConditions(condition, page - 1);
         return PageableExecutionUtils
             .getPage(products.stream().map(ProductResponse::from).toList(), PageRequest.of(0, products.size()), products::size);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ProductResponse>> getProductsBySellerId(
+        @RequestHeader("Seller-Id") Long sellerId,
+        @RequestParam(defaultValue = "1") int page
+    ){
+        Page<ProductResponse> responses = productService.readProductsBySellerId(sellerId, PageRequest.of(page - 1, 20))
+            .map(ProductResponse::from);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<Page<ProductResponse>> getProductsByCategoryId(
+        @PathVariable Long categoryId,
+        @RequestParam(defaultValue = "1") int page
+    ){
+        Page<ProductResponse> responses = productService.readProductsByCategoryId(categoryId, PageRequest.of(page - 1, 20))
+            .map(ProductResponse::from);
+        return ResponseEntity.ok(responses);
     }
 }
