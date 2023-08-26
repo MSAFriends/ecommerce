@@ -1,7 +1,7 @@
 package com.github.msafriends.serviceproduct.moduleapi.service;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.ProductImageRequest;
-import com.github.msafriends.serviceproduct.moduleapi.dto.ProductImageResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductImageRepository;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

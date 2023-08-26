@@ -41,7 +41,8 @@ public enum ErrorCode {
 	INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "CA_002", "유효하지 않은 카드 유효기간 날짜 형식입니다."),
 	INVALID_PASSWORD_ERROR(HttpStatus.BAD_REQUEST, "CA_003", "잘못된 비밀번호 입니다."),
 
-	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다."),
+	INVALID_PRICE_RANGE(HttpStatus.BAD_REQUEST, "P_003", "유효하지 않은 가격 설정입니다. (%d ~ %d)"),
+	INVALID_PRICE_ERROR(HttpStatus.BAD_REQUEST, "P_001", "유효하지 않은 가격입니다. (%d)"),
 	INVALID_QUANTITY_ERROR(HttpStatus.BAD_REQUEST, "P_002", "유효하지 않은 수량입니다."),
 
 	PRODUCT_NOT_EXIST(HttpStatus.NOT_FOUND, "PR_001", "상품(id = %d)가 존재하지 않습니다."),

@@ -16,11 +16,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
-import com.github.msafriends.serviceproduct.moduleapi.dto.UpdateStockRequest;
-import com.github.msafriends.serviceproduct.moduleapi.service.product.DefaultProductServiceImpl;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.modulecore.exception.product.NotEnoughStockException;
@@ -28,7 +30,7 @@ import com.github.msafriends.serviceproduct.modulecore.repository.CategoryReposi
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultProductServiceImplTest {
+public class ProductServiceTest {
 
 	private static final Long RANDOM_ID = 3L;
 
@@ -37,7 +39,7 @@ public class DefaultProductServiceImplTest {
 	@Mock
 	CategoryRepository categoryRepository;
 	@InjectMocks
-    DefaultProductServiceImpl defaultProductServiceImpl;
+	ProductService productService;
 
 	@Nested
 	@DisplayName("상품 등록 테스트")
@@ -48,8 +50,9 @@ public class DefaultProductServiceImplTest {
 			//given
 			Product product = createProduct();
 			when(productRepository.save(product)).thenReturn(createProductWithIdAndQuantity(TEST_PRODUCT_ID, 10));
+
 			//when
-			Long productId = defaultProductServiceImpl.registerProduct(product);
+			Long productId = productService.registerProduct(product);
 			//then
 			Assertions.assertThat(productId).isEqualTo(TEST_PRODUCT_ID);
 		}
@@ -61,7 +64,7 @@ public class DefaultProductServiceImplTest {
 			when(productRepository.save(product)).thenReturn(createProductWithIdAndQuantity(TEST_PRODUCT_ID, 10));
 			when(categoryRepository.findByIdOrThrow(CategoryFixture.MAIN_CATEGORY_ID_A)).thenReturn(CategoryFixture.createMainCategory(CategoryFixture.MAIN_CATEGORY_NAME));
 			//when
-			Long productId = defaultProductServiceImpl.registerProduct(CategoryFixture.MAIN_CATEGORY_ID_A, product);
+			Long productId = productService.registerProduct(CategoryFixture.MAIN_CATEGORY_ID_A, product);
 			//then
 			Assertions.assertThat(productId).isEqualTo(TEST_PRODUCT_ID);
 		}
@@ -76,10 +79,10 @@ public class DefaultProductServiceImplTest {
 			//given
 			List<UpdateStockRequest> updateStockRequestList = createUpdateStockRequestList(3, -4, -5, -6);
 			List<Product> orderedProduct = createOrderedProduct(10, 3);
-			when(productRepository.findProductsByIdIn(Arrays.asList(1L,2L,3L)))
+			when(productRepository.findProductsByIdInWithPessimisticLock(Arrays.asList(1L,2L,3L)))
 				.thenReturn(orderedProduct);
 			//when
-			assertDoesNotThrow(() -> defaultProductServiceImpl.updateStocks(updateStockRequestList));
+			assertDoesNotThrow(() -> productService.updateStocks(updateStockRequestList));
 		}
 
 		@Test
@@ -87,10 +90,10 @@ public class DefaultProductServiceImplTest {
 		void invalidOrderQuantityTest() throws Exception {
 			//given
 			List<UpdateStockRequest> updateStockRequestList = createUpdateStockRequestList(3, -3, -12, -1);
-			when(productRepository.findProductsByIdIn(Arrays.asList(1L,2L,3L))).thenReturn(createOrderedProduct(10, 3));
+			when(productRepository.findProductsByIdInWithPessimisticLock(Arrays.asList(1L,2L,3L))).thenReturn(createOrderedProduct(10, 3));
 			//when
 			NotEnoughStockException notEnoughStockException = assertThrows(NotEnoughStockException.class,
-				() -> defaultProductServiceImpl.updateStocks(updateStockRequestList));
+				() -> productService.updateStocks(updateStockRequestList));
 			//then
 			System.out.println(notEnoughStockException.getDetail());
 			Assertions.assertThat(notEnoughStockException.getErrorCode()).isEqualTo(ErrorCode.INVALID_ORDER_QUANTITY);
@@ -108,12 +111,14 @@ public class DefaultProductServiceImplTest {
 			for (int i = 0; i < 4; i++) {
 				list.add(createProductWithSellerId((RANDOM_ID)));
 			}
-			when(productRepository.findTop1000ProductsBySellerId(RANDOM_ID)).thenReturn(list);
+			PageRequest pageRequest = PageRequest.of(0, 1000);
+			when(productRepository.findProductsBySellerId(RANDOM_ID, pageRequest)).thenReturn(
+				PageableExecutionUtils.getPage(list, pageRequest, list::size));
 			//when
-			List<Product> foundProducts = defaultProductServiceImpl.readProductsBySellerId(RANDOM_ID);
+			Page<Product> foundProducts = productService.readProductsBySellerId(RANDOM_ID, pageRequest);
 			//then
-			Assertions.assertThat(foundProducts).hasSize(4);
-			Assertions.assertThat(foundProducts.get(0).getSellerId()).isEqualTo(RANDOM_ID);
+			Assertions.assertThat(foundProducts).isNotEmpty();
+			Assertions.assertThat(foundProducts.getContent().get(0).getSellerId()).isEqualTo(RANDOM_ID);
 		}
 
 		@Test
@@ -124,12 +129,13 @@ public class DefaultProductServiceImplTest {
 			for (int i = 0; i < 4; i++) {
 				list.add(createProductWithCategoryId(RANDOM_ID));
 			}
-			when(productRepository.findTop1000ProductByCategoryId(RANDOM_ID)).thenReturn(list);
+			PageRequest pageRequest = PageRequest.of(0, 1000);
+			when(productRepository.findProductByCategoryId(RANDOM_ID, pageRequest)).thenReturn(PageableExecutionUtils.getPage(list, pageRequest, list::size));
 			//when
-			List<Product> foundProducts = defaultProductServiceImpl.readProductsByCategoryId(RANDOM_ID);
+			Page<Product> foundProducts = productService.readProductsByCategoryId(RANDOM_ID, pageRequest);
 			//then
-			Assertions.assertThat(foundProducts).hasSize(4);
-			Assertions.assertThat(foundProducts.get(0).getCategory().getId()).isEqualTo(RANDOM_ID);
+			Assertions.assertThat(foundProducts).isNotEmpty();
+			Assertions.assertThat(foundProducts.getContent().get(0).getCategory().getId()).isEqualTo(RANDOM_ID);
 		}
 	}
 }

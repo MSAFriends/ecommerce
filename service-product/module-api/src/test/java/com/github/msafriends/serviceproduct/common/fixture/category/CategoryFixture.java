@@ -3,10 +3,9 @@ package com.github.msafriends.serviceproduct.common.fixture.category;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.platform.commons.util.ReflectionUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.CategoryRequest;
+import com.github.msafriends.serviceproduct.modulecore.dto.category.CategoryRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 
 public class CategoryFixture {

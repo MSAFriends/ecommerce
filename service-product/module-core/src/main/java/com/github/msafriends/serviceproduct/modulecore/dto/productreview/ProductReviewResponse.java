@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.dto.productreview;
+package com.github.msafriends.serviceproduct.modulecore.dto.productreview;
 
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 

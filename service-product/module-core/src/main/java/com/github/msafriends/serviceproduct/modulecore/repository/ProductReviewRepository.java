@@ -17,7 +17,7 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
             .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXIST, id));
     }
 
-    @Query("SELECT r FROM ProductReview r WHERE r.product = :productId")
+    @Query("SELECT r FROM ProductReview r WHERE r.product.id = :productId")
     List<ProductReview> findAllByProductId(Long productId);
 
     List<ProductReview> findAllByMemberId(Long memberId);

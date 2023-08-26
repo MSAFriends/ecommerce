@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.github.msafriends.serviceproduct.moduleapi.dto.CategoryResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.category.CategoryResponse;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 

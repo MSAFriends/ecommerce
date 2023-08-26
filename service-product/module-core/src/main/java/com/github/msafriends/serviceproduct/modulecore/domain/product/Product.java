@@ -38,8 +38,6 @@ public class Product extends BaseTimeEntity {
     private List<ProductReview> productReviews = new ArrayList<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
-    @Version
-    private Long version;
     @Column(unique = true, nullable = false)
     private Long code;
     @Column(nullable = false)
@@ -109,7 +107,7 @@ public class Product extends BaseTimeEntity {
 
     public void updateStockQuantity(int orderedQuantity){
         if(this.quantity + orderedQuantity < 0)
-            throw new NotEnoughStockException(id, quantity);
+            throw new NotEnoughStockException(ErrorCode.NOT_ENOUGH_STOCK, id, quantity);
         this.quantity += orderedQuantity;
     }
 }

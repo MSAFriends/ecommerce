@@ -17,21 +17,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.msafriends.serviceproduct.moduleapi.service.product.DefaultProductServiceImpl;
 
 import com.github.msafriends.serviceproduct.common.AcceptanceTest;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
 
 @ActiveProfiles(value = "test")
 @Transactional
 class ProductControllerTest extends AcceptanceTest {
 	@MockBean
-	DefaultProductServiceImpl defaultProductServiceImpl;
+	ProductService productService;
 	@Autowired
 	ObjectMapper objectMapper;
 
 	@BeforeEach
 	void setup(){
-		when(defaultProductServiceImpl.registerProduct(any())).thenReturn(1L);
+		when(productService.registerProduct(any())).thenReturn(1L);
 	}
 
 	@Test

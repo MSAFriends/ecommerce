@@ -4,7 +4,12 @@ import com.github.msafriends.serviceproduct.modulecore.exception.BusinessExcepti
 import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 
 public class NotEnoughStockException extends BusinessException {
-    public NotEnoughStockException(Long productId, int stockQuantity){
-        super(ErrorCode.INVALID_ORDER_QUANTITY, productId, stockQuantity);
+
+    public NotEnoughStockException(ErrorCode errorCode) {
+        super(errorCode);
+    }
+
+    public NotEnoughStockException(ErrorCode errorCode, Object... args) {
+        super(errorCode, args);
     }
 }
