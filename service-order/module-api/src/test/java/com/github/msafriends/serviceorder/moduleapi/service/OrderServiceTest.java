@@ -54,7 +54,7 @@ class OrderServiceTest {
         void testGetOrder() {
             // given
             Long orderId = 1L;
-            Order order = OrderFixture.createPendingOrderWithId(orderId);
+            Order order = OrderFixture.createConfirmedOrderWithId(orderId);
             OrderResponse orderResponse = OrderFixture.createOrderResponse(order);
 
             when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
@@ -72,8 +72,8 @@ class OrderServiceTest {
             // given
             Long memberId = 1L;
             List<Order> orders = List.of(
-                    OrderFixture.createPendingOrderWithId(1L),
-                    OrderFixture.createPendingOrderWithId(2L));
+                    OrderFixture.createConfirmedOrderWithId(1L),
+                    OrderFixture.createConfirmedOrderWithId(2L));
 
             when(orderRepository.findAllByMemberId(memberId)).thenReturn(orders);
 

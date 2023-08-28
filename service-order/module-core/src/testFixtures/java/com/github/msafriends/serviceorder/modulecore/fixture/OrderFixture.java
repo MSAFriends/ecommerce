@@ -32,6 +32,24 @@ public class OrderFixture {
         return order;
     }
 
+    public static Order.ConfirmedOrderBuilder createDefaultConfirmedOrderBuilder() {
+        return Order.createConfirmedOrderBuilder()
+                .memberId(DEFAULT_MEMBER_ID);
+    }
+
+    public static Order createDefaultConfirmedOrder() {
+        return createDefaultConfirmedOrderBuilder()
+                .request(DEFAULT_REQUEST)
+                .recipient(DEFAULT_RECIPIENT)
+                .build();
+    }
+
+    public static Order createConfirmedOrderWithId(Long id) {
+        Order order = createDefaultConfirmedOrder();
+        ReflectionTestUtils.setField(order, "id", id);
+        return order;
+    }
+
     public static OrderResponse createOrderResponse(Order order) {
         return OrderResponse.from(order);
     }

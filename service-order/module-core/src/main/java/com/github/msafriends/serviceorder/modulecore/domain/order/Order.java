@@ -46,9 +46,6 @@ public class Order extends BaseTimeEntity {
 
     private int discountedPrice;
 
-    @Version
-    private int version;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
@@ -65,6 +62,16 @@ public class Order extends BaseTimeEntity {
 
         this.memberId = memberId;
         this.status = OrderStatus.PENDING;
+    }
+
+    @Builder(builderClassName = "ConfirmedOrderBuilder", builderMethodName = "createConfirmedOrderBuilder")
+    public Order(Long memberId, String request, Recipient recipient) {
+        validateOrder(memberId);
+
+        this.memberId = memberId;
+        this.request = request;
+        this.recipient = recipient;
+        this.status = OrderStatus.APPROVED;
     }
 
     public void addCoupon(OrderCoupon coupon) {
