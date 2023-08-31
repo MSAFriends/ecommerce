@@ -27,7 +27,7 @@ public class ProductQueryRepository {
         queryFactory = new JPAQueryFactory(entityManager);
     }
 
-    public List<Product> readProductsWithConditions(ProductSearchCondition condition, long page){
+    public List<Product> readProductsWithConditions(ProductSearchCondition condition, int page){
         return queryFactory
             .selectFrom(product)
             .where(
