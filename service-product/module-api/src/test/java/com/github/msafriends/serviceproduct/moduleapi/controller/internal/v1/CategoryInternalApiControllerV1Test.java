@@ -19,7 +19,7 @@ import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.moduleapi.service.CategoryService;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
-@ActiveProfiles(value = "test")
+@ActiveProfiles(value = "prod")
 class CategoryInternalApiControllerV1Test extends AcceptanceTest {
     @MockBean
     CategoryService categoryService;

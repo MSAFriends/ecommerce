@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
 
-@ActiveProfiles(value = "test")
+@ActiveProfiles(value = "prod")
 @Transactional
 class ProductControllerTest extends AcceptanceTest {
 	@MockBean

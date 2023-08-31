@@ -22,7 +22,7 @@ import static com.github.msafriends.serviceproduct.common.fixture.product.Produc
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@ActiveProfiles(value = "test")
+@ActiveProfiles(value = "prod")
 class ProductImageExternalApiControllerV1Test extends AcceptanceTest {
 
     @MockBean

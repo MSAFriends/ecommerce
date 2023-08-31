@@ -20,7 +20,7 @@ import com.github.msafriends.serviceproduct.modulecore.dto.product.SatisfactionO
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductQueryRepository;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("prod")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ProductQueryRepositoryTest {
     private static final int RANDOM_INDEX = new Random().nextInt(20);
