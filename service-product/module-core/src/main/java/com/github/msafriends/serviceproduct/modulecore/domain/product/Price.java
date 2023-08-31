@@ -25,15 +25,15 @@ public class Price {
 
 	private void validateSalePrice(int price, int salePrice) {
 		if (price < 0) {
-			throw new InvalidValueException(ErrorCode.INVALID_PRICE_ERROR, "가격은 0보다 커야 합니다.");
+			throw new InvalidValueException(ErrorCode.INVALID_PRICE_ERROR, price);
 		}
 
 		if (salePrice < 0) {
-			throw new InvalidValueException(ErrorCode.INVALID_PRICE_ERROR, "할인 가격은 0보다 커야 합니다.");
+			throw new InvalidValueException(ErrorCode.INVALID_PRICE_ERROR, salePrice);
 		}
 
 		if (price < salePrice) {
-			throw new InvalidValueException(ErrorCode.INVALID_PRICE_ERROR, "할인 가격은 가격보다 작아야 합니다.");
+			throw new InvalidValueException(ErrorCode.INVALID_PRICE_ERROR, salePrice);
 		}
 	}
 }
