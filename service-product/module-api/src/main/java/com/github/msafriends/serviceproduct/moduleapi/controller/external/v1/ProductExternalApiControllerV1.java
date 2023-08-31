@@ -8,7 +8,6 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,9 +48,9 @@ public class ProductExternalApiControllerV1 {
             .getPage(products.stream().map(ProductResponse::from).toList(), PageRequest.of(0, products.size()), products::size);
     }
 
-    @GetMapping
+    @GetMapping("/{sellerId}")
     public ResponseEntity<Page<ProductResponse>> getProductsBySellerId(
-        @RequestHeader("Seller-Id") Long sellerId,
+        @PathVariable Long sellerId,
         @RequestParam(defaultValue = "1") int page
     ){
         Page<ProductResponse> responses = productService.readProductsBySellerId(sellerId, PageRequest.of(page - 1, 20))
