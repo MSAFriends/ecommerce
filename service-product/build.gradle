@@ -26,11 +26,5 @@ subprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
-    docker {
-        println(tasks.bootJar.outputs.files)
-        name rootProject.name + '-' + project.name + ':latest'
-        dockerfile file('../Dockerfile')
-        files tasks.bootJar.outputs.files
-        buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
-    }
+
 }
