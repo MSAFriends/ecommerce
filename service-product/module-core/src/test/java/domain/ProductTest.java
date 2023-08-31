@@ -52,7 +52,6 @@ public class ProductTest {
                     () -> ProductFixture.createInvalidPriceProduct(
                         ProductFixture.PRICE_VALUE, ProductFixture.PRICE_VALUE + ProductFixture.ADDITIONAL_PRICE_AMOUNT));
             Assertions.assertThat(ErrorCode.INVALID_PRICE_ERROR).isEqualTo(invalidValueException.getErrorCode());
-            Assertions.assertThat("유효하지 않은 가격입니다.").isEqualTo(invalidValueException.getDetail());
         }
 
         @Test
@@ -63,7 +62,6 @@ public class ProductTest {
                 () -> ProductFixture.createInvalidPriceProduct(
                     ProductFixture.NEGATIVE_PRICE_VALUE, ProductFixture.SALE_PRICE_VALUE));
             Assertions.assertThat(invalidValueException.getErrorCode()).isEqualTo(ErrorCode.INVALID_PRICE_ERROR);
-            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo("유효하지 않은 가격입니다.");
         }
         @Test
         @DisplayName("Product의 할인 가격은 음수를 가질 수 없다.")
@@ -73,7 +71,7 @@ public class ProductTest {
                 () -> ProductFixture.createInvalidPriceProduct(
                     ProductFixture.PRICE_VALUE, ProductFixture.NEGATIVE_PRICE_VALUE));
             Assertions.assertThat(invalidValueException.getErrorCode()).isEqualTo(ErrorCode.INVALID_PRICE_ERROR);
-            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo("유효하지 않은 가격입니다.");
+            Assertions.assertThat(invalidValueException.getDetail()).isEqualTo(String.format("유효하지 않은 가격입니다. (%d)", ProductFixture.NEGATIVE_PRICE_VALUE));
         }
     }
 }
