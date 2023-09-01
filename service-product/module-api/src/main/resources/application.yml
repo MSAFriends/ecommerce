@@ -4,6 +4,8 @@ spring:
     name: product-service
   config:
     import: vault://
+    activate:
+      on-profile: "prod"
   cloud:
     vault:
       authentication: TOKEN
