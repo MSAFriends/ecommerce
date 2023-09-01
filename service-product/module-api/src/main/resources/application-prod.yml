@@ -1,8 +1,6 @@
 spring:
   application:
     name: product-service
-  config:
-    import: vault://
   cloud:
     vault:
       authentication: TOKEN
@@ -11,6 +9,8 @@ spring:
       kv:
         backend: ecommerce
         application-name: ${spring.application.name}
+  config:
+    import: vault://
   sql:
     init:
       mode: always
