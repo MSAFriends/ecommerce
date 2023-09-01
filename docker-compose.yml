@@ -1,104 +1,12 @@
 version: '3'
 services:
-  discovery-service:
-    image: ecommerce-service-discovery:latest
-    networks:
-      - msafriends_network
-    ports:
-      - "8761:8761"
-
-  api-gateway-service:
-    image: ecommerce-service-api-gateway:latest
-    networks:
-      - msafriends_network
-    depends_on:
-      - discovery-service
-    ports:
-      - "8080:8080"
-
-  member-service:
-    image: ecommerce-service-member:latest
-    networks:
-      - msafriends_network
-    depends_on:
-      member-mysql:
-          condition: service_healthy
-      discovery-service:
-          condition: service_started
-      api-gateway-service:
-        condition: service_started
-    env_file:
-      - .env
-    ports:
-      - "8000:8080"
-
-  member-mysql:
-    image: mysql:8.0
-    networks:
-      - msafriends_network
-    volumes:
-      - ./.docker/member-service/db/conf.d:/etc/mysql/conf.d
-      - ./.docker/member-service/db/data:/var/lib/mysql
-      - ./.docker/member-service/db/initdb.d:/docker-entrypoint-initdb.d
-    ports:
-      - "3306:3306"
-    env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: ecommerce-member
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 20s
-      timeout: 10s
-      retries: 10
-
-  order-service:
-    image: ecommerce-service-order:latest
-    networks:
-      - msafriends_network
-    depends_on:
-      order-mysql:
-        condition: service_healthy
-      discovery-service:
-        condition: service_started
-      api-gateway-service:
-        condition: service_started
-    env_file:
-      - .env
-    ports:
-      - "8010:8080"
-
-  order-mysql:
-    image: mysql:8.0
-    networks:
-      - msafriends_network
-    volumes:
-      - ./.docker/order-service/db/conf.d:/etc/mysql/conf.d
-      - ./.docker/order-service/db/data:/var/lib/mysql
-      - ./.docker/order-service/db/initdb.d:/docker-entrypoint-initdb.d
-    ports:
-      - "3307:3306"
-    env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: ecommerce-order
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 20s
-      timeout: 10s
-      retries: 10
-
   product-service:
-    image: ecommerce-service-product:latest
+    image: msafriend/ecommerce-service-product:latest
     networks:
       - msafriends_network
     depends_on:
       product-mysql:
         condition: service_healthy
-      discovery-service:
-        condition: service_started
-      api-gateway-service:
-        condition: service_started
     env_file:
       - .env
     ports:
@@ -123,16 +31,6 @@ services:
       interval: 20s
       timeout: 10s
       retries: 10
-
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    networks:
-      - msafriends_network
-    ports:
-      - "16686:16686"
-      - "4318:4318"
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
 
 networks:
   msafriends_network:
