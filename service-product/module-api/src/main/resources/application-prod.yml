@@ -2,7 +2,7 @@ spring:
   application:
     name: product-service
   config:
-    import: vault://
+    import: vault://secret/ecommerce/product-service/prod
   cloud:
     vault:
       authentication: TOKEN
