@@ -11,9 +11,6 @@ spring:
       kv:
         backend: ecommerce
         application-name: ${spring.application.name}
-        enabled: true
-        profiles: ${spring.profiles.active}
-
   sql:
     init:
       mode: always
