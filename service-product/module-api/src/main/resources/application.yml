@@ -22,7 +22,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://13.125.53.32:8761/eureka
+      defaultZone: http://13.125.53.32:8761/eureka/
 management:
   tracing:
     sampling:
