@@ -24,6 +24,10 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://13.125.53.32:8761/eureka/
+      default-zone: http://13.125.53.32:8761/eureka/
+    region: default
+    availability-zones:
+      default: default-zone
 management:
   tracing:
     sampling:
