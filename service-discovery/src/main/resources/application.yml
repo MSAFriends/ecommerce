@@ -5,3 +5,9 @@ eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
+logging:
+  level:
+    com:
+      netflix:
+        eureka: off
+        discovery: off
