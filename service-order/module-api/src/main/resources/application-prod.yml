@@ -19,8 +19,6 @@ eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
-    service-url:
-      defaultZone: http://discovery-service:8761/eureka
 
 management:
   tracing:
