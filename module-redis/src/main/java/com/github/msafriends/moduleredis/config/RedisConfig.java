@@ -8,17 +8,14 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Component
 public class RedisConfig {
 
     public static RedisConnectionFactory createRedisConnectionFactory(String host, int port) {
         return new LettuceConnectionFactory(host, port);
     }
-
     public static CacheManager createCacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory);
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()

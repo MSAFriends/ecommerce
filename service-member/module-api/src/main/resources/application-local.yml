@@ -15,8 +15,6 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-#        globally_quoted_identifiers: true
-#        globally_quoted_identifiers_skip_column_definitions: true
         show_sql: true
         format_sql:
     defer-datasource-initialization: true
@@ -30,6 +28,11 @@ spring:
   cloud:
     vault:
       enabled: false
+
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
 
 logging:
   level:
