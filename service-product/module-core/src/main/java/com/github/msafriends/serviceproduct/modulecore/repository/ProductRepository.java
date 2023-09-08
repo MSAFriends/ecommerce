@@ -25,9 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findProductsByIdIn(List<Long> ids);
   
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT p FROM Product p WHERE p.id in :ids")
-    List<Product> findProductsByIdInWithPessimisticLock(List<Long> ids);
+    List<Product> findProductsByIdInWithOptimisticLock(List<Long> ids);
 
     Page<Product> findProductByCategoryId(Long categoryId, Pageable pageable);
 }

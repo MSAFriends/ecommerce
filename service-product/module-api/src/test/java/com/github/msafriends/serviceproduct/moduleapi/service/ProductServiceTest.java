@@ -22,8 +22,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
-import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.modulecore.exception.product.NotEnoughStockException;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
@@ -79,7 +79,7 @@ public class ProductServiceTest {
 			//given
 			List<UpdateStockRequest> updateStockRequestList = createUpdateStockRequestList(3, -4, -5, -6);
 			List<Product> orderedProduct = createOrderedProduct(10, 3);
-			when(productRepository.findProductsByIdInWithPessimisticLock(Arrays.asList(1L,2L,3L)))
+			when(productRepository.findProductsByIdInWithOptimisticLock(Arrays.asList(1L,2L,3L)))
 				.thenReturn(orderedProduct);
 			//when
 			assertDoesNotThrow(() -> productService.updateStocks(updateStockRequestList));
@@ -90,13 +90,13 @@ public class ProductServiceTest {
 		void invalidOrderQuantityTest() throws Exception {
 			//given
 			List<UpdateStockRequest> updateStockRequestList = createUpdateStockRequestList(3, -3, -12, -1);
-			when(productRepository.findProductsByIdInWithPessimisticLock(Arrays.asList(1L,2L,3L))).thenReturn(createOrderedProduct(10, 3));
+			when(productRepository.findProductsByIdInWithOptimisticLock(Arrays.asList(1L,2L,3L))).thenReturn(createOrderedProduct(10, 3));
 			//when
 			NotEnoughStockException notEnoughStockException = assertThrows(NotEnoughStockException.class,
 				() -> productService.updateStocks(updateStockRequestList));
 			//then
 			System.out.println(notEnoughStockException.getDetail());
-			Assertions.assertThat(notEnoughStockException.getErrorCode()).isEqualTo(ErrorCode.INVALID_ORDER_QUANTITY);
+			Assertions.assertThat(notEnoughStockException.getErrorCode()).isEqualTo(ErrorCode.NOT_ENOUGH_STOCK);
 		}
 	}
 
