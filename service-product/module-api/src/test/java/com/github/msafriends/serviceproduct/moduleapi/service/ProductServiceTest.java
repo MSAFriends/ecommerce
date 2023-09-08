@@ -21,10 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
-import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductFacade;
 import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
-import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.modulecore.exception.product.NotEnoughStockException;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
