@@ -51,7 +51,7 @@ public class ProductService {
 			.toList();
 		Map<Long, Integer> requestMap = updateStockRequests.stream()
 			.collect(Collectors.toMap(UpdateStockRequest::getProductId, UpdateStockRequest::getQuantity));
-		List<Product> foundProducts = productRepository.findProductsByIdInWithPessimisticLock(orderedIds);
+		List<Product> foundProducts = productRepository.findProductsByIdInWithOptimisticLock(orderedIds);
 		if(orderedIds.size() != foundProducts.size())
 			throw new EntityNotFoundException(ErrorCode.INVALID_ORDER_ERROR, "유효하지 않은 상품 id가 주문에 포함되어 있습니다.");
 		foundProducts.forEach(product -> product.updateStockQuantity(requestMap.get(product.getId())));
