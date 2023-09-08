@@ -11,23 +11,19 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
+import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductFacade;
 import com.github.msafriends.serviceproduct.modulecore.aop.annotation.ExeTimer;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.ProductRequest;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/internal/v1/products")
 public class ProductInternalApiControllerV1 {
 
-	private final ProductService productService;
-
-
-	public ProductInternalApiControllerV1(
-		ProductService productService
-	) {
-		this.productService = productService;
-	}
+	private final ProductFacade productFacade;
 
 	@PostMapping
 	public ResponseEntity<Void> save(
@@ -37,7 +33,7 @@ public class ProductInternalApiControllerV1 {
 		return ResponseEntity
 			.created(
 				URI.create("/api/internal/v1/products/"
-					+ productService.registerProduct(request.toEntity(sellerId)))
+					+ productFacade.registerProduct(request.toEntity(sellerId)))
 			)
 			.build();
 	}
@@ -45,7 +41,7 @@ public class ProductInternalApiControllerV1 {
 	@ExeTimer
 	@PostMapping("/stocks")
 	public ResponseEntity<Void> bulkUpdateProductStocks(@RequestBody List<UpdateStockRequest> requests){
-		productService.updateStocks(requests);
+		productFacade.updateStocks(requests);
 		return ResponseEntity.ok().build();
 	}
 }
