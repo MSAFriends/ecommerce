@@ -44,7 +44,18 @@ public class ProductSearchCondition {
             .satisfactionOrder(satisfactionOrder)
             .discountOrder(discountOrder)
             .build();
+    }
 
+    public static ProductSearchCondition of(final String keyword, final Integer minPrice, final Integer maxPrice, final SatisfactionOrder satisfactionOrder,
+        final AgeLimit ageLimit, final Long categoryId){
+        return ProductSearchCondition.builder()
+            .keyword(keyword)
+            .minPrice(minPrice)
+            .maxPrice(maxPrice)
+            .ageLimit(ageLimit)
+            .categoryId(categoryId)
+            .satisfactionOrder(satisfactionOrder)
+            .build();
     }
 
     private void validatePriceRange(Integer minPrice, Integer maxPrice){

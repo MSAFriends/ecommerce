@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
 import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductService;
@@ -30,6 +32,7 @@ import com.github.msafriends.serviceproduct.modulecore.repository.CategoryReposi
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 public class ProductServiceTest {
 
 	private static final Long RANDOM_ID = 3L;

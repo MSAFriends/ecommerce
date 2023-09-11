@@ -27,7 +27,14 @@ public class ProductQueryRepository {
         queryFactory = new JPAQueryFactory(entityManager);
     }
 
-    public List<Product> readProductsWithConditions(ProductSearchCondition condition, long page){
+    /**
+     * @deprecated
+     * @param condition
+     * @param page
+     * @return
+     */
+    @Deprecated(since = "tunned query testing is finished")
+    public List<Product> readProductsWithConditions(ProductSearchCondition condition, int page){
         return queryFactory
             .selectFrom(product)
             .where(
@@ -41,6 +48,21 @@ public class ProductQueryRepository {
                 condition.getDiscountOrder())
             )
             .offset(page)
+            .limit(PAGE_SIZE)
+            .fetch();
+    }
+
+    public List<Product> tunedQueryWithConditions(ProductSearchCondition condition, int page){
+        return queryFactory
+            .selectFrom(product)
+            .where(
+                ageLimitEq(condition.getAgeLimit()),
+                priceGoe(condition.getMinPrice()),
+                priceLoe(condition.getMaxPrice()),
+                nameLike(condition.getKeyword())
+            ).orderBy(
+               createTunedOrderQuery(condition.getSatisfactionOrder())
+            ).offset(page)
             .limit(PAGE_SIZE)
             .fetch();
     }
@@ -74,6 +96,23 @@ public class ProductQueryRepository {
             if(discountOrder.equals(DiscountOrder.DESC)){
                 orderSpecifiers.add(new OrderSpecifier(Order.DESC, product.benefit.discount));
             }else {
+                orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.benefit.discount));
+            }
+        }
+        return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
+    }
+    private OrderSpecifier[] createTunedOrderQuery(SatisfactionOrder satisfactionOrder) {
+        List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
+        if(satisfactionOrder != null){
+            if(satisfactionOrder.equals(SatisfactionOrder.DESC)){
+                orderSpecifiers.add(new OrderSpecifier(Order.DESC, product.ageLimit));
+                orderSpecifiers.add(new OrderSpecifier(Order.DESC, product.price.priceValue));
+                orderSpecifiers.add(new OrderSpecifier(Order.DESC, product.buySatisfy));
+                orderSpecifiers.add(new OrderSpecifier(Order.DESC, product.benefit.discount));
+            }else {
+                orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.ageLimit));
+                orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.price.priceValue));
+                orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.buySatisfy));
                 orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.benefit.discount));
             }
         }
