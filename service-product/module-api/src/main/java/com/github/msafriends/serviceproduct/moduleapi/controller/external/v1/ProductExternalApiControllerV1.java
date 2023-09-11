@@ -30,7 +30,19 @@ public class ProductExternalApiControllerV1 {
     private final ProductQueryRepository productQueryRepository;
     private final ProductService productService;
 
-    @GetMapping
+    /**
+     * @deprecated deprecated since the end point added for tuned query
+     * @param page
+     * @param keyword
+     * @param minPrice
+     * @param maxPrice
+     * @param ageLimit
+     * @param categoryId
+     * @param satisfactionOrder
+     * @param discountOrder
+     * @return
+     */
+    @Deprecated(since = "query tuning for performance")
     public Page<ProductResponse> findProductsWithConditions(
         @RequestParam(required = false, defaultValue = "1") int page,
         @RequestParam(required = false) String keyword,
@@ -48,7 +60,24 @@ public class ProductExternalApiControllerV1 {
             .getPage(products.stream().map(ProductResponse::from).toList(), PageRequest.of(0, products.size()), products::size);
     }
 
-    @GetMapping("/{sellerId}")
+    @GetMapping
+    public Page<ProductResponse> queryTunedWithConditions(
+        @RequestParam(required = false, defaultValue = "1") int page,
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) Integer minPrice,
+        @RequestParam(required = false) Integer maxPrice,
+        @RequestParam(required = false) AgeLimit ageLimit,
+        @RequestParam(required = false) Long categoryId,
+        @RequestParam(required = false) SatisfactionOrder satisfactionOrder
+    ){
+        ProductSearchCondition condition = ProductSearchCondition
+            .of(keyword, minPrice, maxPrice, satisfactionOrder, ageLimit, categoryId);
+        List<Product> products = productQueryRepository.tunedQueryWithConditions(condition, page - 1);
+        return PageableExecutionUtils
+            .getPage(products.stream().map(ProductResponse::from).toList(), PageRequest.of(0, products.size()), products::size);
+    }
+
+    @GetMapping("/sellers/{sellerId}")
     public ResponseEntity<Page<ProductResponse>> getProductsBySellerId(
         @PathVariable Long sellerId,
         @RequestParam(defaultValue = "1") int page
@@ -58,7 +87,7 @@ public class ProductExternalApiControllerV1 {
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/categories/{categoryId}")
     public ResponseEntity<Page<ProductResponse>> getProductsByCategoryId(
         @PathVariable Long categoryId,
         @RequestParam(defaultValue = "1") int page
