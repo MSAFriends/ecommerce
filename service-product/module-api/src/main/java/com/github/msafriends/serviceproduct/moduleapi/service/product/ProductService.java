@@ -66,4 +66,12 @@ public class ProductService {
 	public Page<Product> readProductsByCategoryId(Long categoryId, Pageable pageable) {
 		return productRepository.findProductByCategoryId(categoryId, pageable);
 	}
+
+	public List<Product> readTop10PopularProducts(){
+		return productRepository.findTop10ByOrderByBuySatisfyDesc();
+	}
+
+	public List<Product> readTop10PopularProductsForCategory(Long categoryId){
+		return productRepository.findTop10ByCategoryIdOrderByBuySatisfy(categoryId);
+	}
 }
