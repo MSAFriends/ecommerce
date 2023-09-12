@@ -49,7 +49,7 @@ public class Product extends BaseTimeEntity {
     private int quantity;
     @Column(nullable = false)
     private String delivery;
-    private int buySatisfy;
+    private float buySatisfy;
     @Embedded
     private Benefit benefit;
     @Column(nullable = false)
@@ -61,7 +61,7 @@ public class Product extends BaseTimeEntity {
     private Long sellerId;
 
     @Builder
-    public Product(Long code, String name, Price price, int quantity, String delivery, int buySatisfy, Benefit benefit,
+    public Product(Long code, String name, Price price, int quantity, String delivery, float buySatisfy, Benefit benefit,
         AgeLimit ageLimit, Size size, Long sellerId, Category category, List<ProductReview> productReviews,
         List<ProductImage> productImages) {
         validateProduct(sellerId, code, name, delivery, ageLimit, quantity);
@@ -78,6 +78,20 @@ public class Product extends BaseTimeEntity {
         this.category = category;
         this.productReviews = productReviews;
         this.productImages = productImages;
+    }
+
+    public void assignCategory(Category category){
+        this.category = category;
+    }
+
+    public void updateStockQuantity(int orderedQuantity){
+        if(this.quantity + orderedQuantity < 0)
+            throw new NotEnoughStockException(ErrorCode.NOT_ENOUGH_STOCK, id, quantity);
+        this.quantity += orderedQuantity;
+    }
+
+    public void updateBuySatisfy(Float buySatisfy){
+        this.buySatisfy = buySatisfy;
     }
 
     private void validateProduct(Long sellerId, Long code, String name, String delivery, AgeLimit ageLimit, int quantity) {
@@ -101,15 +115,5 @@ public class Product extends BaseTimeEntity {
         Assert.notNull(name, "name must not be null");
         Assert.notNull(delivery, "delivery must not be null");
         Assert.notNull(ageLimit, "isMinor must not be null");
-    }
-
-    public void assignCategory(Category category){
-        this.category = category;
-    }
-
-    public void updateStockQuantity(int orderedQuantity){
-        if(this.quantity + orderedQuantity < 0)
-            throw new NotEnoughStockException(ErrorCode.NOT_ENOUGH_STOCK, id, quantity);
-        this.quantity += orderedQuantity;
     }
 }
