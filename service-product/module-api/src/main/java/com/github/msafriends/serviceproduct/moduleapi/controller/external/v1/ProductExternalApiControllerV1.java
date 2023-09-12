@@ -96,4 +96,26 @@ public class ProductExternalApiControllerV1 {
             .map(ProductResponse::from);
         return ResponseEntity.ok(responses);
     }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<ProductResponse>> getTop10PopularProducts(){
+        return ResponseEntity.ok(
+            productService.readTop10PopularProducts()
+                .stream()
+                .map(ProductResponse::from)
+                .toList()
+        );
+    }
+
+    @GetMapping("/categories/{categoryId}/popular")
+    public ResponseEntity<List<ProductResponse>> getTop10PopularProductForCategory(
+        @PathVariable Long categoryId
+    ){
+        return ResponseEntity.ok(
+            productService.readTop10PopularProductsForCategory(categoryId)
+                .stream()
+                .map(ProductResponse::from)
+                .toList()
+        );
+    }
 }
