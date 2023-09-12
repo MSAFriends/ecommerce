@@ -20,7 +20,7 @@ public class ProductResponse {
     private int salesPrice;
     private Integer quantity;
     private String delivery;
-    private Integer buySatisfy;
+    private float buySatisfy;
     private Integer discount;
     private Integer mileage;
     private AgeLimit ageLimit;
@@ -29,7 +29,7 @@ public class ProductResponse {
 
     @Builder
     public ProductResponse(Long productId, Long sellerId, Long code, String name, int price, int salesPrice,
-        Integer quantity, String delivery, Integer buySatisfy, Integer discount, Integer mileage, AgeLimit ageLimit,
+        Integer quantity, String delivery, float buySatisfy, Integer discount, Integer mileage, AgeLimit ageLimit,
         Size size, Long categoryId) {
         this.productId = productId;
         this.sellerId = sellerId;

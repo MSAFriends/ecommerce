@@ -21,4 +21,7 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
     List<ProductReview> findAllByProductId(Long productId);
 
     List<ProductReview> findAllByMemberId(Long memberId);
+
+    @Query("SELECT AVG (r.rating) FROM ProductReview r WHERE r.product.id=:productId")
+    Float getAverageRatingByProductId(Long productId);
 }

@@ -30,4 +30,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findProductsByIdInWithOptimisticLock(List<Long> ids);
 
     Page<Product> findProductByCategoryId(Long categoryId, Pageable pageable);
+    List<Product> findTop10ByOrderByBuySatisfyDesc();
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId ORDER BY p.buySatisfy DESC")
+    List<Product> findTop10ByCategoryIdOrderByBuySatisfy(Long categoryId);
 }

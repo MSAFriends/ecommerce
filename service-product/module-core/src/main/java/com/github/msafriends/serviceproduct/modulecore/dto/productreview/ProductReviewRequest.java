@@ -3,6 +3,7 @@ package com.github.msafriends.serviceproduct.modulecore.dto.productreview;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
 
 import jakarta.validation.constraints.NotBlank;
@@ -39,10 +40,13 @@ public class ProductReviewRequest {
         this.content = content;
     }
 
-    public ProductReview toProductReview(){
+    public ProductReview toProductReview(Product product, Long memberId){
         return ProductReview.builder()
+            .title(title)
             .rating(rating)
             .content(content)
+            .product(product)
+            .memberId(memberId)
             .build();
     }
 }

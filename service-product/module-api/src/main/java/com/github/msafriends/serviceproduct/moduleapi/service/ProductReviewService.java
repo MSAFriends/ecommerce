@@ -2,9 +2,12 @@ package com.github.msafriends.serviceproduct.moduleapi.service;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.msafriends.serviceproduct.modulecore.dto.product.ProductEvent;
+import com.github.msafriends.serviceproduct.modulecore.dto.productreview.ProductReviewRequest;
 import com.github.msafriends.serviceproduct.modulecore.dto.productreview.ReviewUpdateRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.domain.review.ProductReview;
@@ -14,15 +17,18 @@ import com.github.msafriends.serviceproduct.modulecore.repository.ProductReviewR
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductReviewService {
     private final ProductReviewRepository productReviewRepository;
     private final ProductRepository productRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public Long save(Long memberId, Long productId, ProductReview productReview){
+    @Transactional
+    public Long save(Long memberId, Long productId, ProductReviewRequest request){
         Product product = productRepository.findByIdOrThrow(productId);
-        productReview.associateProduct(product);
-        productReview.associateMember(memberId);
+        eventPublisher.publishEvent(new ProductEvent(productId));
+        ProductReview productReview = request.toProductReview(product, memberId);
         return productReviewRepository.save(productReview).getId();
     }
 

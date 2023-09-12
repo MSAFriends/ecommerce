@@ -15,7 +15,7 @@ public class ProductElevenStreetCSV {
     private int salePriceValue;
     private int quantity;
     private String delivery;
-    private int buySatisfy;
+    private float buySatisfy;
     private int discount;
     private int mileage;
     private String ageLimit;
@@ -23,7 +23,7 @@ public class ProductElevenStreetCSV {
 
     public ProductElevenStreetCSV(Long code, String name, int priceValue, int salePriceValue, int quantity,
         String delivery,
-        int buySatisfy, int discount, int mileage, String ageLimit, Long sellerId) {
+        float buySatisfy, int discount, int mileage, String ageLimit, Long sellerId) {
         this.code = code;
         this.name = name;
         this.priceValue = priceValue;
