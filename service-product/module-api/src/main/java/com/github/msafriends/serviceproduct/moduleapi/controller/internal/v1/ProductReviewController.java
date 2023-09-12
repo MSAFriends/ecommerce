@@ -34,7 +34,7 @@ public class ProductReviewController {
         return ResponseEntity
             .created(
                 URI.create("/api/internal/v1/product-reviews/"
-                    + productReviewService.save(memberId, request.getProductId(), request.toProductReview())))
+                    + productReviewService.save(memberId, request.getProductId(), request)))
             .build();
     }
 
