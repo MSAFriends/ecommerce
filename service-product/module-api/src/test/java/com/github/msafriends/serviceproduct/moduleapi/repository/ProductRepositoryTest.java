@@ -9,21 +9,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.github.msafriends.serviceproduct.common.fixture.category.CategoryFixture;
+import com.github.msafriends.serviceproduct.common.fixture.product.ProductFixture;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Benefit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Price;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
 import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
 
-
+import io.lettuce.core.ScriptOutputType;
 
 @DataJpaTest
+@Transactional
 class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private CategoryRepository categoryRepository;
     @BeforeEach
     void setup(){
         productRepository.save(
@@ -90,5 +96,21 @@ class ProductRepositoryTest {
         List<Product> orderedProducts = productRepository.findProductsByIdIn(list);
         //then
         Assertions.assertThat(orderedProducts).hasSize(4);
+    }
+
+
+    @Test
+    @DisplayName("카테고리 id로 인기 상품 10개 조회 성공")
+    void readTop10PopularProductsByCategoryIdOrderByBuySatisfyTest() throws Exception {
+        //given
+        Long categoryId = 1L;
+        categoryRepository.save(CategoryFixture.createMainCategoryWithId(categoryId, "가전제품"));
+        productRepository.save(ProductFixture.createProductWithCategoryId(categoryId));
+        //when
+        List<Product> popularProductsForCategory = productRepository.findTop10ByCategoryIdOrderByBuySatisfy(
+            categoryId);
+        System.out.println(popularProductsForCategory.size());
+        //then
+        Assertions.assertThat(popularProductsForCategory).isNotEmpty();
     }
 }
