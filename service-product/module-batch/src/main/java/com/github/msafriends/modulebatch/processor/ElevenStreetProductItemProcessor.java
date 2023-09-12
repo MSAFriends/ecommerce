@@ -40,7 +40,7 @@ public class ElevenStreetProductItemProcessor implements ItemProcessor<ElevenStr
             item.getSalePrice(),
             REPLACED_QUANTITY,
             item.getDelivery(),
-            item.getBuySatisfy(),
+            (float)item.getBuySatisfy(),
             extractIntValue(benefit, "Discount"),
             extractIntValue(benefit, "Mileage"),
             extractAgeLimit(item.getMinorYn()),
