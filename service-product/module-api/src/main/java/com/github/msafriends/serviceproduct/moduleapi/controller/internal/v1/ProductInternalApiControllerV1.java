@@ -29,13 +29,17 @@ public class ProductInternalApiControllerV1 {
 	public ResponseEntity<Void> save(
 		@RequestHeader("Seller-Id") Long sellerId,
 		@Validated @RequestBody ProductRequest request
-	){
-		return ResponseEntity
-			.created(
-				URI.create("/api/internal/v1/products/"
-					+ productFacade.registerProduct(request.toEntity(sellerId)))
-			)
-			.build();
+	) {
+		if(request.getCategoryId() == null){
+			return ResponseEntity.created(
+					URI.create("/api/internal/v1/products/"
+						+ productFacade.registerProduct(request.toEntity(sellerId))
+					)).build();
+		}
+		return ResponseEntity.created(
+			URI.create("/api/internal/v1/products/"
+				+ productFacade.registerProduct(request.getCategoryId(), request.toEntity(sellerId))
+			)).build();
 	}
 
 	@ExeTimer
