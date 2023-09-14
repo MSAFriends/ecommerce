@@ -16,6 +16,8 @@ import com.github.msafriends.serviceproduct.moduleapi.service.product.ProductSer
 import com.github.msafriends.serviceproduct.modulecore.domain.product.AgeLimit;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.DiscountOrder;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.PopularProducts;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.PopularProductsCategory;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.ProductResponse;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.ProductSearchCondition;
 import com.github.msafriends.serviceproduct.modulecore.dto.product.SatisfactionOrder;
@@ -98,24 +100,14 @@ public class ProductExternalApiControllerV1 {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<List<ProductResponse>> getTop10PopularProducts(){
-        return ResponseEntity.ok(
-            productService.readTop10PopularProducts()
-                .stream()
-                .map(ProductResponse::from)
-                .toList()
-        );
+    public ResponseEntity<PopularProducts> getTop10PopularProducts(){
+        return ResponseEntity.ok(productService.readTop10PopularProducts());
     }
 
     @GetMapping("/categories/{categoryId}/popular")
-    public ResponseEntity<List<ProductResponse>> getTop10PopularProductForCategory(
+    public ResponseEntity<PopularProductsCategory> getTop10PopularProductForCategory(
         @PathVariable Long categoryId
     ){
-        return ResponseEntity.ok(
-            productService.readTop10PopularProductsForCategory(categoryId)
-                .stream()
-                .map(ProductResponse::from)
-                .toList()
-        );
+        return ResponseEntity.ok(productService.readTop10PopularProductsForCategory(categoryId));
     }
 }
