@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.domain.category.Category;
 import com.github.msafriends.serviceproduct.modulecore.domain.product.Product;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.PopularProductResponse;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.PopularProducts;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.PopularProductsCategory;
+import com.github.msafriends.serviceproduct.modulecore.dto.product.UpdateStockRequest;
 import com.github.msafriends.serviceproduct.modulecore.exception.EntityNotFoundException;
 import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.modulecore.repository.CategoryRepository;
@@ -67,11 +70,21 @@ public class ProductService {
 		return productRepository.findProductByCategoryId(categoryId, pageable);
 	}
 
-	public List<Product> readTop10PopularProducts(){
-		return productRepository.findTop10ByOrderByBuySatisfyDesc();
+	@Cacheable(value = "topPopularProducts", key = "10", cacheManager = "redisCacheManager")
+	public PopularProducts readTop10PopularProducts(){
+		List<PopularProductResponse> popularProducts = productRepository.findTop10ByOrderByBuySatisfyDesc()
+			.stream()
+			.map(PopularProductResponse::from)
+			.toList();
+		return PopularProducts.builder().popularProducts(popularProducts).build();
 	}
 
-	public List<Product> readTop10PopularProductsForCategory(Long categoryId){
-		return productRepository.findTop10ByCategoryIdOrderByBuySatisfy(categoryId);
+	@Cacheable(value = "categoryPopularProducts", key = "#categoryId", cacheManager = "redisCacheManager")
+	public PopularProductsCategory readTop10PopularProductsForCategory(Long categoryId){
+		List<PopularProductResponse> popularProducts = productRepository.findTop10ByCategoryIdOrderByBuySatisfy(categoryId)
+			.stream()
+			.map(PopularProductResponse::from)
+			.toList();
+		return PopularProductsCategory.builder().categoryId(categoryId).popularProducts(popularProducts).build();
 	}
 }
