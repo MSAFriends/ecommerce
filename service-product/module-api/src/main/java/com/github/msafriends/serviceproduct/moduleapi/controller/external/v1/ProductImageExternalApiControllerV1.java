@@ -2,7 +2,7 @@ package com.github.msafriends.serviceproduct.moduleapi.controller.external.v1;
 
 import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageRequest;
 import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
-import com.github.msafriends.serviceproduct.moduleapi.service.ProductImageService;
+import com.github.msafriends.serviceproduct.moduleapi.service.productimage.ProductImageService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
