@@ -4,7 +4,7 @@ package com.github.msafriends.serviceproduct.moduleapi.controller.internal.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.msafriends.serviceproduct.common.AcceptanceTest;
 import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
-import com.github.msafriends.serviceproduct.moduleapi.service.ProductImageService;
+import com.github.msafriends.serviceproduct.moduleapi.service.productimage.ProductImageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

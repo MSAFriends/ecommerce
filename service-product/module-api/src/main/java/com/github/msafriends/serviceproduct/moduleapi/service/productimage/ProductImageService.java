@@ -1,4 +1,4 @@
-package com.github.msafriends.serviceproduct.moduleapi.service;
+package com.github.msafriends.serviceproduct.moduleapi.service.productimage;
 
 import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageRequest;
 import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
