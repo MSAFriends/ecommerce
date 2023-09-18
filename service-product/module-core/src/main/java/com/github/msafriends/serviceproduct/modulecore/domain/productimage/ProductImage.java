@@ -18,8 +18,9 @@ public class ProductImage {
     @Column(name = "product_image_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+    @Column(nullable = false)
     private String base;
     @Column(name = "size_100")
     private String size100;
