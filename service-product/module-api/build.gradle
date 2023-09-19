@@ -12,6 +12,7 @@ dependencies {
     implementation 'io.lettuce:lettuce-core:6.2.5.RELEASE'
     implementation 'org.redisson:redisson:3.23.2'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 ext {
     set('springCloudVersion', "2022.0.3")
