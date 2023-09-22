@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_001", "서버에 오류가 발생하였습니다."),
 	FILE_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_002", "파일 처리에 문제가 발생하였습니다. (원인 : %s)"),
+	INSTANTIATE_UTIL_CLASS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S003", "Util 클래스는 인스턴스화 할 수 없습니다."),
 
 	AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, "AR_001", "권한이 없습니다."),
 
