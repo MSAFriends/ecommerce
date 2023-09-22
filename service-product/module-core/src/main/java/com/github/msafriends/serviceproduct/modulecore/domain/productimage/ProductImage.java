@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import java.util.Map;
+
 @Getter
 @Entity
 @Table(name = "product_images")
 @NoArgsConstructor(access = PROTECTED)
 public class ProductImage {
+    private static final String BASE_KEY = "base";
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_image_id")
     private Long id;
@@ -61,5 +65,23 @@ public class ProductImage {
         this.size250 = size250;
         this.size270 = size270;
         this.size300 = size300;
+    }
+
+    public static ProductImage createProductImageWithResize(Product product, Map<String, String> fileNameMap){
+        return ProductImage.builder()
+            .product(product)
+            .base(fileNameMap.get(BASE_KEY))
+            .size100(fileNameMap.getOrDefault(ResizedPixel.SIZE_100.getPixelKey(), null))
+            .size110(fileNameMap.getOrDefault(ResizedPixel.SIZE_110.getPixelKey(), null))
+            .size120(fileNameMap.getOrDefault(ResizedPixel.SIZE_120.getPixelKey(), null))
+            .size130(fileNameMap.getOrDefault(ResizedPixel.SIZE_130.getPixelKey(), null))
+            .size140(fileNameMap.getOrDefault(ResizedPixel.SIZE_140.getPixelKey(), null))
+            .size150(fileNameMap.getOrDefault(ResizedPixel.SIZE_150.getPixelKey(), null))
+            .size170(fileNameMap.getOrDefault(ResizedPixel.SIZE_170.getPixelKey(), null))
+            .size200(fileNameMap.getOrDefault(ResizedPixel.SIZE_200.getPixelKey(), null))
+            .size250(fileNameMap.getOrDefault(ResizedPixel.SIZE_250.getPixelKey(), null))
+            .size270(fileNameMap.getOrDefault(ResizedPixel.SIZE_270.getPixelKey(), null))
+            .size300(fileNameMap.getOrDefault(ResizedPixel.SIZE_300.getPixelKey(), null))
+            .build();
     }
 }
