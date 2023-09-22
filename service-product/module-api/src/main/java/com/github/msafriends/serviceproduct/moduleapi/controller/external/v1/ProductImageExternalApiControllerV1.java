@@ -1,14 +1,18 @@
 package com.github.msafriends.serviceproduct.moduleapi.controller.external.v1;
 
-import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageRequest;
-import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
-import com.github.msafriends.serviceproduct.moduleapi.service.productimage.ProductImageService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.github.msafriends.serviceproduct.moduleapi.service.productimage.ProductImageService;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,11 +21,6 @@ public class ProductImageExternalApiControllerV1 {
 
     private final ProductImageService productImageService;
 
-    @PostMapping
-    public ResponseEntity<Void> registerProductImage(@PathVariable Long productId, @RequestBody ProductImageRequest request) {
-        productImageService.registerProductImage(request, productId);
-        return ResponseEntity.ok().build();
-    }
     @GetMapping("/{productImageId}")
     public ResponseEntity<ProductImageResponse> getProductImage(@PathVariable Long productId, @PathVariable Long productImageId) {
         return ResponseEntity.ok(productImageService.getProductImage(productImageId));
