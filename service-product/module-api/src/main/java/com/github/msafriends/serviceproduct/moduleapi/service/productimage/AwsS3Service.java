@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,19 +66,23 @@ public class AwsS3Service {
         Map<String, String> fileNameMap = new HashMap<>();
         validateFile(multipartFile);
         try{
-            String hashedName = ImageUtils.hashFile(multipartFile.getBytes());
-            String fileExtension = ImageUtils.getFileExtension(multipartFile.getOriginalFilename());
-            String baseFilePath = ImageUtils.createBaseFilePath(s3Path, hashedName, fileExtension);
-            sendFileToS3(multipartFile, baseFilePath);
-            fileNameMap.put(ImageUtils.BASE_IMAGE_KEY, hashedName + ImageUtils.DOT + fileExtension);
+            byte[] originalFile = multipartFile.getBytes();
+            var hashedName = ImageUtils.hashFile(originalFile);
+            var fileExtension = ImageUtils.getFileExtension(multipartFile.getOriginalFilename());
+            var baseFilePath = ImageUtils.createBaseFilePath(s3Path, hashedName, fileExtension);
+            var compressedBaseFilePath = ImageUtils.createCompressedBaseFilePath(s3Path, hashedName, fileExtension);
+            MultipartFile baseImageToSend = new MockMultipartFile(baseFilePath,
+                ImageUtils.compressFile(originalFile));
+            sendFileToS3(baseImageToSend, compressedBaseFilePath);
+            fileNameMap.put(ImageUtils.BASE_IMAGE_KEY, ImageUtils.createCompressedBaseFileName(hashedName, fileExtension));
             List<CustomMultipartFile> resizedImages = createResizedImages(multipartFile, hashedName, fileExtension);
             resizedImages.forEach(resizedImage -> sendFileToS3(resizedImage, resizedImage.getName()));
             resizedImages.forEach(image -> fileNameMap.put(String.valueOf(image.getWidth()), image.getOriginalFilename()));
         } catch (IOException ex){
             throw new FileProcessingException(ErrorCode.FILE_PROCESSING_ERROR);
         }
-        ProductImage productImage = ProductImage.createProductImageWithResize(product, fileNameMap);
-        ProductImage savedImage = productImageRepository.save(productImage);
+        var productImage = ProductImage.createProductImageWithResize(product, fileNameMap);
+        var savedImage = productImageRepository.save(productImage);
         return ProductImageResponse.from(savedImage);
     }
 
@@ -100,14 +105,16 @@ public class AwsS3Service {
     public ByteArrayResource download(String fileKey){
         S3Object fullObject = null;
         byte[] bytes;
+        byte[] decompressed;
         try{
             fullObject = amazonS3.getObject(new GetObjectRequest(bucket, s3Path + fileKey));
             S3ObjectInputStream objectContent = fullObject.getObjectContent();
             bytes = IOUtils.toByteArray(objectContent);
+            decompressed = ImageUtils.decompressImage(bytes);
         }catch (Exception e){
             throw new FileProcessingException(ErrorCode.FILE_PROCESSING_ERROR, e.getMessage());
         }
-        return new ByteArrayResource(bytes);
+        return new ByteArrayResource(decompressed);
     }
 
     @Transactional
