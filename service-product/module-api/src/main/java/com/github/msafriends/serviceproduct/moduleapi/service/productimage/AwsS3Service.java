@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -70,11 +69,11 @@ public class AwsS3Service {
             var hashedName = ImageUtils.hashFile(originalFile);
             var fileExtension = ImageUtils.getFileExtension(multipartFile.getOriginalFilename());
             var baseFilePath = ImageUtils.createBaseFilePath(s3Path, hashedName, fileExtension);
-            var compressedBaseFilePath = ImageUtils.createCompressedBaseFilePath(s3Path, hashedName, fileExtension);
+            var compressedBaseFilePath = ImageUtils.createCompressedBaseFilePath(s3Path, hashedName);
             MultipartFile baseImageToSend = new MockMultipartFile(baseFilePath,
                 ImageUtils.compressFile(originalFile));
             sendFileToS3(baseImageToSend, compressedBaseFilePath);
-            fileNameMap.put(ImageUtils.BASE_IMAGE_KEY, ImageUtils.createCompressedBaseFileName(hashedName, fileExtension));
+            fileNameMap.put(ImageUtils.BASE_IMAGE_KEY, ImageUtils.createCompressedBaseFileName(hashedName));
             List<CustomMultipartFile> resizedImages = createResizedImages(multipartFile, hashedName, fileExtension);
             resizedImages.forEach(resizedImage -> sendFileToS3(resizedImage, resizedImage.getName()));
             resizedImages.forEach(image -> fileNameMap.put(String.valueOf(image.getWidth()), image.getOriginalFilename()));
