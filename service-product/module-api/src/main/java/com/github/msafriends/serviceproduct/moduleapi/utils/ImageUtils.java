@@ -14,7 +14,7 @@ import com.github.msafriends.serviceproduct.modulecore.exception.InvalidStateExc
 public class ImageUtils {
     public static final String BASE_PATH_PREFIX = "/base/";
     public static final String DOT = ".";
-    public static final String COMPRESSED_FILE_NAME_SUFFIX = "_compressed";
+    public static final String COMPRESSED_FILE_NAME_SUFFIX = "compressed";
     public static final String BASE_IMAGE_KEY = "base";
     public static final String FILE_NAME_HASHING_ALGORITHM = "SHA-256";
 
@@ -38,15 +38,15 @@ public class ImageUtils {
         return sb.toString();
     }
 
-    public static String createCompressedBaseFileName(String fileName, String fileExtention){
+    public static String createCompressedBaseFileName(String fileName){
         StringBuilder sb = new StringBuilder();
-        sb.append(fileName).append(COMPRESSED_FILE_NAME_SUFFIX).append(DOT).append(fileExtention);
+        sb.append(fileName).append(DOT).append(COMPRESSED_FILE_NAME_SUFFIX);
         return sb.toString();
     }
 
-    public static String createCompressedBaseFilePath(String s3Path, String fileName, String fileExtention){
+    public static String createCompressedBaseFilePath(String s3Path, String fileName){
         StringBuilder sb = new StringBuilder();
-        sb.append(s3Path).append(BASE_PATH_PREFIX).append(fileName).append(COMPRESSED_FILE_NAME_SUFFIX).append(DOT).append(fileExtention);
+        sb.append(s3Path).append(BASE_PATH_PREFIX).append(fileName).append(DOT).append(COMPRESSED_FILE_NAME_SUFFIX);
         return sb.toString();
     }
   
