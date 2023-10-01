@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
 import com.github.msafriends.serviceproduct.modulecore.domain.productimage.ResizedPixel;
 import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
 import com.github.msafriends.serviceproduct.modulecore.exception.FileProcessingException;
@@ -50,7 +49,7 @@ public class ImageUtils {
         sb.append(s3Path).append(BASE_PATH_PREFIX).append(fileName).append(COMPRESSED_FILE_NAME_SUFFIX).append(DOT).append(fileExtention);
         return sb.toString();
     }
-
+  
     public static String getFileExtension(String fileName){
         try {
             return fileName.substring(fileName.lastIndexOf(DOT) + 1);

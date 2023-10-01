@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_001", "서버에 오류가 발생하였습니다."),
 	FILE_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_002", "파일 처리에 문제가 발생하였습니다. (원인 : %s)"),
+
 	FILE_NAME_HASHING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_003", "파일 이름 해싱을 실패하였습니다."),
 	FILE_COMPRESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_004", "파일 압축에 실패하였습니다. (원인 : %s)"),
 	FILE_DECOMPRESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_005", "파일 압축 해제를 실패하였습니다. (원인 : %s)"),
