@@ -15,13 +15,6 @@ public enum ErrorCode {
 	S3_FILE_SENDING_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "S_007,", "s3에 파일 업로드를 실패하였습니다. (원인 : %s)"),
 	INSTANTIATE_UTIL_CLASS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_008", "Util 클래스는 인스턴스화 할 수 없습니다."),
 
-	FILE_NAME_HASHING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_003", "파일 이름 해싱을 실패하였습니다."),
-	FILE_COMPRESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_004", "파일 압축에 실패하였습니다. (원인 : %s)"),
-	FILE_DECOMPRESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_005", "파일 압축 해제를 실패하였습니다. (원인 : %s)"),
-	INVALID_FILE_EXTENSION_ERROR(HttpStatus.BAD_REQUEST, "S_006", "유효하지 않은 파일 확장자(%s)입니다."),
-	S3_FILE_SENDING_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "S_007,", "s3에 파일 업로드를 실패하였습니다. (원인 : %s)"),
-	INSTANTIATE_UTIL_CLASS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S_008", "Util 클래스는 인스턴스화 할 수 없습니다."),
-
 	AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, "AR_001", "권한이 없습니다."),
 
 	AUTHENTICATION_FAILED(HttpStatus.FORBIDDEN, "AU_001", "인증에 실패하였습니다."),
