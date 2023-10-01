@@ -1,15 +1,16 @@
 package com.github.msafriends.serviceproduct.moduleapi.service.productimage;
 
-import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageRequest;
-import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
-import com.github.msafriends.serviceproduct.modulecore.repository.ProductImageRepository;
-import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
+import com.github.msafriends.serviceproduct.modulecore.repository.ProductImageRepository;
+import com.github.msafriends.serviceproduct.modulecore.repository.ProductRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +19,6 @@ public class ProductImageService {
 
     private final ProductImageRepository productImageRepository;
     private final ProductRepository productRepository;
-
-    @Transactional
-    public void registerProductImage(ProductImageRequest request, Long productId) {
-        productImageRepository.save(ProductImageRequest.toProductImage(request, productRepository.findByIdOrThrow(productId)));
-    }
 
     public ProductImageResponse getProductImage(Long productImageId) {
         return ProductImageResponse.from(productImageRepository.findByIdOrThrow(productImageId));

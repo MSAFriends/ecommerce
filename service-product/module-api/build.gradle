@@ -13,6 +13,9 @@ dependencies {
     implementation 'org.redisson:redisson:3.23.2'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework:spring-test'
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.20'
+    implementation group: 'com.twelvemonkeys.imageio', name: 'imageio-jpeg', version: '3.9.4'
 }
 ext {
     set('springCloudVersion', "2022.0.3")

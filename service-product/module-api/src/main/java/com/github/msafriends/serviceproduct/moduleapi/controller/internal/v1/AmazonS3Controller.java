@@ -1,11 +1,5 @@
 package com.github.msafriends.serviceproduct.moduleapi.controller.internal.v1;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.msafriends.serviceproduct.moduleapi.service.productimage.AwsS3Service;
-import com.github.msafriends.serviceproduct.modulecore.exception.ErrorCode;
-import com.github.msafriends.serviceproduct.modulecore.exception.FileProcessingException;
+import com.github.msafriends.serviceproduct.modulecore.dto.productimage.ProductImageResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,11 +25,11 @@ public class AmazonS3Controller {
     private final AwsS3Service awsS3Service;
 
     @PostMapping("/products/{productId}/images")
-    public ResponseEntity<List<String>> uploadFiles(
-        @RequestPart List<MultipartFile> multipartFiles,
+    public ResponseEntity<ProductImageResponse> uploadFiles(
+        @RequestPart MultipartFile multipartFile,
         @PathVariable Long productId
     ){
-        return ResponseEntity.ok(awsS3Service.uploadFile(multipartFiles, productId));
+        return ResponseEntity.ok(awsS3Service.uploadFile(multipartFile, productId));
     }
 
     @DeleteMapping("/products/{imageId}/images")
@@ -50,51 +42,13 @@ public class AmazonS3Controller {
     }
 
     @GetMapping("/products/images")
-    public ResponseEntity<ByteArrayResource> downloadFile(
-        @RequestParam String fileKey,
-        @RequestParam(required = false) String downloadFileName,
-        HttpServletRequest request
-    ){
+    public ResponseEntity<ByteArrayResource> downloadFile(@RequestParam String fileKey){
         ByteArrayResource downloadedFile = awsS3Service.download(fileKey);
         return ResponseEntity
             .ok()
+            .contentLength(downloadedFile.contentLength())
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .header("Content-disposition", "attachment; filename=\"" + getEncodedFileName(request.getHeader("User-Agent"), fileKey) +"\"")
+            .header("Content-disposition", "attachment; filename=\"" + fileKey +"\"")
             .body(downloadedFile);
-    }
-
-    private static String chromeEncoding(String displayFileName) throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < displayFileName.length(); i++) {
-            char c = displayFileName.charAt(i);
-            if(c > '~'){
-                sb.append(URLEncoder.encode("" + c, "UTF-8"));
-            }else {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
-    }
-
-    private String getEncodedFileName(String agentName, String displayFileName) {
-        String encodedFileName = null;
-        try {
-            if(agentName.contains("MSIE")){
-                encodedFileName = URLEncoder.encode(displayFileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-            } else if (agentName.contains("Trident")) {
-                encodedFileName = URLEncoder.encode(displayFileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-            } else if (agentName.contains("Chrome")){
-                encodedFileName = chromeEncoding(displayFileName);
-            } else if (agentName.contains("Opera")) {
-                encodedFileName = "\"" + new String(displayFileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1) + "\"";
-            } else {
-                encodedFileName = URLDecoder.decode("\"" + new String(displayFileName.getBytes(StandardCharsets.UTF_8),
-                        StandardCharsets.ISO_8859_1) + "\"",
-                    StandardCharsets.UTF_8);
-            }
-        } catch (UnsupportedEncodingException ex){
-            throw new FileProcessingException(ErrorCode.FILE_PROCESSING_ERROR, "인코딩과정에서 문제가 발생했습니다.");
-        }
-        return encodedFileName;
     }
 }
